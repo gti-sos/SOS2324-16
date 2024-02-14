@@ -121,17 +121,28 @@ let datos=[
     }
 ];
 
-//console.log(datos.length);
+
 
 function mediaPuntoPais(bd,pais){
-
     let filt = bd.filter( (c)=> c.nationality===pais );
     let acum=0;
     filt.forEach( (e)=> acum+=e.point );
     let n=filt.length;
-    console.log("La media de puntos de las jugadoras de "+pais+" es de: "+acum/n);
+    return acum/n;
+}
+
+function todosPaises(bd){
+    let visitados=[];
+    bd.forEach( (e)=> {
+        let n=visitados.filter( (r)=>r===e.nationality );
+        if (  n.length<=0){
+            let pos=visitados.length;
+            visitados[pos]=e.nationality;
+            console.log("La media de puntos de las jugadoras de "+e.nationality+" es de: "+mediaPuntoPais(bd,e.nationality));
+        }
+    } )
 
 }
 
-mediaPuntoPais(datos,"Brazil");
+todosPaises(datos);  
 
