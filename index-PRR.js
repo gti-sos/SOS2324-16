@@ -122,3 +122,11 @@ let array = [
   ];
 
   
+function mediaPesoPorPais(array, pais){
+    array.filter(x => x.bplace == pais);
+    let acum=0;
+    array.forEach( (e)=> acum+=e.weight );
+    return acum/array.length;
+}
+
+console.log("La media del peso entre los 10 jugadores en la cabecera principal del csv : " , mediaPesoPorPais(array, "Argentina"));
