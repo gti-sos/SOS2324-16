@@ -4,8 +4,13 @@
   "description": "- **Team:**\r    - [Domingo Morales Calderón](https://github.com/Domingo-Morales-TI-Grupo4)\r    - [Pablo Suarez Sarmiento](https://github.com/Pablosuasar)\r    - [Pablo Ruiz Rivas](https://github.com/pablorivast)",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cool-ascii-faces": "^1.3.4",
+    "express": "^4.18.2"
+  }
 }
