@@ -1,0 +1,11 @@
+{
+  "name": "sos2324-16",
+  "version": "0.0.0",
+  "description": "- **Team:**\r    - [Domingo Morales Calderón](https://github.com/Domingo-Morales-TI-Grupo4)\r    - [Pablo Suarez Sarmiento](https://github.com/Pablosuasar)\r    - [Pablo Ruiz Rivas](https://github.com/pablorivast)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
