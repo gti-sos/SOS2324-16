@@ -133,22 +133,26 @@ function mediaPuntoPais(bd,pais){
 
 function todosPaises(bd){
     let visitados=[];
+    res=[];
+    i=0;
     bd.forEach( (e)=> {
         let n=visitados.filter( (r)=>r===e.nationality );
         if (  n.length<=0){
             let pos=visitados.length;
             visitados[pos]=e.nationality;
-            console.log("La media de puntos de las jugadoras de "+e.nationality+" es de: "+mediaPuntoPais(bd,e.nationality));
+            res[i]="La media de puntos de las jugadoras de "+e.nationality+" es de: "+mediaPuntoPais(bd,e.nationality);
+            i=i+1;
         }
     } )
+    return res;
 
 }
 
-todosPaises(datos); 
+console.log(todosPaises(datos)); 
 
 let element = document.createElement("h1");
 
-let mensaje = "por qué no me va";
+let mensaje = ""+todosPaises(datos)+"";
 
 element.textContent = mensaje;
 
