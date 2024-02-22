@@ -144,8 +144,12 @@ function todosPaises(bd){
 
 }
 
-//todosPaises(datos); 
+todosPaises(datos); 
 
-app.get("/samples/DMC", (req,res) => {
-    res.send("<html><body><h1>"+todosPaises(datos)  +"</html></body></h1>");
-});
+function todosPaises2(){
+    console.log(todosPaises(datos))
+}
+
+// app.get("/samples/DMC", (req,res) => {
+//     res.send("<html><body><h1>"+todosPaises(datos)  +"</html></body></h1>");
+// });
