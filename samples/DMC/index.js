@@ -146,10 +146,10 @@ function todosPaises(bd){
 
 todosPaises(datos); 
 
-function todosPaises2(){
-    console.log(todosPaises(datos))
-}
+let element = document.createElement("h1");
 
-// app.get("/samples/DMC", (req,res) => {
-//     res.send("<html><body><h1>"+todosPaises(datos)  +"</html></body></h1>");
-// });
+let mensaje = ""+todosPaises(datos)+ "";
+
+element.textContent = mensaje;
+
+document.body.appendChild(element);
