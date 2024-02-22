@@ -130,3 +130,11 @@ function mediaPesoPorPais(array, pais){
 }
 
 console.log("La media del peso entre los 10 jugadores en la cabecera principal del csv : " , mediaPesoPorPais(array, "Argentina"));
+
+let element = document.createElement("h1");
+
+let mensaje = "La media del peso entre los 10 jugadores en la cabecera principal del csv : " + mediaPesoPorPais(array, "Argentina");
+
+element.textContent = mensaje;
+
+document.body.appendChild(element);
