@@ -26,15 +26,26 @@ console.log(`La media de edad de los jugadores de ${nacionalidad} es: ` + calcul
 
 function calcularMediaEdadPorNacionalidades(jugadores){
     let nacionalidades = []
-
+    res = []
+    i = 0
     jugadores.forEach(jugador => {
         let nacionalidad = nacionalidades.filter(x => x === jugador.nationality)
         if(nacionalidad.length <= 0){
             let pos = nacionalidades.length
             nacionalidades[pos] = jugador.nationality
-            console.log("La media de edad de los jugadores de " + jugador.nationality + " es de: " + calcularMediaEdadPorNacionalidad(jugadores, jugador.nationality))
+            res[i] = "La media de edad de los jugadores de " + jugador.nationality + " es de: " + calcularMediaEdadPorNacionalidad(jugadores, jugador.nationality)
+            i++
         }
     })
+    return res;
 }
 
-calcularMediaEdadPorNacionalidades(jugadores)
+let element = document.createElement("h1");
+
+let mensaje = "";
+
+calcularMediaEdadPorNacionalidades(jugadores).forEach((e)=>mensaje+=e+"<br>");
+
+element.innerHTML = mensaje;
+
+document.body.appendChild(element);

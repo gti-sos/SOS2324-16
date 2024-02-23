@@ -149,12 +149,10 @@ function todosPaises(bd){
 }
 
 //console.log(todosPaises(datos).forEach((e)=>""+e+""));
+let element = document.createElement("h1");
 let mensaje="";
-todosPaises(datos).forEach((e)=>mensaje=mensaje+e+"\n");
+todosPaises(datos).forEach((e)=>mensaje+=e+"<br>");
 
-
- let element = document.createElement("h1");
-
- element.textContent = mensaje;
+ element.innerHTML = mensaje;
 
  document.body.appendChild(element);
