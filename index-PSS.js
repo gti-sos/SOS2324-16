@@ -11,6 +11,8 @@ let jugadores=[
     {short_name: "F. Ribéry", long_name: "Franck Bilal Ribéry", age: 31,	dob: "07/04/1983",	height_cm: 170, weight_kg: 72, nationality: "France", club: "FC Bayern München", preferred_foot: "Right", team_position: "SUB"}
 ];
 
+module.exports.jugadores = jugadores;
+
 function calcularMediaEdadPorNacionalidad(jugadores, nacionalidad){
     const jugadoresPorNacionalidad = jugadores.filter(x => x.nationality == nacionalidad)
 
@@ -22,19 +24,20 @@ function calcularMediaEdadPorNacionalidad(jugadores, nacionalidad){
 }
 
 const nacionalidad = "Netherlands"
-console.log(`La media de edad de los jugadores de ${nacionalidad} es: ` + calcularMediaEdadPorNacionalidad(jugadores, nacionalidad))
+//console.log(`La media de edad de los jugadores de ${nacionalidad} es: ` + calcularMediaEdadPorNacionalidad(jugadores, nacionalidad))
 
-function calcularMediaEdadPorNacionalidades(jugadores){
+module.exports.calcularMediaEdadPorNacionalidades = function(jugadores){
     let nacionalidades = []
-
+    let res = []
+    let i = 0
     jugadores.forEach(jugador => {
         let nacionalidad = nacionalidades.filter(x => x === jugador.nationality)
         if(nacionalidad.length <= 0){
             let pos = nacionalidades.length
             nacionalidades[pos] = jugador.nationality
-            console.log(`La media de edad de los jugadores de ${jugador.nationality} es de: ` + calcularMediaEdadPorNacionalidad(jugadores,jugador.nationality));
+            res[i] = "<br>" + "La media de edad de los jugadores de " + jugador.nationality + " es de: " + calcularMediaEdadPorNacionalidad(jugadores, jugador.nationality);
+            i++
         }
     })
+    return res;
 }
-
-calcularMediaEdadPorNacionalidades(jugadores)

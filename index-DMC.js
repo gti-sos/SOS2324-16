@@ -131,18 +131,23 @@ function mediaPuntoPais(bd,pais){
     return acum/n;
 }
 
-function todosPaises(bd){
+module.exports.todosPaises = function(bd){
+    let res=[];
+    let i=0;
     let visitados=[];
     bd.forEach( (e)=> {
         let n=visitados.filter( (r)=>r===e.nationality );
         if (  n.length<=0){
             let pos=visitados.length;
             visitados[pos]=e.nationality;
-            console.log("La media de puntos de las jugadoras de "+e.nationality+" es de: "+mediaPuntoPais(bd,e.nationality));
+            res[i]="<br>"+"La media de puntos de las jugadoras de "+e.nationality+" es de: "+mediaPuntoPais(bd,e.nationality);
+            i=i+1
         }
     } )
+    return res;
 
 }
 
-todosPaises(datos);  
+//console.log(this.todosPaises(datos));
 
+module.exports.datos=datos;
