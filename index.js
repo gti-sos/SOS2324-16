@@ -1,33 +1,50 @@
 let cool = require("cool-ascii-faces");
 let express = require("express");
-
-let app = express();
-const PORT = (process.env.PORT || 10000);
+let bodyParser = require("body-parser");
 
 let PSS = require('./index-PSS');
 let PRR = require('./index-PRR');
 let DMC = require('./index-DMC');
 
+let app = express();
+
+//Variables constantes
+const PORT = (process.env.PORT || 10000);
+const API_BASE = "/api/v1";
+
+app.use(bodyParser.json());
+
+//Recurso html principal
 app.use("/", express.static("./public"));
 
+//Recurso dinámico /cool
 app.get("/cool", (req,res) => {
     res.send(`<html><body><h1>${cool()}</html></body></h1>`);
 });
 
+//Recurso para /samples
 app.get("/samples/PSS", (req,res) => {
     res.send(`<html><body><h1> ${PSS.calcularMediaEdadPorNacionalidades(PSS.jugadores)}  </h1></body></html>`)
 });
-
 app.get("/samples/PRR", (req,res) => {
     res.send(`<html><body><h1> ${PRR.mediaPesoPorPais(PRR.array, "Argentina")}  </h1></body></html>`)
 });
-
 app.get("/samples/DMC",(req,res)=>{
     res.send(`<html><body><h1> ${DMC.todosPaises(DMC.datos)}  </h1></body></html>`)
 });
 
-app.listen(PORT,() =>{
-    console.log(`Server listening on port ${PORT}.`);
+//Recurso para /api de PABLO RIVAS jaja brr 
+app.get(API_BASE+"/stats-rugby", (req,res) => {
+    res.send(JSON.stringify(PRR.array));
 });
+app.post(API_BASE+"/stats-rugby", (req,res) => {
+    let stat = req.body;
+    PRR.array.push(stat);
+    res.sendStatus(201, "Created");
+})
 
+//Iniciar servicio
+app.listen(PORT,() =>{
+    console.log(`Server listening on port ${PORT}. http://localhost:${PORT}`);
+});
 console.log(`Server initializing...`);
