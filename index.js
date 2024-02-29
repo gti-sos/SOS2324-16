@@ -43,6 +43,26 @@ app.post(API_BASE+"/stats-rugby", (req,res) => {
     res.sendStatus(201, "Created");
 })
 
+//Recurso para /api de PABLO SUÁREZ
+app.get(API_BASE+"/stats-football", (req,res) => {
+    res.send(JSON.stringify(PSS.jugadores));
+});
+app.post(API_BASE+"/stats-football", (req,res) => {
+    let stat = req.body;
+    PSS.jugadores.push(stat);
+    res.sendStatus(201, "Created");
+})
+
+//Recurso para /api de DOMINGO MORALES
+app.get(API_BASE+"/stats-volleyball", (req,res) => {
+    res.send(JSON.stringify(DMC.datos));
+});
+app.post(API_BASE+"/stats-volleyball", (req,res) => {
+    let stat = req.body;
+    DMC.datos.push(stat);
+    res.sendStatus(201, "Created");
+})
+
 //Iniciar servicio
 app.listen(PORT,() =>{
     console.log(`Server listening on port ${PORT}. http://localhost:${PORT}`);
