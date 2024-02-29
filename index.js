@@ -39,9 +39,43 @@ app.get(API_BASE+"/stats-rugby", (req,res) => {
 });
 app.post(API_BASE+"/stats-rugby", (req,res) => {
     let stat = req.body;
-    PRR.array.push(stat);
-    res.sendStatus(201, "Created");
+    if(PRR.array.includes === stat){
+        res.sendStatus(409, "Conflict");
+    }else if(stat){
+        PRR.array.push(stat);
+        res.sendStatus(201, "Created");
+    }else{
+        res.sendStatus(400, "Bad request");
+    }
 })
+app.delete(API_BASE+"/stats-rugby", (req,res) => {
+    PRR.array.splice(0,PRR.array.length);
+    res.sendStatus(200, "OK");
+})
+app.put(API_BASE+"/stats-rugby", (req,res) => {
+    res.sendStatus(405, "Method Not Allowed");
+})
+
+app.get(API_BASE+"/stats-rugby/loadInitialData", (req,res) => {
+    if(PRR.array.length === 0){
+        PRR.array.push(PRR.array);
+    }
+    res.sendStatus(201, "Array created");
+});
+
+// app.get(API_BASE+"/stats-rugby/:id", (req,res) => {
+//     const parametro = req.params.id;
+//     const playerData = PRR.array.find(x => x.bplace === parametro);
+//     if (playerData) {
+//         res.send(JSON.stringify(playerData)); 
+//     } else {
+//         res.sendStatus(404, "Player not found");
+//     }
+// });
+
+
+
+
 
 //Iniciar servicio
 app.listen(PORT,() =>{
