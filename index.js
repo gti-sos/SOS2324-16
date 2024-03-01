@@ -53,6 +53,7 @@ app.get(API_BASE+"/stats-rugby/loadInitialData", (req,res) => {
         }
     });
 });
+
 app.get(API_BASE+"/stats-rugby", (req,res) => {
     dbRugby.find({}, (err,info) => {
         if(err){
@@ -65,14 +66,17 @@ app.get(API_BASE+"/stats-rugby", (req,res) => {
         }
     });
 });
+
 app.post(API_BASE+"/stats-rugby", (req,res) => {
     let stat=req.body;
     dbRugby.insert(stat);
     res.sendStatus(201,"Created");
 });
+
 app.put(API_BASE+"/stats-rugby", (req,res) => {
     res.sendStatus(405, "Method Not Allowed");
 });
+
 app.delete(API_BASE+"/stats-rugby", (req,res) => {
     dbRugby.remove({},{ multi: true},(err,numRemoved) => {
         if(err){
@@ -100,6 +104,7 @@ app.get(API_BASE+"/stats-rugby/:first", (req,res) => {
         }
     });
 });
+
 app.post(API_BASE+"/stats-rugby/:first", (req,res) => {
     res.sendStatus(405, "Method Not Allowed");
 });
@@ -108,7 +113,7 @@ app.put(API_BASE+"/stats-rugby/:first", (req,res) => {
     let first  = req.params.first;
     const nuevo = req.body;
 
-    dbRugby.update({"first":first},{$set: nuevo},(err,info)=>{
+    dbRugby.update({"first":first},{$set: nuevo},(err,numUpdated)=>{
         if (err) {
             res.sendStatus(500, "Internal Error");
         } else {
@@ -120,6 +125,7 @@ app.put(API_BASE+"/stats-rugby/:first", (req,res) => {
         }
     });
 });
+
 app.delete(API_BASE+"/stats-rugby/:first", (req,res) => {
     let first=req.params.first;
     dbRugby.remove( {"first":first},{},(err,numRemoved)=>{
@@ -138,22 +144,23 @@ app.delete(API_BASE+"/stats-rugby/:first", (req,res) => {
 
 
 //Recurso para /api de PABLO SUÁREZ
-app.get(API_BASE+"/stats-rugby/loadInitialData", (req,res) => {
-    dbRugby.find({}, (err, docs) => {
+app.get(API_BASE+"/stats-football/loadInitialData", (req,res) => {
+    dbFootball.find({}, (err, docs) => {
         if(err){
             res.sendStatus(500, "Internal Error");
         }else {
             if (docs.length === 0) {
-                dbRugby.insert(PRR.array);
-                res.sendStatus(201, "Array created");
+                dbFootball.insert(PSS.jugadores);
+                res.sendStatus(201, "Created");
             } else{
                 res.sendStatus(409, "Conflict");
             }
         }
     });
 });
-app.get(API_BASE+"/stats-rugby", (req,res) => {
-    dbRugby.find({}, (err,info) => {
+
+app.get(API_BASE+"/stats-football", (req,res) => {
+    dbFootball.find({}, (err,info) => {
         if(err){
             res.sendStatus(500,"Internal Error");
         }else{
@@ -164,16 +171,19 @@ app.get(API_BASE+"/stats-rugby", (req,res) => {
         }
     });
 });
-app.post(API_BASE+"/stats-rugby", (req,res) => {
+
+app.post(API_BASE+"/stats-football", (req,res) => {
     let stat=req.body;
-    dbRugby.insert(stat);
+    dbFootball.insert(stat);
     res.sendStatus(201,"Created");
 });
-app.put(API_BASE+"/stats-rugby", (req,res) => {
+
+app.put(API_BASE+"/stats-football", (req,res) => {
     res.sendStatus(405, "Method Not Allowed");
 });
-app.delete(API_BASE+"/stats-rugby", (req,res) => {
-    dbRugby.remove({},{ multi: true},(err,numRemoved) => {
+
+app.delete(API_BASE+"/stats-football", (req,res) => {
+    dbFootball.remove({},{ multi: true },(err,numRemoved) => {
         if(err){
             res.sendStatus(500,"Internal Error");
         }else{
@@ -186,9 +196,9 @@ app.delete(API_BASE+"/stats-rugby", (req,res) => {
     })
 });
 
-app.get(API_BASE+"/stats-rugby/:first", (req,res) => {
-    let first=req.params.first;
-    dbRugby.find({"first":first}, (err,info) => {
+app.get(API_BASE+"/stats-football/:short_name", (req,res) => {
+    let short_name=req.params.short_name;
+    dbFootball.find({"short_name":short_name}, (err,info) => {
         if(err){
             res.sendStatus(404,"Not Found");
         }else{
@@ -199,15 +209,16 @@ app.get(API_BASE+"/stats-rugby/:first", (req,res) => {
         }
     });
 });
-app.post(API_BASE+"/stats-rugby/:first", (req,res) => {
+
+app.post(API_BASE+"/stats-football/:short_name", (req,res) => {
     res.sendStatus(405, "Method Not Allowed");
 });
 
-app.put(API_BASE+"/stats-rugby/:first", (req,res) => {
-    let first  = req.params.first;
+app.put(API_BASE+"/stats-football/:short_name", (req,res) => {
+    let short_name  = req.params.short_name;
     const nuevo = req.body;
 
-    dbRugby.update({"first":first},{$set: nuevo},(err,info)=>{
+    dbFootball.update({"short_name":short_name},{$set: nuevo},(err,numUpdated)=>{
         if (err) {
             res.sendStatus(500, "Internal Error");
         } else {
@@ -219,9 +230,10 @@ app.put(API_BASE+"/stats-rugby/:first", (req,res) => {
         }
     });
 });
-app.delete(API_BASE+"/stats-rugby/:first", (req,res) => {
-    let first=req.params.first;
-    dbRugby.remove( {"first":first},{},(err,numRemoved)=>{
+
+app.delete(API_BASE+"/stats-football/:short_name", (req,res) => {
+    let short_name=req.params.short_name;
+    dbFootball.remove( {"short_name":short_name},{},(err,numRemoved)=>{
     if(err){
         res.sendStatus(500,"Internal Error");
     }else{
@@ -235,22 +247,23 @@ app.delete(API_BASE+"/stats-rugby/:first", (req,res) => {
 });
 
 //Recurso para /api de DOMINGO MORALES
-app.get(API_BASE+"/stats-rugby/loadInitialData", (req,res) => {
-    dbRugby.find({}, (err, docs) => {
+app.get(API_BASE+"/stats-volleyball/loadInitialData", (req,res) => {
+    dbVolleyball.find({}, (err, docs) => {
         if(err){
             res.sendStatus(500, "Internal Error");
         }else {
             if (docs.length === 0) {
-                dbRugby.insert(PRR.array);
-                res.sendStatus(201, "Array created");
+                dbVolleyball.insert(DMC.datos);
+                res.sendStatus(201, "Created");
             } else{
                 res.sendStatus(409, "Conflict");
             }
         }
     });
 });
-app.get(API_BASE+"/stats-rugby", (req,res) => {
-    dbRugby.find({}, (err,info) => {
+
+app.get(API_BASE+"/stats-volleyball", (req,res) => {
+    dbVolleyball.find({}, (err,info) => {
         if(err){
             res.sendStatus(500,"Internal Error");
         }else{
@@ -261,16 +274,19 @@ app.get(API_BASE+"/stats-rugby", (req,res) => {
         }
     });
 });
-app.post(API_BASE+"/stats-rugby", (req,res) => {
+
+app.post(API_BASE+"/stats-volleyball", (req,res) => {
     let stat=req.body;
-    dbRugby.insert(stat);
+    dbVolleyball.insert(stat);
     res.sendStatus(201,"Created");
 });
-app.put(API_BASE+"/stats-rugby", (req,res) => {
+
+app.put(API_BASE+"/stats-volleyball", (req,res) => {
     res.sendStatus(405, "Method Not Allowed");
 });
-app.delete(API_BASE+"/stats-rugby", (req,res) => {
-    dbRugby.remove({},{ multi: true},(err,numRemoved) => {
+
+app.delete(API_BASE+"/stats-volleyball", (req,res) => {
+    dbVolleyball.remove({},{ multi: true},(err,numRemoved) => {
         if(err){
             res.sendStatus(500,"Internal Error");
         }else{
@@ -283,9 +299,9 @@ app.delete(API_BASE+"/stats-rugby", (req,res) => {
     })
 });
 
-app.get(API_BASE+"/stats-rugby/:first", (req,res) => {
-    let first=req.params.first;
-    dbRugby.find({"first":first}, (err,info) => {
+app.get(API_BASE+"/stats-volleyball/:name", (req,res) => {
+    let name=req.params.name;
+    dbVolleyball.find({"name":name}, (err,info) => {
         if(err){
             res.sendStatus(404,"Not Found");
         }else{
@@ -296,15 +312,16 @@ app.get(API_BASE+"/stats-rugby/:first", (req,res) => {
         }
     });
 });
-app.post(API_BASE+"/stats-rugby/:first", (req,res) => {
+
+app.post(API_BASE+"/stats-volleyball/:name", (req,res) => {
     res.sendStatus(405, "Method Not Allowed");
 });
 
-app.put(API_BASE+"/stats-rugby/:first", (req,res) => {
-    let first  = req.params.first;
+app.put(API_BASE+"/stats-volleyball/:name", (req,res) => {
+    let name  = req.params.name;
     const nuevo = req.body;
 
-    dbRugby.update({"first":first},{$set: nuevo},(err,info)=>{
+    dbVolleyball.update({"name":name},{$set: nuevo},(err,numUpdated)=>{
         if (err) {
             res.sendStatus(500, "Internal Error");
         } else {
@@ -316,9 +333,10 @@ app.put(API_BASE+"/stats-rugby/:first", (req,res) => {
         }
     });
 });
-app.delete(API_BASE+"/stats-rugby/:first", (req,res) => {
-    let first=req.params.first;
-    dbRugby.remove( {"first":first},{},(err,numRemoved)=>{
+
+app.delete(API_BASE+"/stats-volleyball/:name", (req,res) => {
+    let name=req.params.name;
+    dbVolleyball.remove( {"name":name},{},(err,numRemoved)=>{
     if(err){
         res.sendStatus(500,"Internal Error");
     }else{
