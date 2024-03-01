@@ -93,11 +93,33 @@ app.get(API_BASE+"/stats-rugby/:name", (req,res) => {
         if(err){
             res.sendStatus(404,"Not Found");
         }else{
-            res.send(JSON.stringify(info));
+            res.send(JSON.stringify(info.map((c)=> {
+                delete c._id;
+                return c;
+            })));
         }
     });
 });
+app.post(API_BASE+"/stats-rugby/:name", (req,res) => {
+    res.sendStatus(405, "Method Not Allowed");
+});
 
+app.put(API_BASE+"/stats-rugby/:name", (req,res) => {
+    let name  = req.params.name;
+    const nuevo = req.body;
+
+    dbRugby.update({"name":name},{$set: nuevo},(err,info)=>{
+        if (err) {
+            res.sendStatus(500, "Internal Error");
+        } else {
+            if (numUpdated === 0) {
+                res.sendStatus(404, "Not found");
+            } else {
+                res.sendStatus(200, "Ok");
+            }
+        }
+    });
+});
 app.delete(API_BASE+"/stats-rugby/:name", (req,res) => {
     let name=req.params.name;
     dbRugby.remove( {"name":name},{},(err,numRemoved)=>{
@@ -111,14 +133,6 @@ app.delete(API_BASE+"/stats-rugby/:name", (req,res) => {
         }
     }
     });
-});
-
-
-app.get(API_BASE+"/stats-rugby/loadInitialData", (req,res) => {
-    if(PRR.array.length === 0){
-        PRR.array.push(PRR.array);
-    }
-    res.sendStatus(201, "Array created");
 });
 
 
