@@ -2,6 +2,57 @@ let PRR = require('../index-PRR');
 
 const API_BASE = "/api/v1";
 
+//funcion pa validar si los campos son correctos
+function validarDatos(req, res, next) {
+    const jsonRecibido = req.body;
+  
+    const esquemaEsperado = {
+        "team": 'string',
+        "plabel": 'string',
+        "age": 'number',
+        "height": 'number',
+        "weight": 'number',
+        "bplace": 'string',
+        "bdate": 'string',
+        "last": 'string',
+        "first": 'string',
+        "caps": 'number'
+      };
+
+    const keysRecibidas = Object.keys(jsonRecibido);
+    const keysEsperadas = Object.keys(esquemaEsperado);
+    const keysFaltantes = keysEsperadas.filter(key => !keysRecibidas.includes(key));
+    
+    //comprueba q no haya claves de mas
+    const clavesExtra = keysRecibidas.filter(key => !keysEsperadas.includes(key));
+    if (clavesExtra.length > 0) {
+        console.error(`Se encontraron claves adicionales en el JSON: ${clavesExtra.join(', ')}`);
+        return res.sendStatus(400, "Bad request");
+    }
+
+    //comprueba q no haya claves de menos
+    if (keysFaltantes.length > 0) {
+        console.error(`Faltan las siguientes claves en el JSON: ${keysFaltantes.join(', ')}` );
+        return res.sendStatus(400, "Bad request");
+    }
+
+    //comprueba q sean los tipos q son
+    const erroresTipo = [];
+    keysEsperadas.forEach(key => {
+        const tipoEsperado = esquemaEsperado[key];
+        const valor = jsonRecibido[key];
+        if (typeof valor !== tipoEsperado) {
+            erroresTipo.push(`El valor de '${key}' debe ser de tipo '${tipoEsperado}'`);
+        }
+    });
+    if (erroresTipo.length > 0) {
+        console.error(`Errores de tipo: ${erroresTipo.join(', ')}`);
+        return res.sendStatus(400, "Bad request");
+    }
+
+    next();
+}
+
 module.exports = (app,dbRugby) => {
     //Recurso para /api de PABLO RIVAS 
     app.get(API_BASE+"/stats-rugby/loadInitialData", (req,res) => {
@@ -30,18 +81,13 @@ module.exports = (app,dbRugby) => {
             }
         });
     });
-    app.post(API_BASE+"/stats-rugby", (req,res) => {
+    app.post(API_BASE+"/stats-rugby", validarDatos, (req,res) => {
         let stat=req.body;
-        dbRugby.find(stat, (err,info) => {
+        dbRugby.insert(stat, (err,info) => {
             if(err){
                 res.sendStatus(500,"Internal Error");
             }else{
-                if(info){
-                    res.sendStatus(409, "Confilct");
-                }else {
-                    dbRugby.insert(stat);
-                    res.sendStatus(201,"Created");
-                }
+                res.sendStatus(201,"Created");
             }
         });
     });
@@ -62,6 +108,7 @@ module.exports = (app,dbRugby) => {
         })
     });
     
+    //con parámetros
     app.get(API_BASE+"/stats-rugby/:name", (req,res) => {
         let name=req.params.name;
         dbRugby.find({"first":name}, (err,info) => {

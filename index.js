@@ -3,13 +3,13 @@ let express = require("express");
 let bodyParser = require("body-parser");
 let dataStore = require("nedb");
 
-let PSS = require('./index-PSS');
-let DMC = require('./index-DMC');
-
-let apiPRR = require('./api/apiPablo');
+let apiPRR = require('./api/apiPRR');
+let apiPSS = require('./api/apiPSS');
+let apiDMC = require('./api/apiDMC');
 
 let app = express();
 
+//creacion de bases de datos
 let dbRugby = new dataStore();
 let dbVolleyball = new dataStore();
 let dbFootball = new dataStore();
@@ -41,216 +41,16 @@ app.get("/samples/DMC",(req,res)=>{
 
 //llamar a la api pablo
 apiPRR(app, dbRugby);
-
-
-//Recurso para /api de PABLO SUÁREZ
-app.get(API_BASE+"/stats-football/loadInitialData", (req,res) => {
-    dbFootball.find({}, (err, docs) => {
-        if(err){
-            res.sendStatus(500, "Internal Error");
-        }else {
-            if (docs.length === 0) {
-                dbFootball.insert(PSS.jugadores);
-                res.sendStatus(201, "Created");
-            } else{
-                res.sendStatus(409, "Conflict");
-            }
-        }
-    });
-});
-
-app.get(API_BASE+"/stats-football", (req,res) => {
-    dbFootball.find({}, (err,info) => {
-        if(err){
-            res.sendStatus(500,"Internal Error");
-        }else{
-            res.send(JSON.stringify(info.map((c)=> {
-                delete c._id;
-                return c;
-            })));
-        }
-    });
-});
-
-app.post(API_BASE+"/stats-football", (req,res) => {
-    let stat=req.body;
-    dbFootball.insert(stat);
-    res.sendStatus(201,"Created");
-});
-
-app.put(API_BASE+"/stats-football", (req,res) => {
-    res.sendStatus(405, "Method Not Allowed");
-});
-
-app.delete(API_BASE+"/stats-football", (req,res) => {
-    dbFootball.remove({},{ multi: true },(err,numRemoved) => {
-        if(err){
-            res.sendStatus(500,"Internal Error");
-        }else{
-            if(numRemoved>=1){
-                res.sendStatus(200,"All removed");
-            }else{
-                res.sendStatus(404,"Not found");
-            }
-        }
-    })
-});
-
-app.get(API_BASE+"/stats-football/:short_name", (req,res) => {
-    let short_name=req.params.short_name;
-    dbFootball.find({"short_name":short_name}, (err,info) => {
-        if(err){
-            res.sendStatus(404,"Not Found");
-        }else{
-            res.send(JSON.stringify(info.map((c)=> {
-                delete c._id;
-                return c;
-            })));
-        }
-    });
-});
-
-app.post(API_BASE+"/stats-football/:short_name", (req,res) => {
-    res.sendStatus(405, "Method Not Allowed");
-});
-
-app.put(API_BASE+"/stats-football/:short_name", (req,res) => {
-    let short_name  = req.params.short_name;
-    const nuevo = req.body;
-
-    dbFootball.update({"short_name":short_name},{$set: nuevo},(err,numUpdated)=>{
-        if (err) {
-            res.sendStatus(500, "Internal Error");
-        } else {
-            if (numUpdated === 0) {
-                res.sendStatus(404, "Not found");
-            } else {
-                res.sendStatus(200, "Ok");
-            }
-        }
-    });
-});
-
-app.delete(API_BASE+"/stats-football/:short_name", (req,res) => {
-    let short_name=req.params.short_name;
-    dbFootball.remove( {"short_name":short_name},{},(err,numRemoved)=>{
-    if(err){
-        res.sendStatus(500,"Internal Error");
-    }else{
-        if(numRemoved>=1){
-            res.sendStatus(200,"Removed");
-        }else{
-            res.sendStatus(404,"Not found");
-        }
-    }
-    });
-});
-
-//Recurso para /api de DOMINGO MORALES
-app.get(API_BASE+"/stats-volleyball/loadInitialData", (req,res) => {
-    dbVolleyball.find({}, (err, docs) => {
-        if(err){
-            res.sendStatus(500, "Internal Error");
-        }else {
-            if (docs.length === 0) {
-                dbVolleyball.insert(DMC.datos);
-                res.sendStatus(201, "Created");
-            } else{
-                res.sendStatus(409, "Conflict");
-            }
-        }
-    });
-});
-
-app.get(API_BASE+"/stats-volleyball", (req,res) => {
-    dbVolleyball.find({}, (err,info) => {
-        if(err){
-            res.sendStatus(500,"Internal Error");
-        }else{
-            res.send(JSON.stringify(info.map((c)=> {
-                delete c._id;
-                return c;
-            })));
-        }
-    });
-});
-
-app.post(API_BASE+"/stats-volleyball", (req,res) => {
-    let stat=req.body;
-    dbVolleyball.insert(stat);
-    res.sendStatus(201,"Created");
-});
-
-app.put(API_BASE+"/stats-volleyball", (req,res) => {
-    res.sendStatus(405, "Method Not Allowed");
-});
-
-app.delete(API_BASE+"/stats-volleyball", (req,res) => {
-    dbVolleyball.remove({},{ multi: true},(err,numRemoved) => {
-        if(err){
-            res.sendStatus(500,"Internal Error");
-        }else{
-            if(numRemoved>=1){
-                res.sendStatus(200,"All removed");
-            }else{
-                res.sendStatus(404,"Not found");
-            }
-        }
-    })
-});
-
-app.get(API_BASE+"/stats-volleyball/:name", (req,res) => {
-    let name=req.params.name;
-    dbVolleyball.find({"name":name}, (err,info) => {
-        if(err){
-            res.sendStatus(404,"Not Found");
-        }else{
-            res.send(JSON.stringify(info.map((c)=> {
-                delete c._id;
-                return c;
-            })));
-        }
-    });
-});
-
-app.post(API_BASE+"/stats-volleyball/:name", (req,res) => {
-    res.sendStatus(405, "Method Not Allowed");
-});
-
-app.put(API_BASE+"/stats-volleyball/:name", (req,res) => {
-    let name  = req.params.name;
-    const nuevo = req.body;
-
-    dbVolleyball.update({"name":name},{$set: nuevo},(err,numUpdated)=>{
-        if (err) {
-            res.sendStatus(500, "Internal Error");
-        } else {
-            if (numUpdated === 0) {
-                res.sendStatus(404, "Not found");
-            } else {
-                res.sendStatus(200, "Ok");
-            }
-        }
-    });
-});
-
-app.delete(API_BASE+"/stats-volleyball/:name", (req,res) => {
-    let name=req.params.name;
-    dbVolleyball.remove( {"name":name},{},(err,numRemoved)=>{
-    if(err){
-        res.sendStatus(500,"Internal Error");
-    }else{
-        if(numRemoved>=1){
-            res.sendStatus(200,"Removed");
-        }else{
-            res.sendStatus(404,"Not found");
-        }
-    }
-    });
-});
+//llamar a la api pablo
+apiPSS(app, dbFootball);
+//llamar a la api domingo
+apiDMC(app, dbVolleyball);
 
 //Iniciar servicio
 app.listen(PORT,() =>{
-    console.log(`Server listening on port ${PORT}. http://localhost:${PORT}`);
+    console.log(`Server listening on http://localhost:${PORT}`);
+    console.log(`API pablo rivas on http://localhost:${PORT + API_BASE}/stats-rugby`);
+    console.log(`API pablo suarez on http://localhost:${PORT + API_BASE}/stats-football`);
+    console.log(`API domingo on http://localhost:${PORT + API_BASE}/stats-volleyball`);
 });
 console.log(`Server initializing...`);
