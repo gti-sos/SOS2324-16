@@ -82,21 +82,18 @@ module.exports = (app,dbRugby) => {
     app.put(API_BASE+"/stats-rugby/:name", (req,res) => {
         let name  = req.params.name;
         const nuevo = req.body;
-        if(){
-    
-        }else{
-            dbRugby.update({"first":name},{$set: nuevo},(err,info)=>{
-                if (err) {
-                    res.sendStatus(400, "Bad Request");
+        dbRugby.update({"first":name},{$set: nuevo},(err,info)=>{
+            if (err) {
+                res.sendStatus(400, "Bad Request");
+            } else {
+                if (numUpdated === 0) {
+                    res.sendStatus(404, "Not found");
                 } else {
-                    if (numUpdated === 0) {
-                        res.sendStatus(404, "Not found");
-                    } else {
-                        res.sendStatus(200, "Ok");
-                    }
+                    res.sendStatus(200, "Ok");
                 }
-            });
-        }
+            }
+        });
+        
     });
     app.delete(API_BASE+"/stats-rugby/:name", (req,res) => {
         let name=req.params.name;
