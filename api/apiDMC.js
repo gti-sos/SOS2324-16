@@ -136,7 +136,7 @@ app.put(API_BASE+"/stats-volleyball/:name", (req,res) => {
 
     dbVolleyball.update({"name":name},{$set: nuevo},(err,numUpdated)=>{
         if (err) {
-            res.sendStatus(500, "Internal Error");
+            res.sendStatus(400, "Bad request");
         } else {
             if (numUpdated === 0) {
                 res.sendStatus(404, "Not found");
