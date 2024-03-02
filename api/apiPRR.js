@@ -69,18 +69,101 @@ module.exports = (app,dbRugby) => {
             }
         });
     });
-    app.get(API_BASE+"/stats-rugby", (req,res) => {
-        dbRugby.find({}, (err,info) => {
-            if(err){
-                res.sendStatus(500,"Internal Error");
+    // app.get(API_BASE+"/stats-rugby", (req,res) => {
+    //     dbRugby.find({}, (err,info) => {
+    //         if(err){
+    //             res.sendStatus(500,"Internal Error");
+    //         }else{
+    //             res.send(JSON.stringify(info.map((c)=> {
+    //                 delete c._id;
+    //                 return c;
+    //             })));
+    //         }
+    //     });
+    // });
+    app.get(API_BASE+'/stats-rugby', (req, res) => {
+        let peticion = req.query; 
+        const from = Number(req.query.from);
+        const to = Number(req.query.to);
+        if (Object.keys(peticion).length===0) {
+            dbRugby.find( {} ,(err,info)=> {
+                        if(err){
+                            res.sendStatus(500,"Internal Error");
+                        }else{
+                            res.send(JSON.stringify(info.map((c)=> {
+                                delete c._id;
+                                return c;
+            
+                            })));
+                        }
+                    });
+        }else if(from>0 && to >0 && from<to){
+            dbRugby.find( {"bdate": { $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") } } ,(err,info)=> {
+                if(err){
+                    res.sendStatus(500,"Internal Error");
+                }else{
+                    res.send(JSON.stringify(info.map((c)=> {
+                        delete c._id;
+                        return c;
+                    })));
+                }
+            });
+    
+        }else{
+    
+            let valor=Object.values(peticion)[0];
+            let clave=Object.keys(peticion)[0];
+            let cond={}
+            
+            if ((typeof PRR.array[0][clave])==="number"){
+                valor=Number(valor);
+                cond[clave]=valor;
+                dbRugby.find(cond, (err, info) => {
+                    if (err) {
+                        res.sendStatus(500,'Error interno del servidor' );
+                     }else {
+                        res.send(JSON.stringify(info.map((c)=> {
+                        delete c._id;
+                     return c;
+                })));
+    
+            }
+            }); 
+    
+    
+            }else if( (typeof PRR.array[0][clave])==="object" ){
+    
+                valor=Number(valor);        
+    
+                dbRugby.find({"bdate":{ $gte:new Date(valor+"-01-01"), $lte:new Date(valor+"-12-31") }}, (err, info) => {
+                    if (err) {
+                        res.sendStatus(500,'Error interno del servidor' );
+                     }else {
+                        res.send(JSON.stringify(info.map((c)=> {
+                        delete c._id;
+                     return c;
+                })));
+    
+            }
+            });
             }else{
-                res.send(JSON.stringify(info.map((c)=> {
-                    delete c._id;
-                    return c;
+                cond[clave]=valor;
+            
+    
+                dbRugby.find(cond, (err, info) => {
+                    if (err) {
+                        res.sendStatus(500,'Error interno del servidor' );
+                     }else {
+                        res.send(JSON.stringify(info.map((c)=> {
+                        delete c._id;
+                     return c;
                 })));
             }
-        });
-    });
+            }); 
+            }
+        }
+      });
+    
     app.post(API_BASE+"/stats-rugby", validarDatos, (req,res) => {
         let stat=req.body;
         dbRugby.insert(stat, (err,info) => {
@@ -109,18 +192,113 @@ module.exports = (app,dbRugby) => {
     });
     
     //con parámetros
-    app.get(API_BASE+"/stats-rugby/:name", (req,res) => {
-        let name=req.params.name;
-        dbRugby.find({"first":name}, (err,info) => {
-            if(err){
-                res.sendStatus(404,"Not Found");
-            }else{
-                res.send(JSON.stringify(info.map((c)=> {
-                    delete c._id;
-                    return c;
-                })));
+    // app.get(API_BASE+"/stats-rugby/:name", (req,res) => {
+    //     let name=req.params.name;
+    //     dbRugby.find({"first":name}, (err,info) => {
+    //         if(err){
+    //             res.sendStatus(404,"Not Found");
+    //         }else{
+    //             res.send(JSON.stringify(info.map((c)=> {
+    //                 delete c._id;
+    //                 return c;
+    //             })));
+    //         }
+    //     });
+    // });
+    app.get(API_BASE+"/stats-rugby/:nationality", (req,res) => {
+        let nationality=req.params.nationality;
+        let peticion=req.query;
+    
+        const from = Number(req.query.from);
+        const to = Number(req.query.to);
+    
+        if (Object.keys(peticion).length===0) {
+            dbRugby.find( {"bplace":nationality} ,(err,info)=> {
+                        if(err){
+                            res.sendStatus(500,"Internal Error");
+                        }else{
+                            res.send(JSON.stringify(info.map((c)=> {
+                                delete c._id;
+                                return c;
+            
+                            })));
+                        }
+                    });
+        }else if(from>0 && to >0 && from<to){
+            dbRugby.find( {"bplace":nationality,"bdate": { $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") } } ,(err,info)=> {
+                if(err){
+                    res.sendStatus(500,"Internal Error");
+                }else{
+                    res.send(JSON.stringify(info.map((c)=> {
+                        delete c._id;
+                        return c;
+    
+                    })));
+                }
+            });
+    
+        }else{
+    
+                let valor=Object.values(peticion)[0];
+                let clave=Object.keys(peticion)[0];
+                let cond={}
+                
+                if ((typeof PRR.array[0][clave])==="number"){
+                    valor=Number(valor);
+    
+                    cond["bplace"]=nationality;
+                    cond[clave]=valor;
+                
+                    dbRugby.find(cond, (err, info) => {
+                        if (err) {
+                            res.sendStatus(500,'Error interno del servidor' );
+                         }else {
+                            res.send(JSON.stringify(info.map((c)=> {
+                            delete c._id;
+                         return c;
+                    })));
+        
+                }
+                }); 
+        
+        
+                }else if( (typeof PRR.array[0][clave])==="object" ){
+        
+                    valor=Number(valor);        
+        
+                    dbRugby.find({"bplace":nationality,"bdate":{ $gte:new Date(valor+"-01-01"), $lte:new Date(valor+"-12-31") }}, (err, info) => {
+                        if (err) {
+                            res.sendStatus(500,'Error interno del servidor' );
+                         }else {
+                            res.send(JSON.stringify(info.map((c)=> {
+                            delete c._id;
+                         return c;
+                    })));
+        
+                }
+                });
+        
+                }else{
+                    
+                    cond["bplace"]=nationality;
+                    cond[clave]=valor;
+                
+                    dbRugby.find(cond, (err, info) => {
+                        if (err) {
+                            res.sendStatus(500,'Error interno del servidor' );
+                         }else {
+                            res.send(JSON.stringify(info.map((c)=> {
+                            delete c._id;
+                         return c;
+                    })));
+        
+                }
+                }); 
+        
+                }
+             
             }
-        });
+        
     });
     app.post(API_BASE+"/stats-rugby/:name", (req,res) => {
         res.sendStatus(405, "Method Not Allowed");
@@ -156,5 +334,38 @@ module.exports = (app,dbRugby) => {
         }
         });
     });
-}
 
+
+app.get(API_BASE+"/stats-rugby/:nationality/:weight", (req,res) => {
+    let nationality=req.params.nationality;
+    let weight=req.params.weight;
+    dbRugby.find({"bplace":nationality, "weight":Number(weight)}, (err,info) => {
+        if(err){
+            res.sendStatus(404,"Not Found");
+        }else{
+            res.send(JSON.stringify(info.map((c)=> {
+                delete c._id;
+                return c;
+            })));
+        }
+    });
+});
+
+app.put(API_BASE+"/stats-rugby/:nationality/:weight", (req,res) => {
+    let nationality=req.params.nationality;
+    let weight=req.params.weight;
+    const nuevo=req.body;
+
+    dbRugby.update({"bplace":nationality,"weight":Number(weight)},{$set: nuevo},(err,numUpdated)=>{
+        if (err) {
+            res.sendStatus(400, "Bad request");
+        } else {
+            if (numUpdated === 0) {
+                res.sendStatus(404, "Not found");
+            } else {
+                res.sendStatus(200, "Ok");
+            }
+        }
+    });
+});
+}
