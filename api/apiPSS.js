@@ -290,7 +290,7 @@ app.put(API_BASE+"/stats-football/:nationality", (req,res) => {
 
 app.delete(API_BASE+"/stats-football/:nationality", (req,res) => {
     let nationality=req.params.nationality;
-    dbFootball.remove( {"nationality":nationality},{},(err,numRemoved)=>{
+    dbFootball.remove( {"nationality":nationality},{ multi: true },(err,numRemoved)=>{
     if(err){
         res.sendStatus(500,"Internal Error");
     }else{
@@ -304,6 +304,21 @@ app.delete(API_BASE+"/stats-football/:nationality", (req,res) => {
 });
 
 app.get(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
+    let nationality=req.params.nationality;
+    let height_cm=req.params.height_cm;
+    dbFootball.find({"nationality":nationality, "height_cm":Number(height_cm)}, (err,info) => {
+        if(err){
+            res.sendStatus(404,"Not Found");
+        }else{
+            res.send(JSON.stringify(info.map((c)=> {
+                delete c._id;
+                return c;
+            })));
+        }
+    });
+});
+
+app.put(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
     let nationality=req.params.nationality;
     let height_cm=req.params.height_cm;
     dbFootball.find({"nationality":nationality, "height_cm":Number(height_cm)}, (err,info) => {
