@@ -2,7 +2,7 @@ let DMC = require('../index-DMC');
 
 const API_BASE = "/api/v1";
 
-//funcion pa validar si los campos son correctos
+//funcion para validar si los campos son correctos
 function validarDatos(req, res, next) {
     const jsonRecibido = req.body;
   
@@ -23,20 +23,20 @@ function validarDatos(req, res, next) {
     const keysEsperadas = Object.keys(esquemaEsperado);
     const keysFaltantes = keysEsperadas.filter(key => !keysRecibidas.includes(key));
     
-    //comprueba q no haya claves de mas
+    //comprueba que no haya claves de más
     const clavesExtra = keysRecibidas.filter(key => !keysEsperadas.includes(key));
     if (clavesExtra.length > 0) {
         console.error(`Se encontraron claves adicionales en el JSON: ${clavesExtra.join(', ')}`);
         return res.sendStatus(400, "Bad request");
     }
 
-    //comprueba q no haya claves de menos
+    //comprueba que no haya claves de menos
     if (keysFaltantes.length > 0) {
         console.error(`Faltan las siguientes claves en el JSON: ${keysFaltantes.join(', ')}` );
         return res.sendStatus(400, "Bad request");
     }
 
-    //comprueba q sean los tipos q son
+    //comprueba que sean los tipos que son
     const erroresTipo = [];
     keysEsperadas.forEach(key => {
         const tipoEsperado = esquemaEsperado[key];
