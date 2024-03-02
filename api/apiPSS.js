@@ -321,14 +321,17 @@ app.get(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
 app.put(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
     let nationality=req.params.nationality;
     let height_cm=req.params.height_cm;
-    dbFootball.find({"nationality":nationality, "height_cm":Number(height_cm)}, (err,info) => {
-        if(err){
-            res.sendStatus(404,"Not Found");
-        }else{
-            res.send(JSON.stringify(info.map((c)=> {
-                delete c._id;
-                return c;
-            })));
+    const nuevo=req.body;
+
+    dbFootball.update({"nationality":nationality,"height_cm":Number(height_cm)},{$set: nuevo},(err,numUpdated)=>{
+        if (err) {
+            res.sendStatus(400, "Bad request");
+        } else {
+            if (numUpdated === 0) {
+                res.sendStatus(404, "Not found");
+            } else {
+                res.sendStatus(200, "Ok");
+            }
         }
     });
 });

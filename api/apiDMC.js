@@ -74,7 +74,7 @@ app.get(API_BASE+"/stats-volleyball/loadInitialData", (req,res) => {
 
 
 app.get(API_BASE+'/stats-volleyball', (req, res) => {
-    let peticion = req.query; // Obtiene el valor del parámetro de la provincia
+    let peticion = req.query; 
 
     const from = Number(req.query.from);
     const to = Number(req.query.to);
