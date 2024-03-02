@@ -39,18 +39,18 @@ app.get("/samples/DMC",(req,res)=>{
     res.send(`<html><body><h1> ${DMC.todosPaises(DMC.datos)}  </h1></body></html>`)
 });
 
-//llamar a la api pablo
+//Llamar a la api de Pablo Rivas
 apiPRR(app, dbRugby);
-//llamar a la api pablo
+//Llamar a la api de Pablo Suárez
 apiPSS(app, dbFootball);
-//llamar a la api domingo
+//Llamar a la api de Domingo Morales
 apiDMC(app, dbVolleyball);
 
 //Iniciar servicio
 app.listen(PORT,() =>{
     console.log(`Server listening on http://localhost:${PORT}`);
-    console.log(`API pablo rivas on http://localhost:${PORT + API_BASE}/stats-rugby`);
-    console.log(`API pablo suarez on http://localhost:${PORT + API_BASE}/stats-football`);
-    console.log(`API domingo on http://localhost:${PORT + API_BASE}/stats-volleyball`);
+    console.log(`API Pablo Rivas on http://localhost:${PORT + API_BASE}/stats-rugby`);
+    console.log(`API Pablo Suárez on http://localhost:${PORT + API_BASE}/stats-football`);
+    console.log(`API Domingo Morales on http://localhost:${PORT + API_BASE}/stats-volleyball`);
 });
 console.log(`Server initializing...`);
