@@ -168,7 +168,7 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
       
   });
 
-app.post(API_BASE+"/stats-volleyball", (req,res) => {
+app.post(API_BASE+"/stats-volleyball",validarDatos, (req,res) => {
     let stat=req.body;
     dbVolleyball.insert(stat);
     res.sendStatus(201,"Created");
