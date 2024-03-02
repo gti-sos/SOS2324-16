@@ -1,10 +1,25 @@
+function parseaFechasDMC(f){
+    
+    const partesFecha = f.split("/"); // Dividir la cadena en partes usando "/"
+    const dia = parseInt(partesFecha[0], 10); // Convertir el mes a un número entero (base 10)
+    const mes = parseInt(partesFecha[1], 10); // Convertir el día a un número entero (base 10)
+    const anyo = parseInt(partesFecha[2], 10);
+
+    const fecha = new Date(anyo, mes - 1, dia); // Nota: Restamos 1 del mes, ya que los meses en JavaScript van de 0 a 11
+
+    return fecha;
+
+
+}
+
+
 let datos=[
     {
         name:"Ting Zhu",
         ranking:3,
         nationality:"China",
         position:"Outside Hitter",
-        birthdate:"29/11/1994",
+        birthdate:parseaFechasDMC("29/11/1994"),
         height:198,
         weight:78,
         dominant_hand:"Right",
@@ -16,7 +31,7 @@ let datos=[
         ranking:176,
         nationality:"Brazil",
         position:"Setter",
-        birthdate:"03/03/1989",
+        birthdate:parseaFechasDMC("03/03/1989"),
         height:178,
         weight:68,
         dominant_hand:"Right",
@@ -28,7 +43,7 @@ let datos=[
         ranking:31,
         nationality:"Brazil",
         position:"Outside Hitter",
-        birthdate:"19/05/1994",
+        birthdate:parseaFechasDMC("19/05/1994"),
         height:180,
         weight:65,
         dominant_hand:"Right",
@@ -40,7 +55,7 @@ let datos=[
         ranking:28,
         nationality:"Serbia",
         position:"Opposite",
-        birthdate:"08/03/1997",
+        birthdate:parseaFechasDMC("08/03/1997"),
         height:194,
         weight:84,
         dominant_hand:"Left",
@@ -52,7 +67,7 @@ let datos=[
         ranking:134,
         nationality:"Italy",
         position:"Opposite",
-        birthdate:"18/12/1998",
+        birthdate:parseaFechasDMC("18/12/1998"),
         height:190,
         weight:70,
         dominant_hand:"Right",
@@ -64,7 +79,7 @@ let datos=[
         ranking:23,
         nationality:"Dominican Republic",
         position:"Outside Hitter",
-        birthdate:"13/05/1987",
+        birthdate:parseaFechasDMC("13/05/1987"),
         height:188,
         weight:68,
         dominant_hand:"Right",
@@ -76,7 +91,7 @@ let datos=[
         ranking:180,
         nationality:"USA",
         position:"Outside Hitter",
-        birthdate:"25/06/1992",
+        birthdate:parseaFechasDMC("25/06/1992"),
         height:188,
         weight:75,
         dominant_hand:"Right",
@@ -88,7 +103,7 @@ let datos=[
         ranking:1601,
         nationality:"Japan",
         position:"Outside Hitter",
-        birthdate:"14/05/2000",
+        birthdate:parseaFechasDMC("14/05/2000"),
         height:173,
         weight:65,
         dominant_hand:"Right",
@@ -100,7 +115,7 @@ let datos=[
         ranking:621,
         nationality:"USA",
         position:"Opposite",
-        birthdate:"25/12/1993",
+        birthdate:parseaFechasDMC("25/12/1993"),
         height:191,
         weight:77,
         dominant_hand:"Left",
@@ -112,7 +127,7 @@ let datos=[
         ranking:83,
         nationality:"Dominican Republic",
         position:"Outside Hitter",
-        birthdate:"11/09/1996",
+        birthdate:parseaFechasDMC("11/09/1996"),
         height:120,
         weight:83,
         dominant_hand:"Right",
