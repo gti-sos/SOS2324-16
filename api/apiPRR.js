@@ -192,19 +192,6 @@ module.exports = (app,dbRugby) => {
     });
     
     //con parámetros
-    // app.get(API_BASE+"/stats-rugby/:name", (req,res) => {
-    //     let name=req.params.name;
-    //     dbRugby.find({"first":name}, (err,info) => {
-    //         if(err){
-    //             res.sendStatus(404,"Not Found");
-    //         }else{
-    //             res.send(JSON.stringify(info.map((c)=> {
-    //                 delete c._id;
-    //                 return c;
-    //             })));
-    //         }
-    //     });
-    // });
     app.get(API_BASE+"/stats-rugby/:nationality", (req,res) => {
         let nationality=req.params.nationality;
         let peticion=req.query;
@@ -311,7 +298,7 @@ module.exports = (app,dbRugby) => {
             if (err) {
                 res.sendStatus(400, "Bad Request");
             } else {
-                if (numUpdated === 0) {
+                if (info === 0) {
                     res.sendStatus(404, "Not found");
                 } else {
                     res.sendStatus(200, "Ok");
