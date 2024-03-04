@@ -3,9 +3,9 @@ let express = require("express");
 let bodyParser = require("body-parser");
 let dataStore = require("nedb");
 
-let apiPRR = require('./api/apiPRR');
-let apiPSS = require('./api/apiPSS');
-let apiDMC = require('./api/apiDMC');
+let apiPRR = require('./api/apiPRR/apiPRR');
+let apiPSS = require('./api/apiPSS/apiPSS');
+let apiDMC = require('./api/apiDMC/apiDMC');
 
 let app = express();
 
