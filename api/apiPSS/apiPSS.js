@@ -152,13 +152,23 @@ app.get(API_BASE+'/stats-football', (req, res) => {
     }
   });
 
-app.post(API_BASE+"/stats-football", validarDatos, (req,res) => {
+  app.post(API_BASE+"/stats-football", validarDatos, (req,res) => {
     let stat=req.body;
-    dbFootball.insert(stat, (err,info) => {
+    dbFootball.find(stat, (err,info) => {
         if(err){
             res.sendStatus(500,"Internal Error");
         }else{
-            res.sendStatus(201,"Created");
+            if(info.length===0){
+                dbFootball.insert(stat, (err,info) => {
+                    if(err){
+                        res.sendStatus(500,"Internal Error");
+                    }else{
+                        res.sendStatus(201,"Created");
+                    }
+                });
+            }else{
+                res.sendStatus(409,"Conflict");
+            }     
         }
     });
 });
