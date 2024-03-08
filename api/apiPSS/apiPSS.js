@@ -278,7 +278,7 @@ app.get(API_BASE+"/stats-football/:nationality", (req,res) => {
 });
 
 app.post(API_BASE+"/stats-football/:nationality", (req,res) => {
-    res.sendStatus(405, "Method Not Allowed");
+    res.sendStatus(400, "Method Not Allowed");
 });
 
 app.put(API_BASE+"/stats-football/:nationality", (req,res) => {
