@@ -27,10 +27,10 @@ app.get(API_BASE+"/stats-rugby/docs", (req,res) => {
     res.redirect('https://documenter.getpostman.com/view/32964665/2sA2xh2YTp');
 });
 app.get(API_BASE+"/stats-football/docs", (req,res) => {
-    res.redirect('');
+    res.redirect('https://documenter.getpostman.com/view/32965495/2sA2xh2sVA');
 });
 app.get(API_BASE+"/stats-volleyball/docs", (req,res) => {
-    res.redirect('');
+    res.redirect('https://documenter.getpostman.com/view/32966846/2sA2xh2sVB');
 });
 
 //Llamar a la api de Pablo Rivas
