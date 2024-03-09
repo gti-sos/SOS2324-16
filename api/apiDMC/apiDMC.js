@@ -72,12 +72,14 @@ app.get(API_BASE+"/stats-volleyball/loadInitialData", (req,res) => {
 });
 
 
-
 app.get(API_BASE+'/stats-volleyball', (req, res) => {
     let peticion = req.query; 
 
-    const from = Number(req.query.from);
-    const to = Number(req.query.to);
+    let limit = parseInt(req.query.limit) || 10; 
+    let offset = parseInt(req.query.offset) || 0;
+
+    let from = Number(req.query.from);
+    let to = Number(req.query.to);
 
     if (Object.keys(peticion).length===0) {
         dbVolleyball.find( {} ,(err,info)=> {
@@ -91,88 +93,73 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
                         })));
                     }
                 });
-    }else if(from>0 && to >0 && from<to){
-        dbVolleyball.find( {"birthdate": { $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") } } ,(err,info)=> {
-            if(err){
-                res.sendStatus(500,"Internal Error");
-            }else{
-                res.send(JSON.stringify(info.map((c)=> {
-                    delete c._id;
-                    return c;
-
-                })));
-            }
-        });
-
     }else{
 
-        let valor=Object.values(peticion)[0];
-        let clave=Object.keys(peticion)[0];
+        let valores=Object.values(peticion);
+        let claves=Object.keys(peticion);
         let cond={}
-        
-        if ((typeof DMC.datos[0][clave])==="number"){
-            valor=Number(valor);
 
+        //Paginación
+        let indexLimit = claves.indexOf('limit');
+        if (indexLimit !== -1) {
+            claves.splice(indexLimit, 1);
+            valores.splice(indexLimit, 1);
+        }
+        let indexOffset = claves.indexOf('offset');
+        if (indexOffset !== -1) {
+            claves.splice(indexOffset, 1);
+            valores.splice(indexOffset, 1);
+        }
+
+        //Búsquedas
+        if(from>0 && to >0 && from<to){
+
+            let indexFrom = claves.indexOf('from');
+            if (indexFrom !== -1) {
+                claves.splice(indexFrom, 1);
+                valores.splice(indexFrom, 1);
+            }
+            let indexTo = claves.indexOf('to');
+            if (indexTo !== -1) {
+                claves.splice(indexTo, 1);
+                valores.splice(indexTo, 1);
+            }
+
+            cond["birthdate"]={ $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") };
+
+            from=0;
+            to=0;
+
+        }
+
+        for(let i=0;i<claves.length;i++){
+
+            let clave=claves[i];
+
+            if((typeof DMC.datos[0][clave])==="number"){
+                valor=Number(valores[i]);
+            }else if((typeof DMC.datos[0][clave])==="object"){
+                valor_aux=Number(valores[i]);
+                valor={ $gte:new Date(valor_aux+"-01-01"), $lte:new Date(valor_aux+"-12-31") };
+            }else{
+                valor=valores[i];
+            }
             cond[clave]=valor;
-        
-
-            dbVolleyball.find(cond, (err, info) => {
-                if (err) {
-                    res.sendStatus(500,'Error interno del servidor' );
-                 }else {
-                    res.send(JSON.stringify(info.map((c)=> {
-                    delete c._id;
-                 return c;
-            })));
-
         }
-        }); 
 
-
-        }else if( (typeof DMC.datos[0][clave])==="object" ){
-
-            valor=Number(valor);        
-
-            dbVolleyball.find({"birthdate":{ $gte:new Date(valor+"-01-01"), $lte:new Date(valor+"-12-31") }}, (err, info) => {
-                if (err) {
-                    res.sendStatus(500,'Error interno del servidor' );
-                 }else {
-                    res.send(JSON.stringify(info.map((c)=> {
-                    delete c._id;
-                 return c;
-            })));
-
-        }
-        });
-
-        }else{
-            cond[clave]=valor;
-        
-
-            dbVolleyball.find(cond, (err, info) => {
-                if (err) {
-                    res.sendStatus(500,'Error interno del servidor' );
-                 }else {
-                    res.send(JSON.stringify(info.map((c)=> {
-                    delete c._id;
-                 return c;
-            })));
-
-        }
-        }); 
-
-        }
-        
-     
+        dbVolleyball.find(cond).skip(offset).limit(limit).exec((err, info) => {
+            if (err) {
+                res.sendStatus(500,'Error interno del servidor' );
+             }else {
+                res.send(JSON.stringify(info.map((c)=> {
+                delete c._id;
+             return c;
+        })));
     }
-      
+    });      
+    }      
   });
 
-// app.post(API_BASE+"/stats-volleyball",validarDatos, (req,res) => {
-//     let stat=req.body;
-//     dbVolleyball.insert(stat);
-//     res.sendStatus(201,"Created");
-// });
 
 app.post(API_BASE+"/stats-volleyball", validarDatos, (req,res) => {
     let stat=req.body;
@@ -222,8 +209,11 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
     let nationality=req.params.nationality;
     let peticion=req.query;
 
-    const from = Number(req.query.from);
-    const to = Number(req.query.to);
+    let limit = parseInt(req.query.limit) || 10; 
+    let offset = parseInt(req.query.offset) || 0;
+
+    let from = Number(req.query.from);
+    let to = Number(req.query.to);
 
     if (Object.keys(peticion).length===0) {
         dbVolleyball.find( {"nationality":nationality} ,(err,info)=> {
@@ -237,79 +227,72 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
                         })));
                     }
                 });
-    }else if(from>0 && to >0 && from<to){
-        dbVolleyball.find( {"nationality":nationality,"birthdate": { $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") } } ,(err,info)=> {
-            if(err){
-                res.sendStatus(500,"Internal Error");
-            }else{
-                res.send(JSON.stringify(info.map((c)=> {
-                    delete c._id;
-                    return c;
-
-                })));
-            }
-        });
-
     }else{
 
-            let valor=Object.values(peticion)[0];
-            let clave=Object.keys(peticion)[0];
-            let cond={}
-            
-            if ((typeof DMC.datos[0][clave])==="number"){
-                valor=Number(valor);
+        let valores=Object.values(peticion);
+        let claves=Object.keys(peticion);
+        let cond={}
+        cond["nationality"]=nationality;
 
-                cond["nationality"]=nationality;
-                cond[clave]=valor;
-            
-                dbVolleyball.find(cond, (err, info) => {
-                    if (err) {
-                        res.sendStatus(500,'Error interno del servidor' );
-                     }else {
-                        res.send(JSON.stringify(info.map((c)=> {
-                        delete c._id;
-                     return c;
-                })));
-    
+        //Paginación
+        let indexLimit = claves.indexOf('limit');
+        if (indexLimit !== -1) {
+            claves.splice(indexLimit, 1);
+            valores.splice(indexLimit, 1);
+        }
+        let indexOffset = claves.indexOf('offset');
+        if (indexOffset !== -1) {
+            claves.splice(indexOffset, 1);
+            valores.splice(indexOffset, 1);
+        }
+
+        //Búsquedas
+        if(from>0 && to >0 && from<to){
+
+            let indexFrom = claves.indexOf('from');
+            if (indexFrom !== -1) {
+                claves.splice(indexFrom, 1);
+                valores.splice(indexFrom, 1);
             }
-            }); 
-    
-    
-            }else if( (typeof DMC.datos[0][clave])==="object" ){
-    
-                valor=Number(valor);        
-    
-                dbVolleyball.find({"nationality":nationality,"birthdate":{ $gte:new Date(valor+"-01-01"), $lte:new Date(valor+"-12-31") }}, (err, info) => {
-                    if (err) {
-                        res.sendStatus(500,'Error interno del servidor' );
-                     }else {
-                        res.send(JSON.stringify(info.map((c)=> {
-                        delete c._id;
-                     return c;
-                })));
-    
+            let indexTo = claves.indexOf('to');
+            if (indexTo !== -1) {
+                claves.splice(indexTo, 1);
+                valores.splice(indexTo, 1);
             }
-            });
-    
+
+            cond["birthdate"]={ $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") };
+
+            from=0;
+            to=0;
+
+        }
+
+        for(let i=0;i<claves.length;i++){
+
+            clave=claves[i];
+
+            if((typeof DMC.datos[0][clave])==="number"){
+                valor=Number(valores[i]);
+            }else if((typeof DMC.datos[0][clave])==="object"){
+                valor_aux=Number(valores[i]);
+                valor={ $gte:new Date(valor_aux+"-01-01"), $lte:new Date(valor_aux+"-12-31") };
             }else{
-                
-                cond["nationality"]=nationality;
-                cond[clave]=valor;
-            
-                dbVolleyball.find(cond, (err, info) => {
-                    if (err) {
-                        res.sendStatus(500,'Error interno del servidor' );
-                     }else {
-                        res.send(JSON.stringify(info.map((c)=> {
-                        delete c._id;
-                     return c;
-                })));
-    
+                valor=valores[i];
             }
-            }); 
-    
-            }
-         
+            cond[clave]=valor;
+        }
+
+        dbVolleyball.find(cond).skip(offset).limit(limit).exec((err, info) => {
+            if (err) {
+                res.sendStatus(500,'Error interno del servidor' );
+             }else {
+                res.send(JSON.stringify(info.map((c)=> {
+                delete c._id;
+             return c;
+        })));
+    }
+    }); 
+
         }
     
 });
