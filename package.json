@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "npx newman run ./tests/Football_API.json -e ./tests/environments/gcloud.json"
+    "test": "npx newman run ./tests/Football_API.json && npx newman run ./tests/Rugby_API.json && npx newman run ./tests/Volleyball_API.json -e ./tests/environments/gcloud.json"
   },
   "author": "",
   "license": "ISC",

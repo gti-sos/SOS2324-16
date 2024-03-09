@@ -8,6 +8,261 @@
 	},
 	"item": [
 		{
+			"name": "API utils",
+			"item": [
+				{
+					"name": "Load Initial Football",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football/loadInitialData",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football",
+								"loadInitialData"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET v1/stats-football",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Casillas v1/stats-football",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"short_name\": \"I. Casillas\", \r\n    \"long_name\": \"Iker Casillas\", \r\n    \"age\": 27, \r\n    \"dob\": \"24/06/1987\", \r\n    \"height_cm\": 169, \r\n    \"weight_kg\": 67, \r\n    \"nationality\": \"España\", \r\n    \"club\": \"Real Madrid\", \r\n    \"preferred_foot\": \"Left\", \r\n    \"team_position\": \"CF\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT v1/stats-football",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET  Germany v1/stats-football/Germany",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football/Germany",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football",
+								"Germany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Casillas v1/stats-football/I. Casillas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"short_name\": \"I. Casillas\", \r\n    \"long_name\": \"Iker Casillas\", \r\n    \"age\": 27, \r\n    \"dob\": \"24/06/1987\", \r\n    \"height_cm\": 169, \r\n    \"weight_kg\": 67, \r\n    \"nationality\": \"España\", \r\n    \"club\": \"Real Madrid\", \r\n    \"preferred_foot\": \"Left\", \r\n    \"team_position\": \"CF\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football/Casillas",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football",
+								"Casillas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Germany v1/stats-football/Germany",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"age\": 29\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football/Germany",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football",
+								"Germany"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Adicionales",
 			"item": [
 				{
@@ -207,236 +462,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "GET v1/stats-football",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{SERVER}}/api/v1/stats-football",
-					"host": [
-						"{{SERVER}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"stats-football"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST Casillas v1/stats-football",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 201\", function () {\r",
-							"    pm.response.to.have.status(201);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"short_name\": \"I. Casillas\", \r\n    \"long_name\": \"Iker Casillas\", \r\n    \"age\": 27, \r\n    \"dob\": \"24/06/1987\", \r\n    \"height_cm\": 169, \r\n    \"weight_kg\": 67, \r\n    \"nationality\": \"España\", \r\n    \"club\": \"Real Madrid\", \r\n    \"preferred_foot\": \"Left\", \r\n    \"team_position\": \"CF\"\r\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{SERVER}}/api/v1/stats-football",
-					"host": [
-						"{{SERVER}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"stats-football"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PUT v1/stats-football",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"\r",
-							"pm.test(\"Status code is 405\", function () {\r",
-							"    pm.response.to.have.status(405);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"url": {
-					"raw": "{{SERVER}}/api/v1/stats-football",
-					"host": [
-						"{{SERVER}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"stats-football"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET  Germany v1/stats-football/Germany",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{SERVER}}/api/v1/stats-football/Germany",
-					"host": [
-						"{{SERVER}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"stats-football",
-						"Germany"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST Casillas v1/stats-football/I. Casillas",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 405\", function () {\r",
-							"    pm.response.to.have.status(405);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"short_name\": \"I. Casillas\", \r\n    \"long_name\": \"Iker Casillas\", \r\n    \"age\": 27, \r\n    \"dob\": \"24/06/1987\", \r\n    \"height_cm\": 169, \r\n    \"weight_kg\": 67, \r\n    \"nationality\": \"España\", \r\n    \"club\": \"Real Madrid\", \r\n    \"preferred_foot\": \"Left\", \r\n    \"team_position\": \"CF\"\r\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{SERVER}}/api/v1/stats-football/Casillas",
-					"host": [
-						"{{SERVER}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"stats-football",
-						"Casillas"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PUT Germany v1/stats-football/Germany",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"age\": 29\r\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{SERVER}}/api/v1/stats-football/Germany",
-					"host": [
-						"{{SERVER}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"stats-football",
-						"Germany"
-					]
-				}
-			},
-			"response": []
 		},
 		{
 			"name": "DELETE Argentina v1/stats-football/Argentina",

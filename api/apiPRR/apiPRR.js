@@ -1,4 +1,4 @@
-let PRR = require('./datos');
+let PRR = require('./array');
 
 const API_BASE = "/api/v1";
 

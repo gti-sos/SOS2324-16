@@ -1,4 +1,4 @@
-let DMC = require('../../index-DMC');
+let DMC = require('./datos');
 
 const API_BASE = "/api/v1";
 

@@ -1,4 +1,4 @@
-let PSS = require('../../index-PSS');
+let PSS = require('./jugadores');
 
 const API_BASE = "/api/v1";
 

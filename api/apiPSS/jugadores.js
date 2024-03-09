@@ -24,32 +24,3 @@ let jugadores=[
 ];
 
 module.exports.jugadores = jugadores;
-
-function calcularMediaEdadPorNacionalidad(jugadores, nacionalidad){
-    const jugadoresPorNacionalidad = jugadores.filter(x => x.nationality == nacionalidad)
-
-    let totalEdad = 0;
-    jugadoresPorNacionalidad.forEach(jugador => totalEdad += jugador.age)
-
-    const mediaEdad = totalEdad / jugadoresPorNacionalidad.length
-    return mediaEdad
-}
-
-const nacionalidad = "Netherlands"
-//console.log(`La media de edad de los jugadores de ${nacionalidad} es: ` + calcularMediaEdadPorNacionalidad(jugadores, nacionalidad))
-
-module.exports.calcularMediaEdadPorNacionalidades = function(jugadores){
-    let nacionalidades = []
-    let res = []
-    let i = 0
-    jugadores.forEach(jugador => {
-        let nacionalidad = nacionalidades.filter(x => x === jugador.nationality)
-        if(nacionalidad.length <= 0){
-            let pos = nacionalidades.length
-            nacionalidades[pos] = jugador.nationality
-            res[i] = "<br>" + "La media de edad de los jugadores de " + jugador.nationality + " es de: " + calcularMediaEdadPorNacionalidad(jugadores, jugador.nationality);
-            i++
-        }
-    })
-    return res;
-}
