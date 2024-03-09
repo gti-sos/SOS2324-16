@@ -1,4 +1,4 @@
-let PRR = require('../../index-PRR');
+let PRR = require('./datos');
 
 const API_BASE = "/api/v1";
 
@@ -69,18 +69,6 @@ module.exports = (app,dbRugby) => {
             }
         });
     });
-    // app.get(API_BASE+"/stats-rugby", (req,res) => {
-    //     dbRugby.find({}, (err,info) => {
-    //         if(err){
-    //             res.sendStatus(500,"Internal Error");
-    //         }else{
-    //             res.send(JSON.stringify(info.map((c)=> {
-    //                 delete c._id;
-    //                 return c;
-    //             })));
-    //         }
-    //     });
-    // });
     app.get(API_BASE+'/stats-rugby', (req, res) => {
         let peticion = req.query; 
         const from = Number(req.query.from);

@@ -133,10 +133,3 @@ let array = [
 ];
 
 module.exports.array = array;
-
-module.exports.mediaPesoPorPais = function(array, pais){
-  array.filter(x => x.bplace == pais);
-  let acum=0;
-  array.forEach( (e)=> acum+=e.weight );
-  return "La media del peso entre los 10 jugadores en la cabecera principal del csv : " + acum/array.length;
-}

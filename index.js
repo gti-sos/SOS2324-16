@@ -1,4 +1,3 @@
-let cool = require("cool-ascii-faces");
 let express = require("express");
 let bodyParser = require("body-parser");
 let dataStore = require("nedb");
@@ -23,20 +22,15 @@ app.use(bodyParser.json());
 //Recurso html principal
 app.use("/", express.static("./public"));
 
-//Recurso dinámico /cool
-app.get("/cool", (req,res) => {
-    res.send(`<html><body><h1>${cool()}</html></body></h1>`);
+//Redireccionamientos a documentos de postman
+app.get(API_BASE+"/stats-rugby/docs", (req,res) => {
+    res.redirect('https://documenter.getpostman.com/view/32964665/2sA2xh2YTp');
 });
-
-//Recurso para /samples
-app.get("/samples/PSS", (req,res) => {
-    res.send(`<html><body><h1> ${PSS.calcularMediaEdadPorNacionalidades(PSS.jugadores)}  </h1></body></html>`)
+app.get(API_BASE+"/stats-football/docs", (req,res) => {
+    res.redirect('');
 });
-app.get("/samples/PRR", (req,res) => {
-    res.send(`<html><body><h1> ${PRR.mediaPesoPorPais(PRR.array, "Argentina")}  </h1></body></html>`)
-});
-app.get("/samples/DMC",(req,res)=>{
-    res.send(`<html><body><h1> ${DMC.todosPaises(DMC.datos)}  </h1></body></html>`)
+app.get(API_BASE+"/stats-volleyball/docs", (req,res) => {
+    res.redirect('');
 });
 
 //Llamar a la api de Pablo Rivas
@@ -45,6 +39,7 @@ apiPRR(app, dbRugby);
 apiPSS(app, dbFootball);
 //Llamar a la api de Domingo Morales
 apiDMC(app, dbVolleyball);
+
 
 //Iniciar servicio
 app.listen(PORT,() =>{
