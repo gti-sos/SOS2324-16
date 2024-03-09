@@ -1,4 +1,4 @@
-let PRR = require('../index-PRR');
+let PRR = require('../../index-PRR');
 
 const API_BASE = "/api/v1";
 
@@ -166,14 +166,32 @@ module.exports = (app,dbRugby) => {
     
     app.post(API_BASE+"/stats-rugby", validarDatos, (req,res) => {
         let stat=req.body;
-        dbRugby.insert(stat, (err,info) => {
+        dbRugby.find(stat, (err,info) => {
             if(err){
                 res.sendStatus(500,"Internal Error");
             }else{
-                res.sendStatus(201,"Created");
+                if(info.length===0){
+
+                    dbRugby.insert(stat, (err,info) => {
+                        if(err){
+                            res.sendStatus(500,"Internal Error");
+                        }else{
+                            res.sendStatus(201,"Created");
+                        }
+                    });
+
+
+                }else{
+                    res.sendStatus(409,"Conflict");
+                }
+                
             }
         });
+
+
+        
     });
+
     app.put(API_BASE+"/stats-rugby", (req,res) => {
         res.sendStatus(405, "Method Not Allowed");
     });
