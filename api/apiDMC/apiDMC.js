@@ -85,19 +85,22 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
         dbVolleyball.find( {} ,(err,info)=> {
                     if(err){
                         res.sendStatus(500,"Internal Error");
+                    }else if(info.length===0){
+                        res.sendStatus(404,"Not found");
+
                     }else{
-                        res.send(JSON.stringify(info.map((c)=> {
+                        res.send(info.map((c)=> {
                             delete c._id;
                             return c;
         
-                        })));
+                        }));
                     }
                 });
     }else{
 
         let valores=Object.values(peticion);
         let claves=Object.keys(peticion);
-        let cond={}
+        let cond={};
 
         //Paginación
         let indexLimit = claves.indexOf('limit');
@@ -150,11 +153,13 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
         dbVolleyball.find(cond).skip(offset).limit(limit).exec((err, info) => {
             if (err) {
                 res.sendStatus(500,'Error interno del servidor' );
-             }else {
-                res.send(JSON.stringify(info.map((c)=> {
+             }else if(info.length===0){
+                res.sendStatus(404,"Not found");
+            }else {
+                res.send(info.map((c)=> {
                 delete c._id;
              return c;
-        })));
+        }));
     }
     });      
     }      
@@ -217,14 +222,18 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
 
     if (Object.keys(peticion).length===0) {
         dbVolleyball.find( {"nationality":nationality} ,(err,info)=> {
+
                     if(err){
                         res.sendStatus(500,"Internal Error");
+                    }else if(info.length===0){
+                        res.sendStatus(404,"Not found");
+
                     }else{
-                        res.send(JSON.stringify(info.map((c)=> {
+                        res.send(info.map((c)=> {
                             delete c._id;
                             return c;
         
-                        })));
+                        }));
                     }
                 });
     }else{
@@ -285,11 +294,13 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
         dbVolleyball.find(cond).skip(offset).limit(limit).exec((err, info) => {
             if (err) {
                 res.sendStatus(500,'Error interno del servidor' );
-             }else {
-                res.send(JSON.stringify(info.map((c)=> {
+             }else if(info.length===0){
+                res.sendStatus(404,"Not found");
+            }else {
+                res.send(info.map((c)=> {
                 delete c._id;
              return c;
-        })));
+        }));
     }
     }); 
 
@@ -339,11 +350,14 @@ app.get(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
     dbVolleyball.find({"nationality":nationality, "weight":Number(weight)}, (err,info) => {
         if(err){
             res.sendStatus(404,"Not Found");
+        }else if(info.length===0){
+            res.sendStatus(404,"Not found");
+
         }else{
-            res.send(JSON.stringify(info.map((c)=> {
+            res.send(info.map((c)=> {
                 delete c._id;
                 return c;
-            })));
+            }));
         }
     });
 });
