@@ -12,6 +12,19 @@
 			"item": [
 				{
 					"name": "Load Initial Football",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -29,7 +42,12 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "Métodos",
+			"item": [
 				{
 					"name": "GET v1/stats-football",
 					"event": [
@@ -106,40 +124,6 @@
 					"response": []
 				},
 				{
-					"name": "PUT v1/stats-football",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"\r",
-									"pm.test(\"Status code is 405\", function () {\r",
-									"    pm.response.to.have.status(405);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-football",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"stats-football"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "GET  Germany v1/stats-football/Germany",
 					"event": [
 						{
@@ -175,58 +159,12 @@
 					"response": []
 				},
 				{
-					"name": "POST Casillas v1/stats-football/I. Casillas",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 405\", function () {\r",
-									"    pm.response.to.have.status(405);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"short_name\": \"I. Casillas\", \r\n    \"long_name\": \"Iker Casillas\", \r\n    \"age\": 27, \r\n    \"dob\": \"24/06/1987\", \r\n    \"height_cm\": 169, \r\n    \"weight_kg\": 67, \r\n    \"nationality\": \"España\", \r\n    \"club\": \"Real Madrid\", \r\n    \"preferred_foot\": \"Left\", \r\n    \"team_position\": \"CF\"\r\n    }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-football/Casillas",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"stats-football",
-								"Casillas"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "PUT Germany v1/stats-football/Germany",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
 									""
 								],
 								"type": "text/javascript"
@@ -238,7 +176,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"age\": 29\r\n    }",
+							"raw": "{\r\n    \"age\": 29,\r\n    \"_id\": \"3mv6jd5rh7lQ5xwZ\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -456,6 +394,220 @@
 									"key": "to",
 									"value": "1984"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Errores",
+			"item": [
+				{
+					"name": "Error PUT 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"height_cm\": 10\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football/Germany",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football",
+								"Germany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Error POST 409",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 409\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"short_name\": \"M. Neuer\",\r\n        \"long_name\": \"Manuel Neuer\",\r\n        \"age\": 28,\r\n        \"dob\": \"1986-03-26T23:00:00.000Z\",\r\n        \"height_cm\": 193,\r\n        \"weight_kg\": 92,\r\n        \"nationality\": \"Germany\",\r\n        \"club\": \"FC Bayern München\",\r\n        \"preferred_foot\": \"Right\",\r\n        \"team_position\": \"GK\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Error POST 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"short_name\": \"M. Neuer\",\r\n        \"long_name\": \"Manuel Neuer\",\r\n        \"dob\": \"1986-03-27T00:00:00.000Z\",\r\n        \"height_cm\": 193,\r\n        \"weight_kg\": 92,\r\n        \"nationality\": \"Germany\",\r\n        \"club\": \"FC Bayern München\",\r\n        \"preferred_foot\": \"Right\",\r\n        \"team_position\": \"GK\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Error PUT 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"height_cm\": \"10\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football/Germany/183",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football",
+								"Germany",
+								"183"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Error POST 405",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"short_name\": \"I. Casillas\", \r\n    \"long_name\": \"Iker Casillas\", \r\n    \"age\": 27, \r\n    \"dob\": \"24/06/1987\", \r\n    \"height_cm\": 169, \r\n    \"weight_kg\": 67, \r\n    \"nationality\": \"España\", \r\n    \"club\": \"Real Madrid\", \r\n    \"preferred_foot\": \"Left\", \r\n    \"team_position\": \"CF\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football/Casillas",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football",
+								"Casillas"
 							]
 						}
 					},
