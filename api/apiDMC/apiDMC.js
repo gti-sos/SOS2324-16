@@ -317,7 +317,9 @@ app.put(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
     dbVolleyball.find({"nationality":nationality},(err,info)=>{
         if (err) {
             res.sendStatus(500, "Internal Error");
-        } else {
+        } else if(info.length===0){
+            res.sendStatus(404, "Not Found");
+        }else {
             v_id=info[0]._id;
             if(!(nuevo._id) || nuevo._id!==v_id){
                 res.sendStatus(400,"Bad Request");
