@@ -90,7 +90,6 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
 
                     }else{
                         res.send(info.map((c)=> {
-                            delete c._id;
                             return c;
         
                         }));
@@ -157,7 +156,6 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
                 res.sendStatus(404,"Not found");
             }else {
                 res.send(info.map((c)=> {
-                delete c._id;
              return c;
         }));
     }
@@ -168,16 +166,11 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
 
 app.post(API_BASE+"/stats-volleyball", validarDatos, (req,res) => {
     let stat=req.body;
-    let n_id;
 
-    
-
-    dbVolleyball.find({"name":stat.name,}, (err,info) => {
+    dbVolleyball.find({"name":stat.name,"ranking":stat.ranking,"nationality":stat.nationality,"position":stat.position,"height":stat.height,"weight":stat.weight,"dominant_hand":stat.dominant_hand,"country_point":stat.country_point,"point":stat.point}, (err,info) => {
         if(err){
             res.sendStatus(500,"Internal Error");
         }else{
-            console.log(stat);
-            console.log(info);
             if(info.length===0){
 
                 dbVolleyball.insert(stat, (err,info) => {
@@ -236,7 +229,6 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
 
                     }else{
                         res.send(info.map((c)=> {
-                            delete c._id;
                             return c;
         
                         }));
@@ -304,7 +296,6 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
                 res.sendStatus(404,"Not found");
             }else {
                 res.send(info.map((c)=> {
-                delete c._id;
              return c;
         }));
     }
@@ -321,6 +312,8 @@ app.post(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
 app.put(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
     let nationality  = req.params.nationality;
     const nuevo = req.body;
+
+    dbVolleyball.find()
 
     dbVolleyball.update({"nationality":nationality},{$set: nuevo},(err,numUpdated)=>{
         if (err) {
@@ -361,7 +354,6 @@ app.get(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
 
         }else{
             res.send(info.map((c)=> {
-                delete c._id;
                 return c;
             }));
         }
