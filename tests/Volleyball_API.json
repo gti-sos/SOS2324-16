@@ -12,6 +12,19 @@
 			"item": [
 				{
 					"name": "Load Initial Volleyball",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -92,7 +105,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-volleyball/USA/77",
+							"raw": "{{SERVER}}/api/v1/stats-volleyball/USA/75",
 							"host": [
 								"{{SERVER}}"
 							],
@@ -101,7 +114,7 @@
 								"v1",
 								"stats-volleyball",
 								"USA",
-								"77"
+								"75"
 							]
 						}
 					},
@@ -146,7 +159,7 @@
 					"response": []
 				},
 				{
-					"name": "PUT JugadoraPaisPeso stats-volleyball/Brazil/77",
+					"name": "PUT JugadoraPaisPeso",
 					"event": [
 						{
 							"listen": "test",
@@ -167,7 +180,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"height\": 181\r\n    }",
+							"raw": "{\r\n    \"name\":\"Kelsey Robinson\",\r\n    \"height\": 181\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -175,7 +188,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-volleyball/USA/77",
+							"raw": "{{SERVER}}/api/v1/stats-volleyball/USA/75",
 							"host": [
 								"{{SERVER}}"
 							],
@@ -184,7 +197,7 @@
 								"v1",
 								"stats-volleyball",
 								"USA",
-								"77"
+								"75"
 							]
 						}
 					},
@@ -289,7 +302,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"name\": \"Malika Anrews\",\r\n        \"ranking\": 622,\r\n        \"nationality\": \"USA\",\r\n        \"position\": \"Opposite\",\r\n        \"birthdate\": \"1993-12-24T23:00:00.000Z\",\r\n        \"height\": 191,\r\n        \"weight\": 78,\r\n        \"dominant_hand\": \"Left\",\r\n        \"country_point\": 0,\r\n        \"point\": 540.2\r\n    }",
+					"raw": "{\r\n        \"name\": \"Macris Carneiro\",\r\n        \"ranking\": 180,\r\n        \"nationality\": \"Brazil\",\r\n        \"position\": \"Setter\",\r\n        \"birthdate\": \"1989-03-02T23:00:00.000Z\",\r\n        \"height\": 178,\r\n        \"weight\": 68,\r\n        \"dominant_hand\": \"Right\",\r\n        \"country_point\": 220,\r\n        \"point\": 833\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -386,7 +399,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{SERVER}}/api/v1/stats-volleyball/USA",
+					"raw": "{{SERVER}}/api/v1/stats-volleyball/USA/77",
 					"host": [
 						"{{SERVER}}"
 					],
@@ -394,7 +407,8 @@
 						"api",
 						"v1",
 						"stats-volleyball",
-						"USA"
+						"USA",
+						"77"
 					]
 				}
 			},
@@ -443,15 +457,15 @@
 			"response": []
 		},
 		{
-			"name": "PUT JugadoraPais stats-volleyball/Brazil",
+			"name": "PUT ID JugadoraPais stats-volleyball/Brazil",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
 							"\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
 							"});\r",
 							""
 						],
@@ -464,7 +478,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"weight\": 79\r\n    }",
+					"raw": "{\r\n    \"weight\": 200,\r\n    \"nationality\":\"USA\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"

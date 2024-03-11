@@ -393,8 +393,8 @@ app.put(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
         } else if(info.length===0){
             res.sendStatus(404, "Not Found");
         }else {
-            v_id=info[0]._id;
-            if(!(nuevo._id) || nuevo._id!==v_id){
+            v_id=info[0].name;
+            if(!(nuevo.name) || nuevo.name!==v_id){
                 res.sendStatus(400,"Bad Request");
             }else{
                 dbVolleyball.update({"nationality":nationality,"weight":Number(weight)},{$set: nuevo},(err,numUpdated)=>{
