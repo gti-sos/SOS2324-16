@@ -409,8 +409,7 @@ app.put(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
                     }
                 }
             });
-            }
-            
+            } 
             
         }
     });
