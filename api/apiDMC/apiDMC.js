@@ -168,10 +168,16 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
 
 app.post(API_BASE+"/stats-volleyball", validarDatos, (req,res) => {
     let stat=req.body;
-    dbVolleyball.find(stat, (err,info) => {
+    let n_id;
+
+    
+
+    dbVolleyball.find({"name":stat.name,}, (err,info) => {
         if(err){
             res.sendStatus(500,"Internal Error");
         }else{
+            console.log(stat);
+            console.log(info);
             if(info.length===0){
 
                 dbVolleyball.insert(stat, (err,info) => {
