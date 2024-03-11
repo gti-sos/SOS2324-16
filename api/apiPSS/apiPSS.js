@@ -350,15 +350,26 @@ app.put(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
     let height_cm=req.params.height_cm;
     const nuevo=req.body;
 
-    dbFootball.update({"nationality":nationality,"height_cm":Number(height_cm)},{$set: nuevo},(err,numUpdated)=>{
+    dbFootball.find({"nationality":nationality, "height_cm": height_cm},(err,info)=>{
         if (err) {
-            res.sendStatus(400, "Bad request");
+            res.sendStatus(500, "Internal Error");
         } else {
-            if (numUpdated === 0) {
-                res.sendStatus(404, "Not found");
-            } else {
-                res.sendStatus(200, "Ok");
-            }
+            v_id=info[0]._id;
+            if(!(nuevo._id) || nuevo._id!==v_id){
+                res.sendStatus(400,"Bad Request");
+            }else{
+                dbFootball.update({"nationality":nationality, "height_cm": height_cm},{$set: nuevo},(err,numUpdated)=>{
+                if (err) {
+                    res.sendStatus(500, "Internal Error");
+                }else {
+                    if (numUpdated === 0) {
+                        res.sendStatus(404, "Not found");
+                    } else {
+                        res.sendStatus(200, "Ok");
+                    }
+                }
+            });
+            } 
         }
     });
 });
