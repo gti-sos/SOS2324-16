@@ -312,7 +312,7 @@ app.post(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
 app.put(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
     let nationality  = req.params.nationality;
     const nuevo = req.body;
-    let v_id;
+    let nom=false;
 
     dbVolleyball.find({"nationality":nationality},(err,info)=>{
         if (err) {
@@ -320,8 +320,12 @@ app.put(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
         } else if(info.length===0){
             res.sendStatus(404, "Not Found");
         }else {
-            v_id=info[0]._id;
-            if(!(nuevo._id) || nuevo._id!==v_id){
+            info.filter((c)=>{
+                if(c.name===nuevo.name){
+                    nom=true;
+                }
+            })
+            if(nom===false){
                 res.sendStatus(400,"Bad Request");
             }else{
                 dbVolleyball.update({"nationality":nationality},{$set: nuevo},(err,numUpdated)=>{
@@ -383,7 +387,7 @@ app.put(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
 
     let v_id;
 
-    dbVolleyball.find({"nationality":nationality,"weight":weight},(err,info)=>{
+    dbVolleyball.find({"nationality":nationality,"weight":Number(weight)},(err,info)=>{
         if (err) {
             res.sendStatus(500, "Internal Error");
         } else if(info.length===0){
@@ -393,7 +397,7 @@ app.put(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
             if(!(nuevo._id) || nuevo._id!==v_id){
                 res.sendStatus(400,"Bad Request");
             }else{
-                dbVolleyball.update({"nationality":nationality,"weight":weight},{$set: nuevo},(err,numUpdated)=>{
+                dbVolleyball.update({"nationality":nationality,"weight":Number(weight)},{$set: nuevo},(err,numUpdated)=>{
                 if (err) {
                     res.sendStatus(500, "Internal Error");
                 }else {

@@ -86,8 +86,8 @@ app.get(API_BASE+'/stats-football', (req, res) => {
                         res.sendStatus(500,"Internal Error");
                     }else{
                         res.send(info.map((c)=> {
+                            delete c._id;
                             return c;
-        
                         }));
                     }
                 });
@@ -149,6 +149,7 @@ app.get(API_BASE+'/stats-football', (req, res) => {
                 res.sendStatus(500,'Error interno del servidor' );
             }else {
                 res.send(info.map((c)=> {
+                    delete c._id;
                 return c;
                 }));
             }
@@ -156,24 +157,24 @@ app.get(API_BASE+'/stats-football', (req, res) => {
     }      
 });
 
-  app.post(API_BASE+"/stats-football", validarDatos, (req,res) => {
+app.post(API_BASE+"/stats-football", validarDatos, (req,res) => {
     let stat=req.body; 
 
-    dbFootball.find({"short_name":stat.short_name, "long_name":stat.long_name, "age":stat.age, "height_cm":stat.height_cm, "weight_kg":stat.weight_kg, "nationality":stat.nationality, "club":stat.club, "preferred_foot":stat.preferred_foot, "team_position":stat.team_position}, (err,info) => {
+    dbFootball.find({"short_name":stat.short_name, "long_name":stat.long_name, "age":stat.age, "height_cm":stat.height_cm, "weight_kg":stat.weight_kg}, (err,info) => {
         if(err){
             res.sendStatus(500,"Internal Error");
         }else{
-            if(info.length===0){
+            if(info.length>0){
+                res.sendStatus(409,"Conflict");
+            } else{
                 dbFootball.insert(stat, (err,info) => {
                     if(err){
                         res.sendStatus(500,"Internal Error");
                     }else{
                         res.sendStatus(201,"Created");
                     }
-                });
-            }else{
-                res.sendStatus(409,"Conflict");
-            }     
+                });  
+            }
         }
     });
 });
@@ -212,8 +213,8 @@ app.get(API_BASE+"/stats-football/:nationality", (req,res) => {
                 res.sendStatus(500,"Internal Error");
             }else{
                 res.send(info.map((c)=> {
+                    delete c._id;
                     return c;
-
                 }));
             }
         });
@@ -276,6 +277,7 @@ app.get(API_BASE+"/stats-football/:nationality", (req,res) => {
                 res.sendStatus(500,'Error interno del servidor' );
              }else {
                 res.send(info.map((c)=> {
+                    delete c._id;
                 return c;
             }));
             }
@@ -288,19 +290,26 @@ app.post(API_BASE+"/stats-football/:nationality", (req,res) => {
 });
 
 app.put(API_BASE+"/stats-football/:nationality", (req,res) => {
-    let nationality  = req.params.nationality;
-    const nuevo = req.body;
-    let v_id;
+    let nationality = req.params.nationality;
+    let nuevo = req.body;
+
+    let nom=false;
 
     dbFootball.find({"nationality":nationality},(err,info)=>{
         if (err) {
             res.sendStatus(500, "Internal Error");
-        } else {
-            v_id=info[0]._id;
-            if(!(nuevo._id) || nuevo._id!==v_id){
+        } else if(info.length===0){
+            res.sendStatus(404, "Not Found");
+        }else {
+            info.filter((c)=>{
+                if(c.short_name===nuevo.short_name){
+                    nom=true;
+                }
+            })
+            if(nom===false){
                 res.sendStatus(400,"Bad Request");
             }else{
-                dbFootball.update({"nationality":nationality},{$set: nuevo},(err,numUpdated)=>{
+                dbFootball.update({"short_name":nuevo.short_name,"nationality":nationality,},{$set: nuevo},(err,numUpdated)=>{
                 if (err) {
                     res.sendStatus(500, "Internal Error");
                 }else {
@@ -339,6 +348,7 @@ app.get(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
             res.sendStatus(404,"Not Found");
         }else{
             res.send(info.map((c)=> {
+                delete c._id;
                 return c;
             }));
         }
@@ -346,19 +356,23 @@ app.get(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
 });
 
 app.put(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
-    let nationality=req.params.nationality;
-    let height_cm=req.params.height_cm;
-    const nuevo=req.body;
+    let nationality  = req.params.nationality;
+    let height_cm  = req.params.height_cm;
+    const nuevo = req.body;
 
-    dbFootball.find({"nationality":nationality, "height_cm": height_cm},(err,info)=>{
+    let v_n;
+
+    dbFootball.find({"nationality":nationality,"height_cm":Number(height_cm)},(err,info)=>{
         if (err) {
             res.sendStatus(500, "Internal Error");
-        } else {
-            v_id=info[0]._id;
-            if(!(nuevo._id) || nuevo._id!==v_id){
+        } else if(info.length===0){
+            res.sendStatus(404, "Not Found");
+        }else {
+            v_n=info[0].short_name;
+            if(!(nuevo.short_name) || nuevo.short_name!==v_n){
                 res.sendStatus(400,"Bad Request");
             }else{
-                dbFootball.update({"nationality":nationality, "height_cm": height_cm},{$set: nuevo},(err,numUpdated)=>{
+                dbFootball.update({"nationality":nationality,"height_cm":Number(height_cm)},{$set: nuevo},(err,numUpdated)=>{
                 if (err) {
                     res.sendStatus(500, "Internal Error");
                 }else {
@@ -369,7 +383,7 @@ app.put(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
                     }
                 }
             });
-            } 
+            }
         }
     });
 });
