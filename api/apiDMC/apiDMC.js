@@ -381,15 +381,32 @@ app.put(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
     let weight=req.params.weight;
     const nuevo=req.body;
 
-    dbVolleyball.update({"nationality":nationality,"weight":Number(weight)},{$set: nuevo},(err,numUpdated)=>{
+    let v_id;
+
+    dbVolleyball.find({"nationality":nationality,"weight":weight},(err,info)=>{
         if (err) {
-            res.sendStatus(400, "Bad request");
-        } else {
-            if (numUpdated === 0) {
-                res.sendStatus(404, "Not found");
-            } else {
-                res.sendStatus(200, "Ok");
+            res.sendStatus(500, "Internal Error");
+        } else if(info.length===0){
+            res.sendStatus(404, "Not Found");
+        }else {
+            v_id=info[0]._id;
+            if(!(nuevo._id) || nuevo._id!==v_id){
+                res.sendStatus(400,"Bad Request");
+            }else{
+                dbVolleyball.update({"nationality":nationality,"weight":weight},{$set: nuevo},(err,numUpdated)=>{
+                if (err) {
+                    res.sendStatus(500, "Internal Error");
+                }else {
+                    if (numUpdated === 0) {
+                        res.sendStatus(404, "Not found");
+                    } else {
+                        res.sendStatus(200, "Ok");
+                    }
+                }
+            });
             }
+            
+            
         }
     });
 });
