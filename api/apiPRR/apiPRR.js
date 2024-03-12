@@ -151,6 +151,7 @@ module.exports = (app,dbRugby) => {
                 cond[clave]=valor;
             }
     
+            
             dbRugby.find(cond).skip(offset).limit(limit).exec((err, info) => {
                 if (err) {
                     res.sendStatus(500,'Server Internal Error');
