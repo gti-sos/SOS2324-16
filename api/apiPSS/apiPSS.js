@@ -123,7 +123,7 @@ app.get(API_BASE+'/stats-football', (req, res) => {
                 valores.splice(indexTo, 1);
             }
 
-            cond["birthdate"]={ $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") };
+            cond["dob"]={ $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") };
 
             from=0;
             to=0;
@@ -385,6 +385,23 @@ app.put(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
             });
             }
         }
+    });
+});
+
+app.delete(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
+    let nationality=req.params.nationality;
+    let height_cm=req.params.height_cm;
+
+    dbFootball.remove( {"nationality":nationality, "height_cm": Number(height_cm)},{ multi: true },(err,numRemoved)=>{
+    if(err){
+        res.sendStatus(500,"Internal Error");
+    }else{
+        if(numRemoved>=1){
+            res.sendStatus(200,"Removed");
+        }else{
+            res.sendStatus(404,"Not found");
+        }
+    }
     });
 });
 }
