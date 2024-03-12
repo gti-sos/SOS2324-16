@@ -3,8 +3,8 @@
 		"_postman_id": "303fa710-ad65-40b0-952d-dda32e5a8937",
 		"name": "Volleyball API Testing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32966846",
-		"_collection_link": "https://blue-space-119762.postman.co/workspace/My-Workspace~d5f904fa-c8bd-42b9-8e91-0050848f92a5/collection/32966846-303fa710-ad65-40b0-952d-dda32e5a8937?action=share&source=collection_link&creator=32966846"
+		"_exporter_id": "32965495",
+		"_collection_link": "https://blue-space-119762.postman.co/workspace/My-Workspace~d5f904fa-c8bd-42b9-8e91-0050848f92a5/collection/32966846-303fa710-ad65-40b0-952d-dda32e5a8937?action=share&source=collection_link&creator=32965495"
 	},
 	"item": [
 		{
@@ -46,10 +46,274 @@
 			]
 		},
 		{
+			"name": "Errores",
+			"item": [
+				{
+					"name": "POST INCORRECTO(400)(Faltan campos)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"Bethania De La Cruz\",\r\n        \"nationality\": \"Dominican Republic\",\r\n        \"position\": \"Outside Hitter\",\r\n        \"birthdate\": \"1987-05-12T22:00:00.000Z\",\r\n        \"height\": 188,\r\n        \"weight\": 68,\r\n        \"dominant_hand\": \"Right\",\r\n        \"country_point\": 108,\r\n        \"point\": 593.6\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-volleyball",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-volleyball"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST INCORRECTO(405)(No se puede hacer a un país)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"Kersy Robinson\",\r\n        \"ranking\": 181,\r\n        \"nationality\": \"USA\",\r\n        \"position\": \"Outside Hitter\",\r\n        \"birthdate\": \"1992-06-24T22:00:00.000Z\",\r\n        \"height\": 188,\r\n        \"weight\": 75,\r\n        \"dominant_hand\": \"Right\",\r\n        \"country_point\": 0,\r\n        \"point\": 573\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football/Brazil",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football",
+								"Brazil"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST INCORRECTO(409)(Conflicto porque ya existe)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 409\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"Bethania De La Cruz\",\r\n        \"ranking\": 23,\r\n        \"nationality\": \"Dominican Republic\",\r\n        \"position\": \"Outside Hitter\",\r\n        \"birthdate\": \"1987-05-12T22:00:00.000Z\",\r\n        \"height\": 188,\r\n        \"weight\": 68,\r\n        \"dominant_hand\": \"Right\",\r\n        \"country_point\": 108,\r\n        \"point\": 593.6\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-volleyball",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-volleyball"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT INCORRECTO(400)(Falta id, que es el nombre)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"weight\": 79\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-volleyball/USA",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-volleyball",
+								"USA"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT INCORRECTO (404)(No existe dicho país)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Andrea Drews\",\r\n    \"height\": 200,\r\n    \"nationality\":\"USA\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-volleyball/España",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-volleyball",
+								"España"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT INCORRECTO(405)(No se puede actualizar el conjunto general)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"weight\": 79\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-volleyball",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-volleyball"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Adicionales",
 			"item": [
 				{
-					"name": "GET Filtrado stats-volleyball?position=Opposite",
+					"name": "GET BÚSQUEDAS",
 					"event": [
 						{
 							"listen": "test",
@@ -87,7 +351,7 @@
 					"response": []
 				},
 				{
-					"name": "GET Busqueda stats-volleyball/USA/79",
+					"name": "GET BÚSQUEDA POR AÑO",
 					"event": [
 						{
 							"listen": "test",
@@ -97,7 +361,8 @@
 									"    pm.response.to.have.status(200);\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -105,41 +370,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-volleyball/USA/75",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"stats-volleyball",
-								"USA",
-								"75"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET FiltradoAño stats-volleyball?birthdate=1997",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-volleyball?birthdate=1997",
+							"raw": "{{SERVER}}/api/v1/stats-volleyball?birthdate=1994",
 							"host": [
 								"{{SERVER}}"
 							],
@@ -151,7 +382,7 @@
 							"query": [
 								{
 									"key": "birthdate",
-									"value": "1997"
+									"value": "1994"
 								}
 							]
 						}
@@ -159,52 +390,7 @@
 					"response": []
 				},
 				{
-					"name": "PUT JugadoraPaisPeso",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Kelsey Robinson\",\r\n    \"height\": 181\r\n    }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-volleyball/USA/75",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"stats-volleyball",
-								"USA",
-								"75"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET FiltradoAñoDesde stats-volleyball?from=1997&to=2001",
+					"name": "GET FROM&TO",
 					"event": [
 						{
 							"listen": "test",
@@ -245,11 +431,134 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GET LIMIT&OFFSET",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-volleyball?limit=2&offset=2",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-volleyball"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "offset",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET JUGADORA PAÍS Y PESO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-volleyball/USA/75",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-volleyball",
+								"USA",
+								"75"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT JUGADORA PAÍS Y PESO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Kelsey Robinson\",\r\n    \"height\": 181\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-volleyball/USA/75",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-volleyball",
+								"USA",
+								"75"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "GET stats-volleyball",
+			"name": "GET TODAS",
 			"event": [
 				{
 					"listen": "test",
@@ -283,7 +592,7 @@
 			"response": []
 		},
 		{
-			"name": "POST Jugadora stats-volleyball",
+			"name": "POST JUGADORA VOLLEYBALL",
 			"event": [
 				{
 					"listen": "test",
@@ -293,7 +602,8 @@
 							"    pm.response.to.have.status(201);\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -302,7 +612,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"name\": \"Macris Carneiro\",\r\n        \"ranking\": 180,\r\n        \"nationality\": \"Brazil\",\r\n        \"position\": \"Setter\",\r\n        \"birthdate\": \"1989-03-02T23:00:00.000Z\",\r\n        \"height\": 178,\r\n        \"weight\": 68,\r\n        \"dominant_hand\": \"Right\",\r\n        \"country_point\": 220,\r\n        \"point\": 833\r\n    }",
+					"raw": "{\r\n        \"name\": \"Macri\",\r\n        \"ranking\": 176,\r\n        \"nationality\": \"Brazil\",\r\n        \"position\": \"Setter\",\r\n        \"birthdate\": \"1989-03-02T23:00:00.000Z\",\r\n        \"height\": 178,\r\n        \"weight\": 68,\r\n        \"dominant_hand\": \"Right\",\r\n        \"country_point\": 220,\r\n        \"point\": 833\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -324,50 +634,7 @@
 			"response": []
 		},
 		{
-			"name": "PUT Incorrecto stats-volleyball",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"\r",
-							"pm.test(\"Status code is 405\", function () {\r",
-							"    pm.response.to.have.status(405);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"weight\": 79\r\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{SERVER}}/api/v1/stats-volleyball",
-					"host": [
-						"{{SERVER}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"stats-volleyball"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET  Pais stats-football/USA",
+			"name": "GET  JUGADORAS PAIS",
 			"event": [
 				{
 					"listen": "test",
@@ -379,7 +646,8 @@
 							"});\r",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -392,93 +660,6 @@
 				"body": {
 					"mode": "raw",
 					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{SERVER}}/api/v1/stats-volleyball/USA/77",
-					"host": [
-						"{{SERVER}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"stats-volleyball",
-						"USA",
-						"77"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST Incorrecto stats-volleyball/Brazil",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 405\", function () {\r",
-							"    pm.response.to.have.status(405);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n        \"name\": \"Kersy Robinson\",\r\n        \"ranking\": 181,\r\n        \"nationality\": \"USA\",\r\n        \"position\": \"Outside Hitter\",\r\n        \"birthdate\": \"1992-06-24T22:00:00.000Z\",\r\n        \"height\": 188,\r\n        \"weight\": 75,\r\n        \"dominant_hand\": \"Right\",\r\n        \"country_point\": 0,\r\n        \"point\": 573\r\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{SERVER}}/api/v1/stats-football/Brazil",
-					"host": [
-						"{{SERVER}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"stats-football",
-						"Brazil"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PUT ID JugadoraPais stats-volleyball/Brazil",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"\r",
-							"pm.test(\"Status code is 400\", function () {\r",
-							"    pm.response.to.have.status(400);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"weight\": 200,\r\n    \"nationality\":\"USA\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -501,7 +682,89 @@
 			"response": []
 		},
 		{
-			"name": "DELETE JugadoraPais stats-volleyball/Brazil",
+			"name": "PUT JUGADORA (Por país)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Andrea Drews\",\r\n    \"height\": 200,\r\n    \"nationality\":\"USA\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{SERVER}}/api/v1/stats-volleyball/USA",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"stats-volleyball",
+						"USA"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE JUGADORAS PAIS Y PESO",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/stats-volleyball/Serbia/84",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"stats-volleyball",
+						"Serbia",
+						"84"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE JUGADORAS PAIS",
 			"event": [
 				{
 					"listen": "test",
@@ -536,7 +799,7 @@
 			"response": []
 		},
 		{
-			"name": "DELETE stats-volleyball",
+			"name": "DELETE TODAS",
 			"event": [
 				{
 					"listen": "test",

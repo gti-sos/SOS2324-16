@@ -90,8 +90,8 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
 
                     }else{
                         res.send(info.map((c)=> {
+                            delete c._id;
                             return c;
-        
                         }));
                     }
                 });
@@ -156,7 +156,8 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
                 res.sendStatus(404,"Not found");
             }else {
                 res.send(info.map((c)=> {
-             return c;
+                    delete c._id;
+                    return c;
         }));
     }
     });      
@@ -229,6 +230,7 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
 
                     }else{
                         res.send(info.map((c)=> {
+                            delete c._id;
                             return c;
         
                         }));
@@ -296,7 +298,8 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
                 res.sendStatus(404,"Not found");
             }else {
                 res.send(info.map((c)=> {
-             return c;
+                    delete c._id;
+                    return c;
         }));
     }
     }); 
@@ -375,6 +378,7 @@ app.get(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
 
         }else{
             res.send(info.map((c)=> {
+                delete c._id;
                 return c;
             }));
         }
@@ -386,7 +390,7 @@ app.put(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
     let weight=req.params.weight;
     const nuevo=req.body;
 
-    let v_id;
+    let v_nom;
 
     dbVolleyball.find({"nationality":nationality,"weight":Number(weight)},(err,info)=>{
         if (err) {
@@ -394,8 +398,8 @@ app.put(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
         } else if(info.length===0){
             res.sendStatus(404, "Not Found");
         }else {
-            v_id=info[0].name;
-            if(!(nuevo.name) || nuevo.name!==v_id){
+            v_nom=info[0].name;
+            if(!(nuevo.name) || nuevo.name!==v_nom){
                 res.sendStatus(400,"Bad Request");
             }else{
                 dbVolleyball.update({"nationality":nationality,"weight":Number(weight)},{$set: nuevo},(err,numUpdated)=>{
@@ -412,6 +416,23 @@ app.put(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
             } 
             
         }
+    });
+});
+
+app.delete(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
+    let nationality=req.params.nationality;
+    let weight=req.params.weight;
+
+    dbVolleyball.remove( {"nationality":nationality, "weight": Number(weight)},{ multi: true },(err,numRemoved)=>{
+    if(err){
+        res.sendStatus(500,"Internal Error");
+    }else{
+        if(numRemoved>=1){
+            res.sendStatus(200,"Removed");
+        }else{
+            res.sendStatus(404,"Not found");
+        }
+    }
     });
 });
 
