@@ -90,11 +90,11 @@ module.exports = (app,dbRugby) => {
                             delete elem._id;
                             res.send(elem);
                         }else{
-                            res.send(JSON.stringify(info.map((c)=> {
+                            res.send(info.map((c)=> {
                                 delete c._id;
                                 return c;
             
-                            })));
+                            }));
                         }
                     });
         }else{
@@ -191,7 +191,7 @@ module.exports = (app,dbRugby) => {
                 if(info.length>0){
                     res.sendStatus(409,"Conflict");
                 } else{
-                    dbFootball.insert(stat, (err,info) => {
+                    dbRugby.insert(stat, (err,info) => {
                         if(err){
                             res.sendStatus(500,"Internal Error");
                         }else{
