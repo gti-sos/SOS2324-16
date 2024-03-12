@@ -321,9 +321,15 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta contiene el campo 'nombre'\", function () {\r",
+									"    let valores=Object.keys(pm.response.json);\r",
+									"    valores.indexOf(\"name\")!==-1;\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -331,7 +337,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-volleyball?position=Opposite",
+							"raw": "{{SERVER}}/api/v1/stats-volleyball?position=Opposite&dominant_hand=Right",
 							"host": [
 								"{{SERVER}}"
 							],
@@ -344,6 +350,10 @@
 								{
 									"key": "position",
 									"value": "Opposite"
+								},
+								{
+									"key": "dominant_hand",
+									"value": "Right"
 								}
 							]
 						}
@@ -359,6 +369,10 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El tamaño del array es \" + 2, function () {\r",
+									"    (pm.response.json.length)===2;\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -398,9 +412,14 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El tamaño del array es \" + 4, function () {\r",
+									"    (pm.response.json.length)===4;\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -408,15 +427,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-volleyball/Italy?from=1990&to=2001",
+							"raw": "{{SERVER}}/api/v1/stats-volleyball?from=1990&to=1994",
 							"host": [
 								"{{SERVER}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"stats-volleyball",
-								"Italy"
+								"stats-volleyball"
 							],
 							"query": [
 								{
@@ -425,7 +443,7 @@
 								},
 								{
 									"key": "to",
-									"value": "2001"
+									"value": "1994"
 								}
 							]
 						}
@@ -441,6 +459,10 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El tamaño del array es \"+pm.response.json.limit , function () {\r",
+									"    (pm.response.json.length)===pm.response.json.limit;\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -484,9 +506,15 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta contiene el campo 'nombre'\", function () {\r",
+									"    let valores=Object.keys(pm.response.json);\r",
+									"    valores.indexOf(\"name\")!==-1;\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -568,9 +596,13 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							""
+							"\r",
+							"pm.test(\"El tamaño del array es \" + 10, function () {\r",
+							"    (pm.response.json.length)===10;\r",
+							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -644,6 +676,11 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene el campo 'altura'\", function () {\r",
+							"    let valores=Object.keys(pm.response.json);\r",
+							"    valores.indexOf(\"height\")!==-1;\r",
+							"});\r",
 							""
 						],
 						"type": "text/javascript",
@@ -667,7 +704,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{SERVER}}/api/v1/stats-volleyball/USA",
+					"raw": "{{SERVER}}/api/v1/stats-volleyball/Serbia",
 					"host": [
 						"{{SERVER}}"
 					],
@@ -675,7 +712,7 @@
 						"api",
 						"v1",
 						"stats-volleyball",
-						"USA"
+						"Serbia"
 					]
 				}
 			},
