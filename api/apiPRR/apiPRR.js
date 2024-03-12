@@ -49,7 +49,6 @@ function validarDatos(req, res, next) {
         console.error(`Errores de tipo: ${erroresTipo.join(', ')}`);
         return res.sendStatus(400, "Bad request");
     }
-
     next();
 }
 
