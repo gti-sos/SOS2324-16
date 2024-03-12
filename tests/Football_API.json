@@ -159,13 +159,15 @@
 					"response": []
 				},
 				{
-					"name": "PUT Germany v1/stats-football/Germany",
+					"name": "PUT Belgium v1/stats-football/Belgium",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									""
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -176,7 +178,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"age\": 29,\r\n    \"_id\": \"3mv6jd5rh7lQ5xwZ\"\r\n    }",
+							"raw": "{   \r\n    \"short_name\":\"E. Hazard\",\r\n    \"age\": 30\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -184,7 +186,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-football/Germany",
+							"raw": "{{SERVER}}/api/v1/stats-football/Belgium",
 							"host": [
 								"{{SERVER}}"
 							],
@@ -192,7 +194,7 @@
 								"api",
 								"v1",
 								"stats-football",
-								"Germany"
+								"Belgium"
 							]
 						}
 					},
@@ -334,7 +336,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"weight_kg\": 82\r\n    }",
+							"raw": "{\r\n    \"short_name\": \"B. Schweinsteiger\",\r\n    \"weight_kg\": 82\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -398,6 +400,49 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GET LimitOffset stats-football?limit=2&offset=1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-football?limit=2&offset=1",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-football"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "offset",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -426,7 +471,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"height_cm\": 10\r\n    }",
+							"raw": "{   \r\n    \"height_cm\": 10\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -509,7 +554,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n        \"short_name\": \"M. Neuer\",\r\n        \"long_name\": \"Manuel Neuer\",\r\n        \"dob\": \"1986-03-27T00:00:00.000Z\",\r\n        \"height_cm\": 193,\r\n        \"weight_kg\": 92,\r\n        \"nationality\": \"Germany\",\r\n        \"club\": \"FC Bayern München\",\r\n        \"preferred_foot\": \"Right\",\r\n        \"team_position\": \"GK\"\r\n    }",
+							"raw": "{\r\n        \"short_name\": \"M. Neuer\",\r\n        \"long_name\": \"Manuel Neuer\",\r\n        \"dob\": \"1986-03-26T23:00:00.000Z\",\r\n        \"height_cm\": 193,\r\n        \"weight_kg\": 92,\r\n        \"nationality\": \"Germany\",\r\n        \"club\": \"FC Bayern München\",\r\n        \"preferred_foot\": \"Right\",\r\n        \"team_position\": \"GK\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -537,7 +582,9 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									""
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -548,7 +595,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"height_cm\": \"10\"\r\n    }",
+							"raw": "{   \r\n    \"short_name\": \"L. Messi\",\r\n    \"height_cm\": 10\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -556,7 +603,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-football/Germany/183",
+							"raw": "{{SERVER}}/api/v1/stats-football/Argentina/184",
 							"host": [
 								"{{SERVER}}"
 							],
@@ -564,8 +611,8 @@
 								"api",
 								"v1",
 								"stats-football",
-								"Germany",
-								"183"
+								"Argentina",
+								"184"
 							]
 						}
 					},
@@ -614,6 +661,42 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "DELETE Portugal/185 v1/stats-football/Portugal/185",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/stats-football/Portugal/185",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"stats-football",
+						"Portugal",
+						"185"
+					]
+				}
+			},
+			"response": []
 		},
 		{
 			"name": "DELETE Argentina v1/stats-football/Argentina",
