@@ -211,6 +211,8 @@ app.get(API_BASE+"/stats-football/:nationality", (req,res) => {
         dbFootball.find( {"nationality":nationality} ,(err,info)=> {
             if(err){
                 res.sendStatus(500,"Internal Error");
+            }else if(info.length===0){
+                res.sendStatus(404,"Not found");
             }else{
                 res.send(info.map((c)=> {
                     delete c._id;
@@ -251,7 +253,7 @@ app.get(API_BASE+"/stats-football/:nationality", (req,res) => {
                 valores.splice(indexTo, 1);
             }
 
-            cond["birthdate"]={ $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") };
+            cond["dob"]={ $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") };
 
             from=0;
             to=0;
@@ -275,7 +277,9 @@ app.get(API_BASE+"/stats-football/:nationality", (req,res) => {
         dbFootball.find(cond).skip(offset).limit(limit).exec((err, info) => {
             if (err) {
                 res.sendStatus(500,'Error interno del servidor' );
-             }else {
+             }else if(info.length===0){
+                res.sendStatus(404,"Not found");
+            }else {
                 res.send(info.map((c)=> {
                     delete c._id;
                 return c;
@@ -346,6 +350,8 @@ app.get(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
     dbFootball.find({"nationality":nationality, "height_cm":Number(height_cm)}, (err,info) => {
         if(err){
             res.sendStatus(404,"Not Found");
+        }else if(info.length===0){
+            res.sendStatus(404,"Not found");
         }else{
             res.send(info.map((c)=> {
                 delete c._id;

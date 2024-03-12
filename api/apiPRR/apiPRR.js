@@ -146,12 +146,12 @@ module.exports = (app,dbRugby) => {
     
             dbRugby.find(cond).skip(offset).limit(limit).exec((err, info) => {
                 if (err) {
-                    res.sendStatus(500,'Error interno del servidor' );
+                    res.sendStatus(500,'Server Internal Error');
                 }else {
-                    res.send(JSON.stringify(info.map((c)=> {
-                    delete c._id;
-                return c;
-            })));
+                    res.send(info.map((c)=> {
+                        delete c._id;
+                    return c;
+                    }));
         }
         });      
         }      
@@ -174,24 +174,25 @@ module.exports = (app,dbRugby) => {
             if(err){
                 res.sendStatus(500,"Internal Error");
             }else{
-                if(info.length===0){
-                    dbRugby.insert(stat, (err,info) => {
+                if(info.length>0){
+                    res.sendStatus(409,"Conflict");
+                } else{
+                    dbFootball.insert(stat, (err,info) => {
                         if(err){
                             res.sendStatus(500,"Internal Error");
                         }else{
                             res.sendStatus(201,"Created");
                         }
-                    });
-                }else{
-                    res.sendStatus(409,"Conflict");
+                    });  
                 }
-            }
+                }
         });
     });
 
     app.put(API_BASE+"/stats-rugby", (req,res) => {
         res.sendStatus(405, "Method Not Allowed");
     });
+
     app.delete(API_BASE+"/stats-rugby", (req,res) => {
         dbRugby.remove({},{ multi: true},(err,numRemoved) => {
             if(err){
@@ -219,16 +220,14 @@ module.exports = (app,dbRugby) => {
     
         if (Object.keys(peticion).length===0) {
             dbRugby.find( {"bplace":nationality} ,(err,info)=> {
-    
                         if(err){
                             res.sendStatus(500,"Internal Error");
                         }else if(info.length===0){
                             res.sendStatus(404,"Not found");
-    
                         }else{
                             res.send(info.map((c)=> {
+                                delete c._id;
                                 return c;
-            
                             }));
                         }
                     });
@@ -294,6 +293,7 @@ module.exports = (app,dbRugby) => {
                     res.sendStatus(404,"Not found");
                 }else {
                     res.send(info.map((c)=> {
+                        delete c._id;
                  return c;
             }));
         }
@@ -309,17 +309,23 @@ module.exports = (app,dbRugby) => {
     app.put(API_BASE+"/stats-rugby/:nationality", (req,res) => {
         let nationality  = req.params.nationality;
         const nuevo = req.body;
-        let v_id;
+        let nom=false;
     
         dbRugby.find({"bplace":nationality},(err,info)=>{
             if (err) {
                 res.sendStatus(500, "Internal Error");
-            } else {
-                v_id=info[0]._id;
-                if(!(nuevo._id) || nuevo._id!==v_id){
+            }else if(info.length===0){
+                res.sendStatus(404, "Not Found");
+            }else {
+                info.filter((c)=>{
+                    if(c.first===nuevo.first){
+                        nom=true;
+                    }
+                })
+                if(nom===false){
                     res.sendStatus(400,"Bad Request");
                 }else{
-                    dbRugby.update({"bplace":nationality},{$set: nuevo},(err,numUpdated)=>{
+                dbRugby.update({"first":nuevo.first,"bplace":nationality},{$set: nuevo},(err,numUpdated)=>{
                     if (err) {
                         res.sendStatus(500, "Internal Error");
                     }else {
@@ -359,9 +365,9 @@ app.get(API_BASE+"/stats-rugby/:nationality/:weight", (req,res) => {
             res.sendStatus(404,"Not Found");
         }else if(info.length===0){
             res.sendStatus(404,"Not found");
-
         }else{
             res.send(info.map((c)=> {
+                delete c._id;
                 return c;
             }));
         }
