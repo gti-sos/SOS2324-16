@@ -88,6 +88,10 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
                     }else if(info.length===0){
                         res.sendStatus(404,"Not found");
 
+                    }else if(info.length===1){
+                        let elem=info[0];
+                        delete elem._id;
+                        res.send(elem);
                     }else{
                         res.send(info.map((c)=> {
                             delete c._id;
@@ -154,6 +158,10 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
                 res.sendStatus(500,'Error interno del servidor' );
              }else if(info.length===0){
                 res.sendStatus(404,"Not found");
+            }else if(info.length===1){
+                let elem=info[0];
+                delete elem._id;
+                res.send(elem);
             }else {
                 res.send(info.map((c)=> {
                     delete c._id;
@@ -228,6 +236,10 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
                     }else if(info.length===0){
                         res.sendStatus(404,"Not found");
 
+                    }else if(info.length===1){
+                        let elem=info[0];
+                        delete elem._id;
+                        res.send(elem);
                     }else{
                         res.send(info.map((c)=> {
                             delete c._id;
@@ -296,6 +308,10 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
                 res.sendStatus(500,'Error interno del servidor' );
              }else if(info.length===0){
                 res.sendStatus(404,"Not found");
+            }else if(info.length===1){
+                let elem=info[0];
+                delete elem._id;
+                res.send(elem);
             }else {
                 res.send(info.map((c)=> {
                     delete c._id;
@@ -376,10 +392,9 @@ app.get(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
             res.sendStatus(404,"Not found");
 
         }else{
-            res.send(info.map((c)=> {
-                delete c._id;
-                return c;
-            }));
+            let elem=info[0];
+            delete elem._id;
+            res.send(elem);
         }
     });
 });
