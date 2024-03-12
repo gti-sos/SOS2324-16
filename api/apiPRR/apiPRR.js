@@ -82,6 +82,13 @@ module.exports = (app,dbRugby) => {
             dbRugby.find( {} ,(err,info)=> {
                         if(err){
                             res.sendStatus(500,"Internal Error");
+                        }else if(info.length===0){
+                            res.sendStatus(404,"Not found");
+    
+                        }else if(info.length===1){
+                            let elem=info[0];
+                            delete elem._id;
+                            res.send(elem);
                         }else{
                             res.send(JSON.stringify(info.map((c)=> {
                                 delete c._id;
@@ -147,6 +154,13 @@ module.exports = (app,dbRugby) => {
             dbRugby.find(cond).skip(offset).limit(limit).exec((err, info) => {
                 if (err) {
                     res.sendStatus(500,'Server Internal Error');
+                }else if(info.length===0){
+                    res.sendStatus(404,"Not found");
+
+                }else if(info.length===1){
+                    let elem=info[0];
+                    delete elem._id;
+                    res.send(elem);
                 }else {
                     res.send(info.map((c)=> {
                         delete c._id;
@@ -224,6 +238,10 @@ module.exports = (app,dbRugby) => {
                             res.sendStatus(500,"Internal Error");
                         }else if(info.length===0){
                             res.sendStatus(404,"Not found");
+                        }else if(info.length===1){
+                            let elem=info[0];
+                            delete elem._id;
+                            res.send(elem);
                         }else{
                             res.send(info.map((c)=> {
                                 delete c._id;
@@ -291,6 +309,10 @@ module.exports = (app,dbRugby) => {
                     res.sendStatus(500,'Server Internal Error' );
                  }else if(info.length===0){
                     res.sendStatus(404,"Not found");
+                }else if(info.length===1){
+                    let elem=info[0];
+                    delete elem._id;
+                    res.send(elem);
                 }else {
                     res.send(info.map((c)=> {
                         delete c._id;
@@ -365,6 +387,10 @@ app.get(API_BASE+"/stats-rugby/:nationality/:weight", (req,res) => {
             res.sendStatus(404,"Not Found");
         }else if(info.length===0){
             res.sendStatus(404,"Not found");
+        }else if(info.length===1){
+            let elem=info[0];
+            delete elem._id;
+            res.send(elem);
         }else{
             res.send(info.map((c)=> {
                 delete c._id;
@@ -379,19 +405,22 @@ app.put(API_BASE+"/stats-rugby/:nationality/:weight", (req,res) => {
     let weight=req.params.weight;
     const nuevo=req.body;
 
-    dbRugby.update({"bplace":nationality,"weight":Number(weight)},{$set: nuevo},(err,info)=>{
+    let v_n;
+
+    dbRugby.find({"bplace":nationality,"weight":Number(weight)},{$set: nuevo},(err,info)=>{
         if (err) {
-            res.sendStatus(500, "Internal Error");
+            res.sendStatus(500, "Server Internal Error");
         } else if(info.length===0){
             res.sendStatus(404, "Not Found");
         }else {
-            v_id=info[0]._id;
-            if(!(nuevo._id) || nuevo._id!==v_id){
+            v_n=info[0].first;
+            if(!(nuevo.first) || nuevo.first!==v_n){
                 res.sendStatus(400,"Bad Request");
             }else{
+
                 dbRugby.update({"bplace":nationality,"weight":Number(weight)},{$set: nuevo},(err,numUpdated)=>{
                 if (err) {
-                    res.sendStatus(500, "Internal Error");
+                    res.sendStatus(500, "Server Internal Error");
                 }else {
                     if (numUpdated === 0) {
                         res.sendStatus(404, "Not found");
@@ -402,6 +431,23 @@ app.put(API_BASE+"/stats-rugby/:nationality/:weight", (req,res) => {
             });
             }
         }
+    });
+});
+
+app.delete(API_BASE+"/stats-rugby/:nationality/:weight", (req,res) => {
+    let nationality=req.params.nationality;
+    let weight=req.params.weight;
+
+    dbFootball.remove( {"bplace":nationality, "weight": Number(weight)},{ multi: true },(err,numRemoved)=>{
+    if(err){
+        res.sendStatus(500,"Internal Error");
+    }else{
+        if(numRemoved>=1){
+            res.sendStatus(200,"Removed");
+        }else{
+            res.sendStatus(404,"Not found");
+        }
+    }
     });
 });
 }
