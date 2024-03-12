@@ -98,7 +98,7 @@ module.exports = (app,dbRugby) => {
                         }
                     });
         }else{
-    
+
             let valores=Object.values(peticion);
             let claves=Object.keys(peticion);
             let cond={}
@@ -150,7 +150,6 @@ module.exports = (app,dbRugby) => {
                 }
                 cond[clave]=valor;
             }
-    
             
             dbRugby.find(cond).skip(offset).limit(limit).exec((err, info) => {
                 if (err) {
