@@ -3,15 +3,15 @@
 		"_postman_id": "d7ef9062-4f94-4148-aea8-f7e5a7b1d0f4",
 		"name": "Rugby API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32966846",
-		"_collection_link": "https://blue-space-119762.postman.co/workspace/My-Workspace~d5f904fa-c8bd-42b9-8e91-0050848f92a5/collection/32964665-d7ef9062-4f94-4148-aea8-f7e5a7b1d0f4?action=share&source=collection_link&creator=32966846"
+		"_exporter_id": "32964665",
+		"_collection_link": "https://blue-space-119762.postman.co/workspace/My-Workspace~d5f904fa-c8bd-42b9-8e91-0050848f92a5/collection/32964665-d7ef9062-4f94-4148-aea8-f7e5a7b1d0f4?action=share&source=collection_link&creator=32964665"
 	},
 	"item": [
 		{
 			"name": "Utils",
 			"item": [
 				{
-					"name": "{{SERVER}}/api/v1/stats-rugby/loadInitialData",
+					"name": "Load Initial Data",
 					"event": [
 						{
 							"listen": "test",
@@ -46,7 +46,7 @@
 			]
 		},
 		{
-			"name": "Exito",
+			"name": "Done",
 			"item": [
 				{
 					"name": "GET /api/v1/stats-rugby",
@@ -57,9 +57,14 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El tamaño del array es \" + 10, function () {\r",
+									"    (pm.response.json.length)===10;\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -91,7 +96,8 @@
 									"    pm.response.to.have.status(201);\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -100,7 +106,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"team\": \"ARG\",\r\n    \"plabel\": \"Lock\",\r\n    \"age\": 27,\r\n    \"height\": 198,\r\n    \"weight\": 112,\r\n    \"bplace\": \"Argentina\",\r\n    \"bdate\": \"05/12/1991\",\r\n    \"last\": \"Alemanno\",\r\n    \"first\": \"Matias\",\r\n    \"caps\": 57\r\n  }",
+							"raw": "{\r\n    \"team\": \"ESP\",\r\n    \"plabel\": \"Lock\",\r\n    \"age\": 21,\r\n    \"height\": 175,\r\n    \"weight\": 75,\r\n    \"bplace\": \"España\",\r\n    \"bdate\": \"19/04/2002\",\r\n    \"last\": \"Rivas\",\r\n    \"first\": \"Pablo\",\r\n    \"caps\": 2\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -156,10 +162,10 @@
 			]
 		},
 		{
-			"name": "Fallos Sin Parametros",
+			"name": "Errors",
 			"item": [
 				{
-					"name": "POST /api/v1/stats-rugby (falta claves)",
+					"name": "POST 400 Bad request",
 					"event": [
 						{
 							"listen": "test",
@@ -200,14 +206,57 @@
 					"response": []
 				},
 				{
-					"name": "POST /api/v1/stats-rugby (sobra claves)",
+					"name": "POST 405 Method not allowed",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"team\": \"ARG\",\r\n    \"plabel\": \"Lock\",\r\n    \"age\": 27,\r\n    \"height\": 198,\r\n    \"bplace\": \"España\",\r\n    \"bdate\": \"05/12/1991\",\r\n    \"last\": \"Alemanno\",\r\n    \"first\": \"Matias Ignacio\",\r\n    \"caps\": 57\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-rugby/España",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-rugby",
+								"España"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST 409 Conflict",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 409\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -219,7 +268,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"team\": \"ARG\",\r\n    \"plabel\": \"Lock\",\r\n    \"age\": 27,\r\n    \"height\": 198,\r\n    \"weight\": 112,\r\n    \"pass\":12,\r\n    \"bplace\": \"Argentina\",\r\n    \"bdate\": \"05/12/1991\",\r\n    \"last\": \"Alemanno\",\r\n    \"first\": \"Matias Ignacio\",\r\n    \"caps\": 57\r\n  }",
+							"raw": "{\r\n    \"team\": \"ESP\",\r\n    \"plabel\": \"Lock\",\r\n    \"age\": 21,\r\n    \"height\": 175,\r\n    \"weight\": 75,\r\n    \"bplace\": \"España\",\r\n    \"bdate\": \"19/04/2002\",\r\n    \"last\": \"Rivas\",\r\n    \"first\": \"Pablo\",\r\n    \"caps\": 2\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -241,7 +290,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /api/v1/stats-rugby (son distintas claves)",
+					"name": "PUT 400 Bad request",
 					"event": [
 						{
 							"listen": "test",
@@ -251,59 +300,23 @@
 									"    pm.response.to.have.status(400);\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"team\": \"ARG\",\r\n    \"plabel\": \"Lock\",\r\n    \"age\": 27,\r\n    \"height\": 198,\r\n    \"peso\": 112,\r\n    \"bplace\": \"Argentina\",\r\n    \"bdate\": \"05/12/1991\",\r\n    \"last\": \"Alemanno\",\r\n    \"first\": \"Matias Ignacio\",\r\n    \"caps\": 57\r\n  }",
+							"raw": "{\r\n    \"caps\": 54\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-rugby",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"stats-rugby"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Con parámetros",
-			"item": [
-				{
-					"name": "GET /api/v1/stats-rugby/Argentina",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
 						"url": {
 							"raw": "{{SERVER}}/api/v1/stats-rugby/Argentina",
 							"host": [
@@ -320,139 +333,18 @@
 					"response": []
 				},
 				{
-					"name": "GET /api/v1/stats-rugby/Argentina/151",
+					"name": "PUT 404 Not found",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
 									"});"
 								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-rugby/Argentina/115",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"stats-rugby",
-								"Argentina",
-								"115"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /api/v1/stats-rugby/Argentina?age=30",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-rugby/Argentina?age=30",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"stats-rugby",
-								"Argentina"
-							],
-							"query": [
-								{
-									"key": "age",
-									"value": "30"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "POST /api/v1/stats-rugby/Matias",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 405\", function () {\r",
-									"    pm.response.to.have.status(405);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"team\": \"ESP\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-rugby/Matias",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"stats-rugby",
-								"Matias"
-							],
-							"query": [
-								{
-									"key": "caps",
-									"value": "3",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "PUT /api/v1/stats-rugby/Argentina/115 (con 2 parametros)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -461,7 +353,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"team\": \"ESP\"\r\n}",
+							"raw": "{\r\n    \"caps\": 54\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -469,7 +361,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-rugby/Argentina/115",
+							"raw": "{{SERVER}}/api/v1/stats-rugby/Murcia",
 							"host": [
 								"{{SERVER}}"
 							],
@@ -477,111 +369,14 @@
 								"api",
 								"v1",
 								"stats-rugby",
-								"Argentina",
-								"115"
-							],
-							"query": [
-								{
-									"key": "caps",
-									"value": "3",
-									"disabled": true
-								}
+								"Murcia"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "PUT /api/v1/stats-rugby/Matias",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"team\": \"ESP\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-rugby/Matias Ignacio",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"stats-rugby",
-								"Matias Ignacio"
-							],
-							"query": [
-								{
-									"key": "caps",
-									"value": "3",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE /api/v1/stats-rugby/Matias",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-rugby/Matias",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"stats-rugby",
-								"Matias"
-							],
-							"query": [
-								{
-									"key": "caps",
-									"value": "3",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE /api/v1/stats-rugby/Abraham (No existe)",
+					"name": "DELETE 404 Not found",
 					"event": [
 						{
 							"listen": "test",
@@ -632,7 +427,422 @@
 			]
 		},
 		{
-			"name": "DELETE /api/v1/stats-rugby",
+			"name": "Aditionals",
+			"item": [
+				{
+					"name": "GET ?bplace=Argentina",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Size of array is \" + 10, function () {\r",
+									"    (pm.response.json.length)===10;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-rugby?bplace=Argentina",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-rugby"
+							],
+							"query": [
+								{
+									"key": "bplace",
+									"value": "Argentina"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ?bplace=Argentina&age=30",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains field 'name'\", function () {\r",
+									"    let valores=Object.keys(pm.response.json);\r",
+									"    valores.indexOf(\"first\")!==-1;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-rugby?bplace=Argentina&age=30",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-rugby"
+							],
+							"query": [
+								{
+									"key": "bplace",
+									"value": "Argentina"
+								},
+								{
+									"key": "age",
+									"value": "30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ?bdate=1995",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains field 'name'\", function () {\r",
+									"    let valores=Object.keys(pm.response.json);\r",
+									"    valores.indexOf(\"first\")!==-1;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-rugby?bdate=1995",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-rugby"
+							],
+							"query": [
+								{
+									"key": "bdate",
+									"value": "1995"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ?from=1995&to=2000",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Size of array is \" + 3, function () {\r",
+									"    (pm.response.json.length)===3;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-rugby?from=1995&to=2000",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-rugby"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "1995"
+								},
+								{
+									"key": "to",
+									"value": "2000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ?limit=2&offset=5",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Size of array is \"+pm.response.json.limit , function () {\r",
+									"    (pm.response.json.length)===pm.response.json.limit;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-rugby?limit=2&offset=5",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-rugby"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "offset",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /BDATE/WEIGHT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains field 'name'\", function () {\r",
+									"    let valores=Object.keys(pm.response.json);\r",
+									"    valores.indexOf(\"first\")!==-1;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-rugby/Argentina/82",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-rugby",
+								"Argentina",
+								"82"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT (with id, FIRST)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"team\": \"ITA\",\r\n    \"first\": \"Santiago\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-rugby/Argentina",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-rugby",
+								"Argentina"
+							],
+							"query": [
+								{
+									"key": "caps",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /BPLACE/WEIGHT (with id, FIRST)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"team\": \"FRA\",\r\n    \"first\": \"Santiago\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/api/v1/stats-rugby/Argentina",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stats-rugby",
+								"Argentina"
+							],
+							"query": [
+								{
+									"key": "caps",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELETE /Pablo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v1/stats-rugby/Pablo",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"stats-rugby",
+						"Pablo"
+					],
+					"query": [
+						{
+							"key": "caps",
+							"value": "3",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE ALL",
 			"event": [
 				{
 					"listen": "test",
