@@ -49,7 +49,7 @@
 			"name": "Métodos",
 			"item": [
 				{
-					"name": "GET v1/stats-football",
+					"name": "GET /stats-football",
 					"event": [
 						{
 							"listen": "test",
@@ -59,9 +59,13 @@
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
-									""
+									"\r",
+									"pm.test(\"El tamaño del array es \" + 10, function () {\r",
+									"    (pm.response.json.length)===10;\r",
+									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -83,7 +87,7 @@
 					"response": []
 				},
 				{
-					"name": "POST Casillas v1/stats-football",
+					"name": "POST Casillas",
 					"event": [
 						{
 							"listen": "test",
@@ -124,7 +128,7 @@
 					"response": []
 				},
 				{
-					"name": "GET  Germany v1/stats-football/Germany",
+					"name": "GET  /Germany",
 					"event": [
 						{
 							"listen": "test",
@@ -134,9 +138,14 @@
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
-									""
+									"\r",
+									"pm.test(\"La respuesta contiene el campo 'altura'\", function () {\r",
+									"    let valores=Object.keys(pm.response.json);\r",
+									"    valores.indexOf(\"height_cm\")!==-1;\r",
+									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -159,7 +168,7 @@
 					"response": []
 				},
 				{
-					"name": "PUT Belgium v1/stats-football/Belgium",
+					"name": "PUT /Belgium",
 					"event": [
 						{
 							"listen": "test",
@@ -206,7 +215,7 @@
 			"name": "Adicionales",
 			"item": [
 				{
-					"name": "GET Filtrado stats-football?age=29",
+					"name": "GET Búsquedas",
 					"event": [
 						{
 							"listen": "test",
@@ -214,9 +223,15 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta contiene el campo 'nombre'\", function () {\r",
+									"    let valores=Object.keys(pm.response.json);\r",
+									"    valores.indexOf(\"name\")!==-1;\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -224,7 +239,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SERVER}}/api/v1/stats-football?age=29",
+							"raw": "{{SERVER}}/api/v1/stats-football?team_position=SUB&preferred_foot=Right",
 							"host": [
 								"{{SERVER}}"
 							],
@@ -235,8 +250,12 @@
 							],
 							"query": [
 								{
-									"key": "age",
-									"value": "29"
+									"key": "team_position",
+									"value": "SUB"
+								},
+								{
+									"key": "preferred_foot",
+									"value": "Right"
 								}
 							]
 						}
@@ -244,7 +263,7 @@
 					"response": []
 				},
 				{
-					"name": "GET Búsqueda stats-football/Germany/183",
+					"name": "GET Búsqueda /Germany/183",
 					"event": [
 						{
 							"listen": "test",
@@ -252,9 +271,15 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta contiene el campo 'name'\", function () {\r",
+									"    let valores=Object.keys(pm.response.json);\r",
+									"    valores.indexOf(\"short_name\")!==-1;\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -278,7 +303,7 @@
 					"response": []
 				},
 				{
-					"name": "GET FiltradoAño stats-football?dob=1984",
+					"name": "GET Filtrado Año",
 					"event": [
 						{
 							"listen": "test",
@@ -286,9 +311,14 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El tamaño del array es \" + 2, function () {\r",
+									"    (pm.response.json.length)===2;\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -316,7 +346,7 @@
 					"response": []
 				},
 				{
-					"name": "PUT JugadorPaisAltura stats-football/Germany/183",
+					"name": "PUT /Germany/183",
 					"event": [
 						{
 							"listen": "test",
@@ -360,7 +390,7 @@
 					"response": []
 				},
 				{
-					"name": "GET FiltradoAñoDesde stats-football?from=1982&to=1984",
+					"name": "GET FROM&TO",
 					"event": [
 						{
 							"listen": "test",
@@ -368,9 +398,14 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El tamaño del array es \" + 4, function () {\r",
+									"    (pm.response.json.length)===4;\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -402,7 +437,7 @@
 					"response": []
 				},
 				{
-					"name": "GET LimitOffset stats-football?limit=2&offset=1",
+					"name": "GET LIMIT&OFFSET",
 					"event": [
 						{
 							"listen": "test",
@@ -410,6 +445,10 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El tamaño del array es \"+pm.response.json.limit , function () {\r",
+									"    (pm.response.json.length)===pm.response.json.limit;\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -663,7 +702,7 @@
 			]
 		},
 		{
-			"name": "DELETE Portugal/185 v1/stats-football/Portugal/185",
+			"name": "DELETE /Portugal/185",
 			"event": [
 				{
 					"listen": "test",
@@ -699,7 +738,7 @@
 			"response": []
 		},
 		{
-			"name": "DELETE Argentina v1/stats-football/Argentina",
+			"name": "DELETE /Argentina",
 			"event": [
 				{
 					"listen": "test",
@@ -711,7 +750,8 @@
 							"});\r",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -734,7 +774,7 @@
 			"response": []
 		},
 		{
-			"name": "DELETE v1/stats-football",
+			"name": "DELETE /stats-football",
 			"event": [
 				{
 					"listen": "test",
@@ -746,7 +786,8 @@
 							"});\r",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
