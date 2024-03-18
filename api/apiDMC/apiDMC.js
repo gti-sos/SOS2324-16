@@ -88,10 +88,6 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
                     }else if(info.length===0){
                         res.sendStatus(404,"Not found");
 
-                    }else if(info.length===1){
-                        let elem=info[0];
-                        delete elem._id;
-                        res.send(elem);
                     }else{
                         res.send(info.map((c)=> {
                             delete c._id;
@@ -236,11 +232,8 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
                     }else if(info.length===0){
                         res.sendStatus(404,"Not found");
 
-                    }else if(info.length===1){
-                        let elem=info[0];
-                        delete elem._id;
-                        res.send(elem);
-                    }else{
+                    }
+                    else{
                         res.send(info.map((c)=> {
                             delete c._id;
                             return c;
