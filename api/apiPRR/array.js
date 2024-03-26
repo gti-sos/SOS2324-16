@@ -132,4 +132,4 @@ let array = [
   }
 ];
 
-module.exports.array = array;
+export default array;

@@ -13,7 +13,7 @@ function parseaFechasDMC(f){
 }
 
 
-let datos=[
+let datosDMC=[
     {
         name:"Ting Zhu",
         ranking:3,
@@ -136,4 +136,4 @@ let datos=[
     }
 ];
 
-module.exports.datos=datos;
+export default datosDMC;

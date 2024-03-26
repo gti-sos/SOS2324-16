@@ -23,4 +23,4 @@ let jugadores=[
     {short_name: "F. Ribéry", long_name: "Franck Bilal Ribéry", age: 31,	dob: parseaFechasPSS("07/04/1983"),	height_cm: 170, weight_kg: 72, nationality: "France", club: "FC Bayern München", preferred_foot: "Right", team_position: "SUB"}
 ];
 
-module.exports.jugadores = jugadores;
+export default jugadores;

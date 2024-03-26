@@ -1,4 +1,4 @@
-let PRR = require('./array');
+import array from "./array.js";
 
 const API_BASE = "/api/v1";
 
@@ -52,7 +52,9 @@ function validarDatos(req, res, next) {
     next();
 }
 
-module.exports = (app,dbRugby) => {
+function loadBackendPRR(app,dbRugby){
+
+    dbRugby.insert(array);
     //Recurso para /api de PABLO RIVAS 
     app.get(API_BASE+"/stats-rugby/loadInitialData", (req,res) => {
         dbRugby.find({}, (err, docs) => {
@@ -60,7 +62,7 @@ module.exports = (app,dbRugby) => {
                 res.sendStatus(500, "Internal Error");
             }else {
                 if (docs.length === 0) {
-                    dbRugby.insert(PRR.array);
+                    dbRugby.insert(array);
                     res.sendStatus(201, "Array created");
                 } else{
                     res.sendStatus(409, "Conflict");
@@ -136,9 +138,9 @@ module.exports = (app,dbRugby) => {
     
                 let clave=claves[i];
     
-                if((typeof PRR.array[0][clave])==="number"){
+                if((typeof array[0][clave])==="number"){
                     valor=Number(valores[i]);
-                }else if((typeof PRR.array[0][clave])==="object"){
+                }else if((typeof array[0][clave])==="object"){
                     valor_aux=Number(valores[i]);
                     valor={ $gte:new Date(valor_aux+"-01-01"), $lte:new Date(valor_aux+"-12-31") };
                 }else{
@@ -281,9 +283,9 @@ module.exports = (app,dbRugby) => {
     
                 clave=claves[i];
     
-                if((typeof PRR.array[0][clave])==="number"){
+                if((typeof array[0][clave])==="number"){
                     valor=Number(valores[i]);
-                }else if((typeof PRR.array[0][clave])==="object"){
+                }else if((typeof array[0][clave])==="object"){
                     valor_aux=Number(valores[i]);
                     valor={ $gte:new Date(valor_aux+"-01-01"), $lte:new Date(valor_aux+"-12-31") };
                 }else{
@@ -435,3 +437,5 @@ app.delete(API_BASE+"/stats-rugby/:nationality/:weight", (req,res) => {
     });
 });
 }
+
+export{loadBackendPRR};

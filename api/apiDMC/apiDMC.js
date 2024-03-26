@@ -1,6 +1,6 @@
-let DMC = require('./datos');
+import datosDMC from "./datos.js"
 
-const API_BASE = "/api/v1";
+const API_BASE = "/api/v2";
 
 //funcion para validar si los campos son correctos
 function validarDatos(req, res, next) {
@@ -53,8 +53,10 @@ function validarDatos(req, res, next) {
     next();
 }
 
-module.exports = (app,dbVolleyball) => {
+function loadBackendDMC(app,dbVolleyball){
 //Recurso para /api de DOMINGO MORALES
+
+dbVolleyball.insert(datosDMC);
 
 app.get(API_BASE+"/stats-volleyball/loadInitialData", (req,res) => {
     dbVolleyball.find({}, (err, docs) => {
@@ -62,7 +64,7 @@ app.get(API_BASE+"/stats-volleyball/loadInitialData", (req,res) => {
             res.sendStatus(500, "Internal Error");
         }else {
             if (docs.length === 0) {
-                dbVolleyball.insert(DMC.datos);
+                dbVolleyball.insert(datosDMC);
                 res.sendStatus(201, "Created");
             } else{
                 res.sendStatus(409, "Conflict");
@@ -85,9 +87,6 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
         dbVolleyball.find( {} ,(err,info)=> {
                     if(err){
                         res.sendStatus(500,"Internal Error");
-                    }else if(info.length===0){
-                        res.sendStatus(404,"Not found");
-
                     }else{
                         res.send(info.map((c)=> {
                             delete c._id;
@@ -138,9 +137,9 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
 
             let clave=claves[i];
 
-            if((typeof DMC.datos[0][clave])==="number"){
+            if((typeof datosDMC[0][clave])==="number"){
                 valor=Number(valores[i]);
-            }else if((typeof DMC.datos[0][clave])==="object"){
+            }else if((typeof datosDMC[0][clave])==="object"){
                 valor_aux=Number(valores[i]);
                 valor={ $gte:new Date(valor_aux+"-01-01"), $lte:new Date(valor_aux+"-12-31") };
             }else{
@@ -154,17 +153,7 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
                 res.sendStatus(500,'Error interno del servidor' );
              }else if(info.length===0){
                 res.sendStatus(404,"Not found");
-<<<<<<< HEAD
-            }
-            // else if(info.length===1){
-            //     let elem=info[0];
-            //     delete elem._id;
-            //     res.send(elem);
-            // }
-            else {
-=======
             }else {
->>>>>>> 3313a0b10fae855e817b33ba821dfc0d0ef3de6d
                 res.send(info.map((c)=> {
                     delete c._id;
                     return c;
@@ -235,9 +224,6 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
 
                     if(err){
                         res.sendStatus(500,"Internal Error");
-                    }else if(info.length===0){
-                        res.sendStatus(404,"Not found");
-
                     }
                     else{
                         res.send(info.map((c)=> {
@@ -290,9 +276,9 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
 
             clave=claves[i];
 
-            if((typeof DMC.datos[0][clave])==="number"){
+            if((typeof datosDMC[0][clave])==="number"){
                 valor=Number(valores[i]);
-            }else if((typeof DMC.datos[0][clave])==="object"){
+            }else if((typeof datosDMC[0][clave])==="object"){
                 valor_aux=Number(valores[i]);
                 valor={ $gte:new Date(valor_aux+"-01-01"), $lte:new Date(valor_aux+"-12-31") };
             }else{
@@ -306,17 +292,7 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
                 res.sendStatus(500,'Error interno del servidor' );
              }else if(info.length===0){
                 res.sendStatus(404,"Not found");
-<<<<<<< HEAD
-            }
-            // else if(info.length===1){
-            //     let elem=info[0];
-            //     delete elem._id;
-            //     res.send(elem);
-            // }
-            else {
-=======
             }else {
->>>>>>> 3313a0b10fae855e817b33ba821dfc0d0ef3de6d
                 res.send(info.map((c)=> {
                     delete c._id;
                     return c;
@@ -392,10 +368,12 @@ app.get(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
     dbVolleyball.find({"nationality":nationality, "weight":Number(weight)}, (err,info) => {
         if(err){
             res.sendStatus(404,"Not Found");
-        }else if(info.length===0){
+        }
+        else if(info.length===0){
             res.sendStatus(404,"Not found");
 
-        }else{
+        }
+        else{
             let elem=info[0];
             delete elem._id;
             res.send(elem);
@@ -455,3 +433,5 @@ app.delete(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
 });
 
 }
+
+export{loadBackendDMC};

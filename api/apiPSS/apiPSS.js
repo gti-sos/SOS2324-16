@@ -1,4 +1,4 @@
-let PSS = require('./jugadores');
+import jugadores from "./jugadores.js"
 
 const API_BASE = "/api/v1";
 
@@ -53,7 +53,9 @@ function validarDatos(req, res, next) {
     next();
 }
 
-module.exports = (app,dbFootball) => {
+function loadBackendPSS(app,dbFootball){
+
+dbFootball.insert(jugadores);
 //Recurso para /api de PABLO SUÁREZ
 
 app.get(API_BASE+"/stats-football/loadInitialData", (req,res) => {
@@ -62,7 +64,7 @@ app.get(API_BASE+"/stats-football/loadInitialData", (req,res) => {
             res.sendStatus(500, "Internal Error");
         }else {
             if (docs.length === 0) {
-                dbFootball.insert(PSS.jugadores);
+                dbFootball.insert(jugadores);
                 res.sendStatus(201, "Created");
             } else{
                 res.sendStatus(409, "Conflict");
@@ -136,9 +138,9 @@ app.get(API_BASE+'/stats-football', (req, res) => {
 
             let clave=claves[i];
 
-            if((typeof PSS.jugadores[0][clave])==="number"){
+            if((typeof jugadores[0][clave])==="number"){
                 valor=Number(valores[i]);
-            }else if((typeof PSS.jugadores[0][clave])==="object"){
+            }else if((typeof jugadores[0][clave])==="object"){
                 valor_aux=Number(valores[i]);
                 valor={ $gte:new Date(valor_aux+"-01-01"), $lte:new Date(valor_aux+"-12-31") };
             }else{
@@ -269,9 +271,9 @@ app.get(API_BASE+"/stats-football/:nationality", (req,res) => {
 
             clave=claves[i];
 
-            if((typeof PSS.jugadores[0][clave])==="number"){
+            if((typeof jugadores[0][clave])==="number"){
                 valor=Number(valores[i]);
-            }else if((typeof PSS.jugadores[0][clave])==="object"){
+            }else if((typeof jugadores[0][clave])==="object"){
                 valor_aux=Number(valores[i]);
                 valor={ $gte:new Date(valor_aux+"-01-01"), $lte:new Date(valor_aux+"-12-31") };
             }else{
@@ -421,3 +423,4 @@ app.delete(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
     });
 });
 }
+export{loadBackendPSS};
