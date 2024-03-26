@@ -84,9 +84,6 @@ function loadBackendPRR(app,dbRugby){
             dbRugby.find( {} ,(err,info)=> {
                         if(err){
                             res.sendStatus(500,"Internal Error");
-                        }else if(info.length===0){
-                            res.sendStatus(404,"Not found");
-    
                         }else{
                             res.send(info.map((c)=> {
                                 delete c._id;
@@ -230,8 +227,6 @@ function loadBackendPRR(app,dbRugby){
             dbRugby.find( {"bplace":nationality} ,(err,info)=> {
                         if(err){
                             res.sendStatus(500,"Internal Error");
-                        }else if(info.length===0){
-                            res.sendStatus(404,"Not found");
                         }else{
                             res.send(info.map((c)=> {
                                 delete c._id;
@@ -373,15 +368,10 @@ app.get(API_BASE+"/stats-rugby/:nationality/:weight", (req,res) => {
             res.sendStatus(404,"Not Found");
         }else if(info.length===0){
             res.sendStatus(404,"Not found");
-        }else if(info.length===1){
+        }else{
             let elem=info[0];
             delete elem._id;
             res.send(elem);
-        }else{
-            res.send(info.map((c)=> {
-                delete c._id;
-                return c;
-            }));
         }
     });
 });
@@ -424,7 +414,7 @@ app.delete(API_BASE+"/stats-rugby/:nationality/:weight", (req,res) => {
     let nationality=req.params.nationality;
     let weight=req.params.weight;
 
-    dbFootball.remove( {"bplace":nationality, "weight": Number(weight)},{ multi: true },(err,numRemoved)=>{
+    dbRugby.remove( {"bplace":nationality, "weight": Number(weight)},{ multi: true },(err,numRemoved)=>{
     if(err){
         res.sendStatus(500,"Internal Error");
     }else{
