@@ -1,6 +1,3 @@
-// let express = require("express");
-// let bodyParser = require("body-parser");
-// let dataStore = require("nedb");
 import express from "express";
 import bodyParser from "body-parser";
 import dataStore from "nedb";
@@ -8,12 +5,9 @@ import cors from "cors";
 //Svelte
 import {handler} from "./front/build/handler.js";
 
-// let apiPRR = require('./api/apiPRR/apiPRR');
-// let apiPSS = require('./api/apiPSS/apiPSS');
-// let apiDMC = require('./api/apiDMC/apiDMC');
-import {loadBackendPRR} from './api/apiPRR/apiPRR.js';
-import {loadBackendPSS} from './api/apiPSS/apiPSS.js';
-import {loadBackendDMC} from './api/apiDMC/apiDMC.js';
+import {loadBackendPRR} from './api/apiPRR/apiPRR-v2.js';
+import {loadBackendPSS} from './api/apiPSS/apiPSS-v2.js';
+import {loadBackendDMC} from './api/apiDMC/apiDMC-v2.js';
 
 let app = express();
 app.use(cors());
@@ -25,7 +19,8 @@ let dbFootball = new dataStore();
 
 //Variables constantes
 const PORT = (process.env.PORT || 10000);
-const API_BASE = "/api/v2";
+const API_BASE_v2 = "/api/v2";
+const API_BASE_v1 = "/api/v1";
 
 app.use(bodyParser.json());
 
@@ -33,9 +28,12 @@ app.use(bodyParser.json());
 // app.use("/", express.static("./public"));
 
 // //Redireccionamientos a documentos de postman
-// app.get(API_BASE+"/stats-rugby/docs", (req,res) => {
-//     res.redirect('https://documenter.getpostman.com/view/32964665/2sA2xh2YTp');
-// });
+app.get(API_BASE_v1+"/stats-rugby/docs", (req,res) => {
+    res.redirect('https://documenter.getpostman.com/view/32964665/2sA2xh2YTp');
+});
+app.get(API_BASE_v2+"/stats-rugby/docs", (req,res) => {
+    res.redirect('https://documenter.getpostman.com/view/32964665/2sA35Eb3QP');
+});
 // app.get(API_BASE+"/stats-football/docs", (req,res) => {
 //     res.redirect('https://documenter.getpostman.com/view/32965495/2sA2xh2sVA');
 // });
@@ -56,8 +54,8 @@ app.use(handler);
 //Iniciar servicio
 app.listen(PORT,() =>{
     console.log(`Server listening on http://localhost:${PORT}`);
-    console.log(`API Pablo Rivas on http://localhost:${PORT + API_BASE}/stats-rugby`);
-    console.log(`API Pablo Suárez on http://localhost:${PORT + API_BASE}/stats-football`);
-    console.log(`API Domingo Morales on http://localhost:${PORT + API_BASE}/stats-volleyball`);
+    console.log(`API Pablo Rivas on http://localhost:${PORT + API_BASE_v2}/stats-rugby`);
+    console.log(`API Pablo Suárez on http://localhost:${PORT + API_BASE_v2}/stats-football`);
+    console.log(`API Domingo Morales on http://localhost:${PORT + API_BASE_v2}/stats-volleyball`);
 });
 console.log(`Server initializing...`);

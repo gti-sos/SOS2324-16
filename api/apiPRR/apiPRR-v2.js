@@ -1,6 +1,6 @@
 import array from "./array.js";
 
-const API_BASE = "/api/v1";
+const API_BASE = "/api/v2";
 
 //funcion pa validar si los campos son correctos
 function validarDatos(req, res, next) {
@@ -130,7 +130,8 @@ function loadBackendPRR(app,dbRugby){
                 to=0;
     
             }
-    
+            let valor = 0;
+            let valor_aux = 0;
             for(let i=0;i<claves.length;i++){
     
                 let clave=claves[i];
@@ -274,9 +275,12 @@ function loadBackendPRR(app,dbRugby){
     
             }
     
+            let valor=0;
+            let valor_aux=0;
             for(let i=0;i<claves.length;i++){
     
                 clave=claves[i];
+
     
                 if((typeof array[0][clave])==="number"){
                     valor=Number(valores[i]);

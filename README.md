@@ -11,4 +11,5 @@
 - **APIs**: 
    - [https://sos2324-16.appspot.com/api/v1/stats-football/docs](https://sos2324-16.appspot.com/api/v1/stats-football/docs) (developed by Pablo Suárez Sarmiento)
    - [https://sos2324-16.appspot.com/api/v1/stats-volleyball/docs](https://sos2324-16.appspot.com/api/v1/stats-volleyball/docs) (developed by Domingo Morales Calderon)
-   - [https://sos2324-16.appspot.com/api/v1/stats-rugby/docs](https://sos2324-16.appspot.com/api/v1/stats-rugby/docs) (developed by Pablo Ruiz Rivas)
+   - [https://sos2324-16.appspot.com/api/v1/stats-rugby/docs](https://sos2324-16.appspot.com/api/v1/stats-rugby/docs) (v1 developed by Pablo Ruiz Rivas)
+   - [https://sos2324-16.appspot.com/api/v2/stats-rugby/docs](https://sos2324-16.appspot.com/api/v2/stats-rugby/docs) (v2 developed by Pablo Ruiz Rivas)

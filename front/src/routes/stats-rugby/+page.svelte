@@ -1,14 +1,16 @@
 <script>
     import { onMount } from "svelte";
     import {dev} from "$app/environment";
+    import Mensaje from "../Mensaje.svelte";
     //Muestra si está en desarrollo  
-    let API="/api/v1/stats-rugby";
+    let API="/api/v2/stats-rugby";
     if(dev){
-        API="http://localhost:10000/api/v1/stats-rugby";
+        API="http://localhost:10000/api/v2/stats-rugby";
     }
 
     let Rugby=[];
     let errorMsg="";
+    let msg="";
     let newRugby={
                     "team": "ARG",
                     "plabel": "Scrum Half",
@@ -46,6 +48,7 @@
 
             if(response.status===200){
                 getRugby();
+                msg="Jugador borrado correctamente";
             }else{
                 errorMsg="code: "+response.status;
             }
@@ -64,6 +67,7 @@
 
             if(response.status===200){
                 getRugby();
+                msg="Todos los jugadores borrados correctamente";
             }else{
                 errorMsg="code: "+response.status;
             }
@@ -87,6 +91,7 @@
             console.log(`Creation response status ${status}`);
             if(status===201){
                 getRugby();
+                msg="Jugador creado correctamente";
             }else{
                 errorMsg="code: "+status;
             }
@@ -97,6 +102,19 @@
     }
 //export default Rugby;
 </script>
+
+{#if msg!=""}
+<div>
+    <Mensaje tipo="exito" mensaje={msg} />
+</div>
+{/if}
+{#if errorMsg!=""}
+    <div>
+    {#if errorMsg=="code: 409"}
+        <Mensaje tipo="error" mensaje={`Existe un contacto con nombre ${newRugby.first}`}/>
+    {/if}
+    </div>
+{/if}
 
 <table>
     <thead>
@@ -191,7 +209,3 @@
     <br>
     <button on:click="{createRugby}">Crear jugador Rugby</button> <button on:click="{deleteAllRugby}">Limpiar lista</button>
 </ul>
-{#if errorMsg!=""}
-<hr>
-ERROR: {errorMsg}    
-{/if}
