@@ -3,48 +3,13 @@
 		"_postman_id": "8bb7660e-e691-4ccb-9337-9fd60147a5bf",
 		"name": "Football API Testing v2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32966846",
-		"_collection_link": "https://blue-space-119762.postman.co/workspace/My-Workspace~d5f904fa-c8bd-42b9-8e91-0050848f92a5/collection/32966846-8bb7660e-e691-4ccb-9337-9fd60147a5bf?action=share&source=collection_link&creator=32966846"
+		"_exporter_id": "32964665",
+		"_collection_link": "https://blue-space-119762.postman.co/workspace/My-Workspace~d5f904fa-c8bd-42b9-8e91-0050848f92a5/collection/32966846-8bb7660e-e691-4ccb-9337-9fd60147a5bf?action=share&source=collection_link&creator=32964665"
 	},
 	"item": [
 		{
 			"name": "API utils",
-			"item": [
-				{
-					"name": "Load Initial Football",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 201\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{SERVER}}/api/v2/stats-football/loadInitialData",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v2",
-								"stats-football",
-								"loadInitialData"
-							]
-						}
-					},
-					"response": []
-				}
-			]
+			"item": []
 		},
 		{
 			"name": "Métodos",
@@ -812,6 +777,40 @@
 						"api",
 						"v2",
 						"stats-football"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Load Initial Football",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v2/stats-football/loadInitialData",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"stats-football",
+						"loadInitialData"
 					]
 				}
 			},

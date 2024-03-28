@@ -3,48 +3,13 @@
 		"_postman_id": "f7ad7b14-6940-42c7-8920-c3f8194e6b73",
 		"name": "Volleyball API Testing v2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32966846",
-		"_collection_link": "https://blue-space-119762.postman.co/workspace/My-Workspace~d5f904fa-c8bd-42b9-8e91-0050848f92a5/collection/32966846-f7ad7b14-6940-42c7-8920-c3f8194e6b73?action=share&source=collection_link&creator=32966846"
+		"_exporter_id": "32964665",
+		"_collection_link": "https://blue-space-119762.postman.co/workspace/My-Workspace~d5f904fa-c8bd-42b9-8e91-0050848f92a5/collection/32966846-f7ad7b14-6940-42c7-8920-c3f8194e6b73?action=share&source=collection_link&creator=32964665"
 	},
 	"item": [
 		{
 			"name": "Utils",
-			"item": [
-				{
-					"name": "Load Initial Volleyball",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 201\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{SERVER}}/api/v2/stats-volleyball/loadInitialData",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v2",
-								"stats-volleyball",
-								"loadInitialData"
-							]
-						}
-					},
-					"response": []
-				}
-			]
+			"item": []
 		},
 		{
 			"name": "Errores",
@@ -869,6 +834,40 @@
 						"api",
 						"v2",
 						"stats-volleyball"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Load Initial Volleyball",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v2/stats-volleyball/loadInitialData",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"stats-volleyball",
+						"loadInitialData"
 					]
 				}
 			},

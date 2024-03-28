@@ -3,49 +3,10 @@
 		"_postman_id": "3b99dead-44a7-42ef-89b9-04621a3c7ad3",
 		"name": "Rugby API v2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32966846",
-		"_collection_link": "https://blue-space-119762.postman.co/workspace/My-Workspace~d5f904fa-c8bd-42b9-8e91-0050848f92a5/collection/32964665-3b99dead-44a7-42ef-89b9-04621a3c7ad3?action=share&source=collection_link&creator=32966846"
+		"_exporter_id": "32964665",
+		"_collection_link": "https://blue-space-119762.postman.co/workspace/My-Workspace~d5f904fa-c8bd-42b9-8e91-0050848f92a5/collection/32964665-3b99dead-44a7-42ef-89b9-04621a3c7ad3?action=share&source=collection_link&creator=32964665"
 	},
 	"item": [
-		{
-			"name": "Utils",
-			"item": [
-				{
-					"name": "Load Initial Data",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 201\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{SERVER}}/api/v2/stats-rugby/loadInitialData",
-							"host": [
-								"{{SERVER}}"
-							],
-							"path": [
-								"api",
-								"v2",
-								"stats-rugby",
-								"loadInitialData"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
 		{
 			"name": "Done",
 			"item": [
@@ -874,6 +835,40 @@
 						"api",
 						"v2",
 						"stats-rugby"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Load Initial Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERVER}}/api/v2/stats-rugby/loadInitialData",
+					"host": [
+						"{{SERVER}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"stats-rugby",
+						"loadInitialData"
 					]
 				}
 			},
