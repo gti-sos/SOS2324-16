@@ -19,3 +19,28 @@
     <li><a href="https://github.com/Pablosuasar">Pablo Suarez Sarmiento</a> (stats-football)</li>
     <li><a href="https://github.com/pablorivast">Pablo Ruiz Rivas</a> (stats-rugby)</li>
 </ul>
+<style>
+    * {
+      font-family: 'Georgia', sans-serif; /* Fuente */
+      margin: 0; /* Eliminar margen predeterminado */
+      padding: 4px; /* Espaciado interno */
+    }
+
+    h2, h3 {
+      margin-top: 10px; /* Espacio entre títulos */
+    }
+
+    ul {
+      list-style-type: none; /* Eliminar viñetas de las listas */
+      padding: 0; /* Eliminar relleno de las listas */
+    }
+
+    a {
+      color: #337ab7; /* Color del enlace */
+      text-decoration: none; /* Sin subrayado */
+    }
+
+    a:hover {
+      text-decoration: underline; /* Subrayado al pasar el ratón */
+    }
+  </style>
