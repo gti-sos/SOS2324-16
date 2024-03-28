@@ -1,33 +1,45 @@
 <script>
     import { onMount } from "svelte";
     import {dev} from "$app/environment";
-    import Mensaje from "../../../Mensaje.svelte";
+    import Mensaje from "../Mensaje.svelte";
+
      
-    let API="/api/v2/stats-volleyball";
+    let API="/api/v2/stats-football";
     if(dev){
-        API="http://localhost:10000/api/v2/stats-volleyball";
+        API="http://localhost:10000/api/v2/stats-football";
     }
 
-    let volleyball=[];
+    let Football=[];
     let errorMsg="";
     let msg="";
-    let newVolleyball={name:"nombreJugadora",ranking:11,nationality:"Spain",position:"Outside Hitter",birthdate:"19/06/2006",height:188,weight:89,dominant_hand:"Right",country_point:221.0,point:666.0};
+    let newFootball={
+                    "short_name": "I. Casillas", 
+                    "long_name": "Iker Casillas", 
+                    "age": 27, 
+                    "dob": "24/06/1987", 
+                    "height_cm": 169, 
+                    "weight_kg": 67, 
+                    "nationality": "España", 
+                    "club": "Real Madrid", 
+                    "preferred_foot": "Left", 
+                    "team_position": "CF"
+                };
 
     onMount(()=>{
-        getVolleyball();
+        getFootball();
     })
 
-    async function getVolleyball(){
+    async function getFootball(){
         let response=await fetch(API,{
                             method:"GET"
                         })
 
         let data=await response.json();
-        volleyball=data;
+        Football=data;
         console.log(data);
     }
 
-    async function deleteVolleyball(nom,n){
+    async function deleteFootball(nom,n){
         console.log(`Deleting ${nom}`);
 
         try{
@@ -36,8 +48,8 @@
                             })
 
             if(response.status===200){
-                getVolleyball();
-                msg="Jugadora borrada correctamente";
+                getFootball();
+                msg="Jugador borrado correctamente";
             }else{
                 errorMsg="code: "+response.status;
             }
@@ -46,7 +58,7 @@
         }
     }
 
-    async function deleteTodasVolleyball(){
+    async function deleteAllFootball(){
         console.log(`Deleting all`);
 
         try{
@@ -55,8 +67,8 @@
                             })
 
             if(response.status===200){
-                getVolleyball();
-                msg="Todas las jugadoras borradas correctamente";
+                getFootball();
+                msg="Todos los jugadores borrados correctamente";
             }else{
                 errorMsg="code: "+response.status;
             }
@@ -65,7 +77,7 @@
         }
     }
 
-    async function createVolleyball(){
+    async function createFootball(){
 
         try{
             let response=await fetch(API,{
@@ -73,14 +85,14 @@
                                 headers:{
                                     "Content-Type":"application/json"
                                 },
-                                body:JSON.stringify(newVolleyball,null,2)
+                                body:JSON.stringify(newFootball,null,2)
                             })
 
             let status=await response.status;
             console.log(`Creation response status ${status}`);
             if(status===201){
-                getVolleyball();
-                msg="Jugadora creada correctamente";
+                getFootball();
+                msg="Jugador creado correctamente";
             }else{
                 errorMsg="code: "+status;
             }
@@ -89,7 +101,6 @@
         }
 
     }
-//export default volleyball;
 </script>
 
 {#if msg!=""}
@@ -100,7 +111,7 @@
 {#if errorMsg!=""}
     <div>
     {#if errorMsg=="code: 409"}
-        <Mensaje tipo="error" mensaje={`Existe un contacto con nombre ${newVolleyball.name}`}/>
+        <Mensaje tipo="error" mensaje={`Existe un contacto con nombre ${newFootball.short_name}`}/>
     {/if}
     </div>
 {/if}
@@ -109,19 +120,19 @@
     <thead>
         <tr>
             <th>
-                Name
+                Nombre
             </th>
             <th>
-                Ranking
+                Nombre completo
             </th>
             <th>
-                Nationality
+                Edad
             </th>
             <th>
-                Position
+                Fecha de nacimiento
             </th>
             <th>
-                Birthdate
+                Altura (en cm)
             </th>
         </tr>
 
@@ -129,19 +140,19 @@
     <tbody>
         <tr>
             <td>
-                <input bind:value={newVolleyball.name}>
+                <input bind:value={newFootball.short_name}>
             </td>
             <td>
-                <input bind:value={newVolleyball.ranking}>
+                <input bind:value={newFootball.long_name}>
             </td>
             <td>
-                <input bind:value={newVolleyball.nationality}>
+                <input type="number" bind:value={newFootball.age}>
             </td>
             <td>
-                <input bind:value={newVolleyball.position}>
+                <input bind:value={newFootball.dob}>
             </td>
             <td>
-                <input bind:value={newVolleyball.birthdate}>
+                <input type="number" bind:value={newFootball.height_cm}>
             </td>
         </tr>
 
@@ -149,19 +160,19 @@
     <thead>
         <tr>
             <th>
-                Height
+                Peso (en kg)
             </th>
             <th>
-                Weight
+                Nacionalidad
             </th>
             <th>
-                Dominant Hand
+                Club
             </th>
             <th>
-                Promedio de puntos con su selección
+                Pie dominante
             </th>
             <th>
-                Promedio de puntos
+                Posición 
             </th>
 
         </tr>
@@ -169,19 +180,19 @@
     <tbody>
         <tr>
             <td>
-                <input bind:value={newVolleyball.height}>
+                <input type="number" bind:value={newFootball.weight_kg}>
             </td>
             <td>
-                <input bind:value={newVolleyball.weight}>
+                <input bind:value={newFootball.nationality}>
             </td>
             <td>
-                <input bind:value={newVolleyball.dominant_hand}>
+                <input bind:value={newFootball.club}>
             </td>
             <td>
-                <input bind:value={newVolleyball.country_point}>
+                <input bind:value={newFootball.preferred_foot}>
             </td>
             <td>
-                <input bind:value={newVolleyball.point}>
+                <input bind:value={newFootball.team_position}>
             </td>
 
         </tr>
@@ -190,11 +201,11 @@
 </table>
 
 <ul>
-    {#each volleyball as volleyball_j}
-        <li> <a href="/stats-volleyball/{volleyball_j.nationality}/{volleyball_j.weight}">{volleyball_j.name} - {volleyball_j.nationality}</a>  <button on:click="{deleteVolleyball(volleyball_j.name,volleyball_j.nationality+"/"+volleyball_j.weight)}">Delete</button> </li>
+    {#each Football as football_j}
+        <li> <a href="/stats-football/{football_j.nationality}/{football_j.height_cm}">{football_j.short_name} - {football_j.nationality}</a>  <button on:click="{deleteFootball(football_j.short_name,football_j.nationality+"/"+football_j.height_cm)}">Delete</button> </li>
         
     {/each}
     <br>
     <br>
-    <button on:click="{createVolleyball}">Crear jugadora volleyball</button> <button on:click="{deleteTodasVolleyball}">Limpiar lista</button>
+    <button on:click="{createFootball}">Crear jugador de fútbol</button> <button on:click="{deleteAllFootball}">Limpiar lista</button>
 </ul>

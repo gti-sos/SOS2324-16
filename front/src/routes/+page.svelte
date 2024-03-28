@@ -1,8 +1,8 @@
 <h2>Documentación Postman</h2>
 <ul>
-    <li><a href="https://sos2324-16.appspot.com/api/v1/stats-volleyball/docs">Documentación voleibol</a></li>
-    <li><a href="https://sos2324-16.appspot.com/api/v1/stats-football/docs">Documentación fútbol</a></li>
-    <li><a href="https://sos2324-16.appspot.com/api/v1/stats-rugby/docs">Documentación rugbi</a></li>
+    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-volleyball/docs">Documentación voleibol</a></li>
+    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-football/docs">Documentación fútbol</a></li>
+    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-rugby/docs">Documentación rugbi</a></li>
 </ul>
 <h2>API's desarrolladas</h2>
 <ul>

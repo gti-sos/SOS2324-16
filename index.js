@@ -34,12 +34,18 @@ app.get(API_BASE_v1+"/stats-rugby/docs", (req,res) => {
 app.get(API_BASE_v2+"/stats-rugby/docs", (req,res) => {
     res.redirect('https://documenter.getpostman.com/view/32964665/2sA35Eb3QP');
 });
-// app.get(API_BASE+"/stats-football/docs", (req,res) => {
-//     res.redirect('https://documenter.getpostman.com/view/32965495/2sA2xh2sVA');
-// });
-// app.get(API_BASE+"/stats-volleyball/docs", (req,res) => {
-//     res.redirect('https://documenter.getpostman.com/view/32966846/2sA2xh2sVB');
-// });
+app.get(API_BASE_v1+"/stats-football/docs", (req,res) => {
+    res.redirect('https://documenter.getpostman.com/view/32965495/2sA2xh2sVA');
+});
+app.get(API_BASE_v2+"/stats-football/docs", (req,res) => {
+    res.redirect('https://documenter.getpostman.com/view/32966846/2sA35Eb3nQ');
+});
+app.get(API_BASE_v1+"/stats-volleyball/docs", (req,res) => {
+    res.redirect('https://documenter.getpostman.com/view/32966846/2sA2xh2sVB');
+});
+app.get(API_BASE_v2+"/stats-volleyball/docs", (req,res) => {
+    res.redirect('https://documenter.getpostman.com/view/32966846/2sA35Eb3nS');
+});
 
 //Llamar a la api de Pablo Rivas
 loadBackendPRR(app, dbRugby);

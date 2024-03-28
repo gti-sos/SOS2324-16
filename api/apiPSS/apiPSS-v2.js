@@ -1,42 +1,42 @@
-import datosDMC from "./datos.js"
+import jugadores from "./jugadores.js"
 
 const API_BASE = "/api/v2";
 
-//funcion para validar si los campos son correctos
+//Función para validar si los campos son correctos
 function validarDatos(req, res, next) {
     const jsonRecibido = req.body;
   
     const esquemaEsperado = {
-        'name':'string',
-        'ranking':'number',
-        'nationality':'string',
-        'position':'string',
-        'birthdate':'string',
-        'height':'number',
-        'weight':'number',
-        'dominant_hand':'string',
-        'country_point':'number',
-        'point':'number'
+        'short_name': 'string', 
+        'long_name': 'string', 
+        'age': 'number', 
+        'dob': 'string', 
+        'height_cm': 'number', 
+        'weight_kg': 'number', 
+        'nationality': 'string', 
+        'club': 'string', 
+        'preferred_foot': 'string', 
+        'team_position': 'string'
     };
 
     const keysRecibidas = Object.keys(jsonRecibido);
     const keysEsperadas = Object.keys(esquemaEsperado);
     const keysFaltantes = keysEsperadas.filter(key => !keysRecibidas.includes(key));
     
-    //comprueba que no haya claves de más
+    //Comprueba que no haya claves de más
     const clavesExtra = keysRecibidas.filter(key => !keysEsperadas.includes(key));
     if (clavesExtra.length > 0) {
         console.error(`Se encontraron claves adicionales en el JSON: ${clavesExtra.join(', ')}`);
         return res.sendStatus(400, "Bad request");
     }
 
-    //comprueba que no haya claves de menos
+    //Comprueba que no haya claves de menos
     if (keysFaltantes.length > 0) {
         console.error(`Faltan las siguientes claves en el JSON: ${keysFaltantes.join(', ')}` );
         return res.sendStatus(400, "Bad request");
     }
 
-    //comprueba que sean los tipos que son
+    //Comprueba q sean los tipos q son
     const erroresTipo = [];
     keysEsperadas.forEach(key => {
         const tipoEsperado = esquemaEsperado[key];
@@ -45,26 +45,26 @@ function validarDatos(req, res, next) {
             erroresTipo.push(`El valor de '${key}' debe ser de tipo '${tipoEsperado}'`);
         }
     });
+
     if (erroresTipo.length > 0) {
         console.error(`Errores de tipo: ${erroresTipo.join(', ')}`);
         return res.sendStatus(400, "Bad request");
     }
-
     next();
 }
 
-function loadBackendDMC(app,dbVolleyball){
-//Recurso para /api de DOMINGO MORALES
+function loadBackendPSS(app,dbFootball){
 
-dbVolleyball.insert(datosDMC);
+dbFootball.insert(jugadores);
+//Recurso para /api de PABLO SUÁREZ
 
-app.get(API_BASE+"/stats-volleyball/loadInitialData", (req,res) => {
-    dbVolleyball.find({}, (err, docs) => {
+app.get(API_BASE+"/stats-football/loadInitialData", (req,res) => {
+    dbFootball.find({}, (err, docs) => {
         if(err){
             res.sendStatus(500, "Internal Error");
         }else {
             if (docs.length === 0) {
-                dbVolleyball.insert(datosDMC);
+                dbFootball.insert(jugadores);
                 res.sendStatus(201, "Created");
             } else{
                 res.sendStatus(409, "Conflict");
@@ -73,8 +73,7 @@ app.get(API_BASE+"/stats-volleyball/loadInitialData", (req,res) => {
     });
 });
 
-
-app.get(API_BASE+'/stats-volleyball', (req, res) => {
+app.get(API_BASE+'/stats-football', (req, res) => {
     let peticion = req.query; 
 
     let limit = parseInt(req.query.limit) || 10; 
@@ -84,7 +83,7 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
     let to = Number(req.query.to);
 
     if (Object.keys(peticion).length===0) {
-        dbVolleyball.find( {} ,(err,info)=> {
+        dbFootball.find( {} ,(err,info)=> {
                     if(err){
                         res.sendStatus(500,"Internal Error");
                     }else{
@@ -98,7 +97,7 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
 
         let valores=Object.values(peticion);
         let claves=Object.keys(peticion);
-        let cond={};
+        let cond={}
 
         //Paginación
         let indexLimit = claves.indexOf('limit');
@@ -126,11 +125,10 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
                 valores.splice(indexTo, 1);
             }
 
-            cond["birthdate"]={ $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") };
+            cond["dob"]={ $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") };
 
             from=0;
             to=0;
-
         }
 
         let valor=0;
@@ -140,9 +138,9 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
 
             let clave=claves[i];
 
-            if((typeof datosDMC[0][clave])==="number"){
+            if((typeof jugadores[0][clave])==="number"){
                 valor=Number(valores[i]);
-            }else if((typeof datosDMC[0][clave])==="object"){
+            }else if((typeof jugadores[0][clave])==="object"){
                 valor_aux=Number(valores[i]);
                 valor={ $gte:new Date(valor_aux+"-01-01"), $lte:new Date(valor_aux+"-12-31") };
             }else{
@@ -151,55 +149,50 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
             cond[clave]=valor;
         }
 
-        dbVolleyball.find(cond).skip(offset).limit(limit).exec((err, info) => {
+        dbFootball.find(cond).skip(offset).limit(limit).exec((err, info) => {
             if (err) {
                 res.sendStatus(500,'Error interno del servidor' );
-             }else if(info.length===0){
+            }else if(info.length===0){
                 res.sendStatus(404,"Not found");
+
             }else {
                 res.send(info.map((c)=> {
                     delete c._id;
-                    return c;
-        }));
-    }
-    });      
+                return c;
+                }));
+            }
+        });      
     }      
-  });
+});
 
+app.post(API_BASE+"/stats-football", validarDatos, (req,res) => {
+    let stat=req.body; 
 
-app.post(API_BASE+"/stats-volleyball", validarDatos, (req,res) => {
-    let stat=req.body;
-
-    dbVolleyball.find({"name":stat.name,"ranking":stat.ranking,"nationality":stat.nationality,"position":stat.position,"height":stat.height,"weight":stat.weight,"dominant_hand":stat.dominant_hand,"country_point":stat.country_point,"point":stat.point}, (err,info) => {
+    dbFootball.find({"short_name":stat.short_name, "long_name":stat.long_name, "age":stat.age, "height_cm":stat.height_cm, "weight_kg":stat.weight_kg}, (err,info) => {
         if(err){
             res.sendStatus(500,"Internal Error");
         }else{
-            if(info.length===0){
-
-                dbVolleyball.insert(stat, (err,info) => {
+            if(info.length>0){
+                res.sendStatus(409,"Conflict");
+            } else{
+                dbFootball.insert(stat, (err,info) => {
                     if(err){
                         res.sendStatus(500,"Internal Error");
                     }else{
                         res.sendStatus(201,"Created");
                     }
-                });
-
-
-            }else{
-                res.sendStatus(409,"Conflict");
+                });  
             }
-            
         }
     });
-    
 });
 
-app.put(API_BASE+"/stats-volleyball", (req,res) => {
+app.put(API_BASE+"/stats-football", (req,res) => {
     res.sendStatus(405, "Method Not Allowed");
 });
 
-app.delete(API_BASE+"/stats-volleyball", (req,res) => {
-    dbVolleyball.remove({},{ multi: true},(err,numRemoved) => {
+app.delete(API_BASE+"/stats-football", (req,res) => {
+    dbFootball.remove({},{ multi: true },(err,numRemoved) => {
         if(err){
             res.sendStatus(500,"Internal Error");
         }else{
@@ -212,7 +205,7 @@ app.delete(API_BASE+"/stats-volleyball", (req,res) => {
     })
 });
 
-app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
+app.get(API_BASE+"/stats-football/:nationality", (req,res) => {
     let nationality=req.params.nationality;
     let peticion=req.query;
 
@@ -223,19 +216,16 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
     let to = Number(req.query.to);
 
     if (Object.keys(peticion).length===0) {
-        dbVolleyball.find( {"nationality":nationality} ,(err,info)=> {
-
-                    if(err){
-                        res.sendStatus(500,"Internal Error");
-                    }
-                    else{
-                        res.send(info.map((c)=> {
-                            delete c._id;
-                            return c;
-        
-                        }));
-                    }
-                });
+        dbFootball.find( {"nationality":nationality} ,(err,info)=> {
+            if(err){
+                res.sendStatus(500,"Internal Error");
+            }else{
+                res.send(info.map((c)=> {
+                    delete c._id;
+                    return c;
+                }));
+            }
+        });
     }else{
 
         let valores=Object.values(peticion);
@@ -269,13 +259,12 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
                 valores.splice(indexTo, 1);
             }
 
-            cond["birthdate"]={ $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") };
+            cond["dob"]={ $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") };
 
             from=0;
             to=0;
-
         }
-
+        
         let valor=0;
         let valor_aux=0;
 
@@ -283,9 +272,9 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
 
             clave=claves[i];
 
-            if((typeof datosDMC[0][clave])==="number"){
+            if((typeof jugadores[0][clave])==="number"){
                 valor=Number(valores[i]);
-            }else if((typeof datosDMC[0][clave])==="object"){
+            }else if((typeof jugadores[0][clave])==="object"){
                 valor_aux=Number(valores[i]);
                 valor={ $gte:new Date(valor_aux+"-01-01"), $lte:new Date(valor_aux+"-12-31") };
             }else{
@@ -294,7 +283,7 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
             cond[clave]=valor;
         }
 
-        dbVolleyball.find(cond).skip(offset).limit(limit).exec((err, info) => {
+        dbFootball.find(cond).skip(offset).limit(limit).exec((err, info) => {
             if (err) {
                 res.sendStatus(500,'Error interno del servidor' );
              }else if(info.length===0){
@@ -302,39 +291,38 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
             }else {
                 res.send(info.map((c)=> {
                     delete c._id;
-                    return c;
-        }));
+                return c;
+            }));
+            }
+        }); 
     }
-    }); 
-
-        }
-    
 });
 
-app.post(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
+app.post(API_BASE+"/stats-football/:nationality", (req,res) => {
     res.sendStatus(405, "Method Not Allowed");
 });
 
-app.put(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
-    let nationality  = req.params.nationality;
-    const nuevo = req.body;
+app.put(API_BASE+"/stats-football/:nationality", (req,res) => {
+    let nationality = req.params.nationality;
+    let nuevo = req.body;
+
     let nom=false;
 
-    dbVolleyball.find({"nationality":nationality},(err,info)=>{
+    dbFootball.find({"nationality":nationality},(err,info)=>{
         if (err) {
             res.sendStatus(500, "Internal Error");
         } else if(info.length===0){
             res.sendStatus(404, "Not Found");
         }else {
             info.filter((c)=>{
-                if(c.name===nuevo.name){
+                if(c.short_name===nuevo.short_name){
                     nom=true;
                 }
             })
             if(nom===false){
                 res.sendStatus(400,"Bad Request");
             }else{
-                dbVolleyball.update({"nationality":nationality},{$set: nuevo},(err,numUpdated)=>{
+                dbFootball.update({"short_name":nuevo.short_name,"nationality":nationality,},{$set: nuevo},(err,numUpdated)=>{
                 if (err) {
                     res.sendStatus(500, "Internal Error");
                 }else {
@@ -346,16 +334,13 @@ app.put(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
                 }
             });
             }
-            
         }
     });
-
-    
 });
 
-app.delete(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
+app.delete(API_BASE+"/stats-football/:nationality", (req,res) => {
     let nationality=req.params.nationality;
-    dbVolleyball.remove( {"nationality":nationality},{},(err,numRemoved)=>{
+    dbFootball.remove( {"nationality":nationality},{ multi: true },(err,numRemoved)=>{
     if(err){
         res.sendStatus(500,"Internal Error");
     }else{
@@ -366,21 +351,17 @@ app.delete(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
         }
     }
     });
-    
 });
 
-app.get(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
+app.get(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
     let nationality=req.params.nationality;
-    let weight=req.params.weight;
-    dbVolleyball.find({"nationality":nationality, "weight":Number(weight)}, (err,info) => {
+    let height_cm=req.params.height_cm;
+    dbFootball.find({"nationality":nationality, "height_cm":Number(height_cm)}, (err,info) => {
         if(err){
             res.sendStatus(404,"Not Found");
-        }
-        else if(info.length===0){
+        }else if(info.length===0){
             res.sendStatus(404,"Not found");
-
-        }
-        else{
+        }else{
             let elem=info[0];
             delete elem._id;
             res.send(elem);
@@ -388,24 +369,24 @@ app.get(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
     });
 });
 
-app.put(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
-    let nationality=req.params.nationality;
-    let weight=req.params.weight;
-    const nuevo=req.body;
+app.put(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
+    let nationality  = req.params.nationality;
+    let height_cm  = req.params.height_cm;
+    const nuevo = req.body;
 
-    let v_nom;
+    let v_n;
 
-    dbVolleyball.find({"nationality":nationality,"weight":Number(weight)},(err,info)=>{
+    dbFootball.find({"nationality":nationality,"height_cm":Number(height_cm)},(err,info)=>{
         if (err) {
             res.sendStatus(500, "Internal Error");
         } else if(info.length===0){
             res.sendStatus(404, "Not Found");
         }else {
-            v_nom=info[0].name;
-            if(!(nuevo.name) || nuevo.name!==v_nom){
+            v_n=info[0].short_name;
+            if(!(nuevo.short_name) || nuevo.short_name!==v_n){
                 res.sendStatus(400,"Bad Request");
             }else{
-                dbVolleyball.update({"nationality":nationality,"weight":Number(weight)},{$set: nuevo},(err,numUpdated)=>{
+                dbFootball.update({"nationality":nationality,"height_cm":Number(height_cm)},{$set: nuevo},(err,numUpdated)=>{
                 if (err) {
                     res.sendStatus(500, "Internal Error");
                 }else {
@@ -416,17 +397,16 @@ app.put(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
                     }
                 }
             });
-            } 
-            
+            }
         }
     });
 });
 
-app.delete(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
+app.delete(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
     let nationality=req.params.nationality;
-    let weight=req.params.weight;
+    let height_cm=req.params.height_cm;
 
-    dbVolleyball.remove( {"nationality":nationality, "weight": Number(weight)},{ multi: true },(err,numRemoved)=>{
+    dbFootball.remove( {"nationality":nationality, "height_cm": Number(height_cm)},{ multi: true },(err,numRemoved)=>{
     if(err){
         res.sendStatus(500,"Internal Error");
     }else{
@@ -438,7 +418,5 @@ app.delete(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
     }
     });
 });
-
 }
-
-export{loadBackendDMC};
+export{loadBackendPSS};

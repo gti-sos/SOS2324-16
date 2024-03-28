@@ -2,6 +2,7 @@
 
     import { onMount } from "svelte";
     import {dev} from "$app/environment";
+    import Mensaje from "../../../Mensaje.svelte";
 
     let API="/api/v2/stats-volleyball";
     if(dev){
@@ -87,8 +88,19 @@
 </script>
 
 {#if msg!=""}
-<hr>
-ERROR: {msg}    
+<div>
+    <Mensaje tipo="exito" mensaje={msg} />
+</div>
+{/if}
+{#if errorMsg!=""}
+<div>
+    {#if errorMsg=="code: 400"}
+        <Mensaje tipo="error" mensaje="La petición realizada es incorrecta" />
+    {/if}
+    {#if errorMsg=="code: 404"}
+        <Mensaje tipo="error" mensaje={`No existe un contacto con nacionalidad ${pais} y peso ${peso}`}/>
+    {/if}
+</div>   
 {/if}
 
 <table>
