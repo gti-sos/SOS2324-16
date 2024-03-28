@@ -202,7 +202,7 @@
 
 <ul>
     {#each Rugby as rugby_j}
-        <li> <a href="/stats-rugby/{rugby_j.bplace}/{rugby_j.weight}">{rugby_j.first} - {rugby_j.bplace}</a>  <button on:click="{deleteRugby(rugby_j.first,rugby_j.bplace+"/"+rugby_j.weight)}">Delete</button> </li>
+        <li> <a href="/stats-rugby/{rugby_j.bplace}/{rugby_j.weight}">{rugby_j.first} - {rugby_j.bplace}</a>  <button on:click="{deleteRugby(rugby_j.first,rugby_j.bplace+"/"+rugby_j.weight)}">Borrar</button> </li>
         
     {/each}
     <br>

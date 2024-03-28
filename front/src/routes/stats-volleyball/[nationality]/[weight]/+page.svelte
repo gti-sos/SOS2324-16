@@ -107,19 +107,19 @@
     <thead>
         <tr>
             <th>
-                Name
+                Nombre
             </th>
             <th>
-                Ranking
+                Clasificación
             </th>
             <th>
-                Nationality
+                Nacionalidad
             </th>
             <th>
-                Position
+                Posición
             </th>
             <th>
-                Birthdate
+                Fecha de nacimiento
             </th>
         </tr>
 
@@ -147,13 +147,13 @@
     <thead>
         <tr>
             <th>
-                Height
+                Altura
             </th>
             <th>
-                Weight
+                Peso
             </th>
             <th>
-                Dominant Hand
+                Mano dominante
             </th>
             <th>
                 Promedio de puntos con su selección
@@ -192,13 +192,3 @@
 </form>
 
 <br>
-{#if errorMsg!=""}
-<hr>
-ERROR: {errorMsg}    
-{/if} 
-<!-- <ul>
-    {#each jElegida as volleyball_jj}
-        <li><p>Nombre: {volleyball_jj.name}</p> </li>
-        
-    {/each}
-</ul> -->

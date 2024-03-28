@@ -109,19 +109,19 @@
     <thead>
         <tr>
             <th>
-                Name
+                Nombre
             </th>
             <th>
-                Ranking
+                Clasificación
             </th>
             <th>
-                Nationality
+                Nacionalidad
             </th>
             <th>
-                Position
+                Posición
             </th>
             <th>
-                Birthdate
+                Fecha de nacimiento
             </th>
         </tr>
 
@@ -149,13 +149,13 @@
     <thead>
         <tr>
             <th>
-                Height
+                Altura
             </th>
             <th>
-                Weight
+                Peso
             </th>
             <th>
-                Dominant Hand
+                Mano dominante
             </th>
             <th>
                 Promedio de puntos con su selección
@@ -191,7 +191,7 @@
 
 <ul>
     {#each volleyball as volleyball_j}
-        <li> <a href="/stats-volleyball/{volleyball_j.nationality}/{volleyball_j.weight}">{volleyball_j.name} - {volleyball_j.nationality}</a>  <button on:click="{deleteVolleyball(volleyball_j.name,volleyball_j.nationality+"/"+volleyball_j.weight)}">Delete</button> </li>
+        <li> <a href="/stats-volleyball/{volleyball_j.nationality}/{volleyball_j.weight}">{volleyball_j.name} - {volleyball_j.nationality}</a>  <button on:click="{deleteVolleyball(volleyball_j.name,volleyball_j.nationality+"/"+volleyball_j.weight)}">Borrar</button> </li>
         
     {/each}
     <br>

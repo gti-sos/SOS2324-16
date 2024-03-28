@@ -202,7 +202,7 @@
 
 <ul>
     {#each Football as football_j}
-        <li> <a href="/stats-football/{football_j.nationality}/{football_j.height_cm}">{football_j.short_name} - {football_j.nationality}</a>  <button on:click="{deleteFootball(football_j.short_name,football_j.nationality+"/"+football_j.height_cm)}">Delete</button> </li>
+        <li> <a href="/stats-football/{football_j.nationality}/{football_j.height_cm}">{football_j.short_name} - {football_j.nationality}</a>  <button on:click="{deleteFootball(football_j.short_name,football_j.nationality+"/"+football_j.height_cm)}">Borrar</button> </li>
         
     {/each}
     <br>
