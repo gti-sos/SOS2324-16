@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import {dev} from "$app/environment";
-    import Mensaje from "../../../Mensaje.svelte";
+    import Mensaje from "../Mensaje.svelte";
      
     let API="/api/v2/stats-volleyball";
     if(dev){
