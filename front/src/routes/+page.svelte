@@ -1,14 +1,14 @@
 <h2>Documentación Postman</h2>
 <ul>
-    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-volleyball/docs">Documentación voleibol</a></li>
+    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-volleyball/docs">Documentación voleyball</a></li>
     <li><a href="https://sos2324-16.appspot.com/api/v2/stats-football/docs">Documentación fútbol</a></li>
-    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-rugby/docs">Documentación rugbi</a></li>
+    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-rugby/docs">Documentación rugby</a></li>
 </ul>
 <h2>API's desarrolladas</h2>
 <ul>
-    <li><a href="https://sos2324-16.appspot.com/stats-volleyball">Estadísticas de voleibol</a> (desarrollado por Domingo Morales Calderón)</li>
+    <li><a href="https://sos2324-16.appspot.com/stats-volleyball">Estadísticas de volleyball</a> (desarrollado por Domingo Morales Calderón)</li>
     <li><a href="https://sos2324-16.appspot.com/stats-football">Estadísticas de fútbol</a> (desarrollado por Pablo Suarez Sarmiento)</li>
-    <li><a href="https://sos2324-16.appspot.com/stats-rugby">Estadísticas de rugbi</a> (desarrollado por Pablo Ruiz Rivas)</li>
+    <li><a href="https://sos2324-16.appspot.com/stats-rugby">Estadísticas de rugby</a> (desarrollado por Pablo Ruiz Rivas)</li>
 </ul>
 <h3>Repositorio en github</h3>
 <a href="https://github.com/gti-sos/SOS2324-16">gti-sos/SOS2324-16</a>
