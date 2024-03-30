@@ -146,13 +146,13 @@
                 <input bind:value={newRugby.plabel}>
             </td>
             <td>
-                <input bind:value={newRugby.age}>
+                <input type="number" bind:value={newRugby.age}>
             </td>
             <td>
-                <input bind:value={newRugby.height}>
+                <input type="number" bind:value={newRugby.height}>
             </td>
             <td>
-                <input bind:value={newRugby.weight}>
+                <input type="number" bind:value={newRugby.weight}>
             </td>
         </tr>
 
@@ -192,7 +192,7 @@
                 <input bind:value={newRugby.first}>
             </td>
             <td>
-                <input bind:value={newRugby.caps}>
+                <input type="number" bind:value={newRugby.caps}>
             </td>
 
         </tr>

@@ -132,7 +132,7 @@
                 <input bind:value={newVolleyball.name}>
             </td>
             <td>
-                <input bind:value={newVolleyball.ranking}>
+                <input type="number" bind:value={newVolleyball.ranking}>
             </td>
             <td>
                 <input bind:value={newVolleyball.nationality}>
@@ -169,19 +169,19 @@
     <tbody>
         <tr>
             <td>
-                <input bind:value={newVolleyball.height}>
+                <input type="number" bind:value={newVolleyball.height}>
             </td>
             <td>
-                <input bind:value={newVolleyball.weight}>
+                <input type="number" bind:value={newVolleyball.weight}>
             </td>
             <td>
                 <input bind:value={newVolleyball.dominant_hand}>
             </td>
             <td>
-                <input bind:value={newVolleyball.country_point}>
+                <input type="number" bind:value={newVolleyball.country_point}>
             </td>
             <td>
-                <input bind:value={newVolleyball.point}>
+                <input type="number" bind:value={newVolleyball.point}>
             </td>
 
         </tr>
