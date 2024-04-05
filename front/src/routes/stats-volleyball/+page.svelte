@@ -13,145 +13,277 @@
     let errorMsg="";
     let msg="";
     let newVolleyball={name:"nombreJugadora",ranking:11,nationality:"Spain",position:"Outside Hitter",birthdate:"19/06/2006",height:188,weight:89,dominant_hand:"Right",country_point:221.0,point:666.0};
-    let param="";
-    let busqueda="";
+    let param=[];
+    let busqueda=[];
     let from="";
     let to="";
-    let offset=0;
-    let limit=4;
+    let numFormularios=1;
+    let API22="";
+    //
+    let numero=10;
+    let n2=0;
+    let limit=false;
+    //
     //pa no liarme yo
     let opcionSeleccionada="name";
 
     function handleSeleccion(event) {
-        opcionSeleccionada = event.target.value;
+        opcionSeleccionada=event.target.value ;
     }
 
     onMount(()=>{
         getVolleyball();
     })
 
-    async function getVolleyball(){
-        let response=await fetch(API,{
-                            method:"GET"
-                        })
+    async function getVolleyball(numPag=1){
+        // if(limit===true){
+        //     let limite=n;
+        //     offset=n*(m-1);
 
-        let data=await response.json();
-        volleyball=data;
-        console.log(data);
+        //     let API2=API+"?limit="+limite+"&offset="+offset;
+        //     if(param==="from-to"){
+        //         API2=API2+"&from="+from+"&to="+to;
+        //     }else{
+        //         API2=API2+"&"+param+"="+busqueda;
+        //     }
+            
+            
+            
+        //     response=await fetch(API2,{
+        //                     method:"GET"
+        //                 });
+        // }else{
+        //     response=await fetch(API,{
+        //                     method:"GET"
+        //                 });
+
+        // }
+
+
+        try{
+            let offset=numero*(numPag-1);
+            API22=API;
+            let response="";
+
+            console.log(param.length);
+            if(limit===true){
+                if(API22===API){
+                    console.log("ll");
+                    API22=API+"?limit="+numero+"&offset="+offset;
+                    
+                }else{
+                    API22=API22+"&limit="+numero+"&offset="+offset;
+                }
+
+            }
+            if(param.length===0){
+                response=await fetch(API22,{
+                                method:"GET"
+                            });
+            }
+            else{
+
+                console.log("entra?"+API22);
+                let i=0;
+                while(i<param.length){
+                    if(API22===API){
+                        if(param[i]==="from-to"){
+                            API22=API+"?from="+from+"&to="+to;
+                        }else{
+                            API22=API+"?"+param[i]+"="+busqueda[i];
+                        }
+
+                    }else{
+                        if(param[i]==="from-to"){
+                            API22=API22+"&from="+from+"&to"+to;
+                        }else{
+                            API22=API22+"&"+param[i]+"="+busqueda[i];
+                        }
+                        
+
+                    }
+                    i=i+1;
+                }
+                response=await fetch(API22,{
+                                method:"GET"
+                            });
+                
+            }
+
+            console.log(API22);
+            let status = await response.status;
+            
+            if(status===200 ){
+                if(API22!==API){
+                    msg="Filtrado realizado correctamente";
+                }
+                
+                let data= await response.json();
+                volleyball=data;
+            }else{
+                errorMsg="code: "+status;
+            }
+                
+        }catch(e){
+            errorMsg=e;
+        }
+        console.log(volleyball);
+        
     }
 
     async function actualizaP(){
-            // Obtenemos el elemento select
-            var selectElement = document.getElementById('opciones');
-            
-            // Obtenemos el valor seleccionado
-            var valorSeleccionado = selectElement.value;
-            param=valorSeleccionado;
-            
-            // Hacer lo que necesites con el valor seleccionado, por ejemplo, imprimirlo en la consola
-            console.log("El usuario seleccionó: " + param);
 
-            if(param==="from-to"){
-                var selectElementFrom = document.getElementById('from');
+        param=[];
+        busqueda=[];
+        for(let i=0;i<numFormularios;i++){
+            var selectElement = document.getElementById('opciones '+i);
+
+            var valorSeleccionado = selectElement.value;
+            
+            param.push(valorSeleccionado);
+
+            if(param[i]==="from-to"){
+                var selectElementFrom = document.getElementById('from '+i);
                 
-                // Obtenemos el valor seleccionado
                 var valorSeleccionadoFrom = selectElementFrom.value;
                 from=valorSeleccionadoFrom;
 
-                var selectElementTo = document.getElementById('to');
+                ////
+
+                var selectElementTo = document.getElementById('to '+i);
                 
-                // Obtenemos el valor seleccionado
                 var valorSeleccionadoTo = selectElementTo.value;
                 to=valorSeleccionadoTo;
+                busqueda.push("");
 
             }else{
-                var selectElement2 = document.getElementById('entrada');
-            
-                // Obtenemos el valor seleccionado
-                
+                var selectElement2 = document.getElementById('entrada '+i);    
                 var valorSeleccionado2 = selectElement2.value;
-                busqueda=valorSeleccionado2;
-                
-                // Hacer lo que necesites con el valor seleccionado, por ejemplo, imprimirlo en la consola
-                console.log("El usuario seleccionó: " + busqueda);
+                busqueda.push(valorSeleccionado2) ;
 
             }
+
+
+        }
+        console.log(param);
+        console.log(busqueda);
 
     }
 
   
 
-    async function getVolleyballBusquedas(){
+    // async function getVolleyballBusquedas(){
 
-        try{
-
-            let API2=API+"?"+param+"="+busqueda;
-            if(param==="from-to"){
-                API2=API+"?from="+from+"&to="+to;
-            }
-        
-            console.log(API2);
-            let response=await fetch(API2,{
-                            method:"GET"
-                        });
+    //     try{
+    //         let API2=API+"?limit="+numero+"&offset="+0;
+    //         API2=API2+"&"+param+"="+busqueda;
+    //         if(param==="from-to"){
+    //             API2=API2+"&from="+from+"&to="+to;
+    //         }
+    //         let response=await fetch(API2,{
+    //                         method:"GET"
+    //                     });
 
             
-            let status = await response.status;
+    //         let status = await response.status;
             
-            if(status===200){
-                msg="Filtrado realizado correctamente";
-                let data= await response.json();
-                volleyball=data;
-            }else{
-                errorMsg="code: "+status;
-            }
+    //         if(status===200){
+    //             msg="Filtrado realizado correctamente";
+    //             let data= await response.json();
+    //             volleyball=data;
+    //         }else{
+    //             errorMsg="code: "+status;
+    //         }
       
-        }catch(e){
-            errorMsg=e;
-        }
+    //     }catch(e){
+    //         errorMsg=e;
+    //     }
         
-        console.log(volleyball);
+    //     console.log(volleyball);
 
     
-    }
+    // }
 
     async function ejecutaOrden(){
-        console.log(param);
+        
         await actualizaP();
-        console.log(param);
-        await getVolleyballBusquedas();
+
+        await getVolleyball();
+        
+        //await getVolleyballBusquedas();
     }
 
 
+    // async function crearBotones() {
+    //     var numero = document.getElementById("paginar").value;
+    //     var container = document.getElementById("container");
+    //     container.innerHTML = ""; // Limpiar contenedor
+    //     let n2=numero+0;
+    //     if(volleyball.length>0){
+    //         n2=Math.ceil(volleyball.length/numero);
+    //     }
+    //     console.log(n2);
+    //     for (var i = 0; i < n2; i++) {
+    //         var btn = document.createElement("button");
+    //         btn.innerHTML =  i+1;
+    //         btn.className = "btn";
+    //         await btn.addEventListener("click",eje()); // Agregar evento click
+    //         container.appendChild(btn);
+    //     }
+    //     console.log("deberia 1");
+    // }
 
-    async function getVolleyballPaginacion(){
-
-        try{
-
-            API2=API+"?limit="+limit+"&offset="+offset;
-            let response=await fetch(API2,{
-                            method:"GET"
-                        });
-
-            
-            let status = await response.status;
-            
-            if(status===200){
-                msg="Filtrado realizado correctamente";
-                let data= await response.json();
-                volleyball=data;
-            }else{
-                errorMsg="code: "+status;
-            }
-
-        }catch(e){
-            errorMsg=e;
+    async function actualizaLO(){
+        limit=false;
+        await getVolleyball(1);
+        let numElems=volleyball.length;
+        if(numElems>0){
+            n2=Math.ceil(numElems/numero) ;
         }
-
-        console.log(volleyball);
-
-
+        limit=true;
+        await getVolleyball(1);
+        
     }
+    
+    async function aumentarf(){
+        numFormularios=numFormularios+1;
+    }
+
+    async function disminuirF(){
+        numFormularios=numFormularios-1;
+        if(numFormularios===-1){
+            numFormularios=0;
+        }
+    }
+
+    // async function getVolleyballPaginacion(n,m){
+    //     let limit=n;
+    //     offset=n*(m-1);
+
+    //     try{
+    //         let API2=API+"?limit="+limit+"&offset="+offset;
+            
+    //         let response=await fetch(API2,{
+    //                         method:"GET"
+    //                     });
+
+    //         let status = await response.status;
+            
+    //         if(status===200){
+    //             msg="Filtrado realizado correctamente";
+    //             let data= await response.json();
+    //             volleyball=data;
+    //             console.log(data);
+
+    //         }else{
+    //             errorMsg="code: "+status;
+    //         }
+
+    //     }catch(e){
+    //         errorMsg=e;
+    //     }
+
+    // }
 
 
     async function deleteVolleyball(nom,n){
@@ -182,6 +314,7 @@
                             })
 
             if(response.status===200){
+                
                 getVolleyball();
                 msg="Todas las jugadoras borradas correctamente";
             }else{
@@ -321,45 +454,76 @@
 
 <br>
 <br>
-<form id="FormularioBusqueda" style="display: block;">
-    <label for="opciones">Búsqueda por:</label>
-    <select id="opciones" name="opciones" on:change={handleSeleccion}>
-        <option value="name">Nombre</option>
-        <option value="ranking">Ranking</option>
-        <option value="nationality">Nacionalidad</option>
-        <option value="position">Posición</option>
-        <option value="birthdate">Fecha de nacimiento</option>
-        <option value="height">Altura</option>
-        <option value="weight">Peso</option>
-        <option value="dominant_hand">Mano dominante</option>
-        <option value="country_point">Puntos realizados con su país</option>
-        <option value="point">Puntos conseguidos</option>
-        <option value="from-to">Rango de años</option>
-    </select>
-    <br>
-    <br>
-    
-    {#if opcionSeleccionada === 'from-to'}
-        <!-- Campos del formulario 2 -->
-        <label for="from">Desde:</label>
-        <input type="text" id="from" name="from">
-        <label for="to">Hasta:</label>
-        <input type="text" id="to" name="to">
-    {:else}
-        <label for="entrada">Introduzca el valor de la búsqueda</label>
-        <input type="text" id="entrada" name="texto">    
-    {/if}
-    <br>
-    <br>
-    <button type="button" id="Filtrar"  on:click={ejecutaOrden}> Filtrar </button>
+
+<span>
+    <button on:click={aumentarf}> + </button>
+    <h5>Filtrar</h5>
+    <button  on:click={disminuirF}> - </button>
+</span>
+
+
+
+
+{#each Array.from({ length: numFormularios }, (_, i) => i) as nn}
+    <form id="FormularioBusqueda" style="display: block;">
+        <label for="opciones">Búsqueda por:</label>
+        <select class="inpututil" id='opciones {nn}' name="opciones" on:change={handleSeleccion}>
+            <option class="inpututil" value="name">Nombre</option>
+            <option class="inpututil" value="ranking">Ranking</option>
+            <option class="inpututil" value="nationality">Nacionalidad</option>
+            <option class="inpututil" value="position">Posición</option>
+            <option class="inpututil" value="birthdate">Fecha de nacimiento</option>
+            <option class="inpututil" value="height">Altura</option>
+            <option class="inpututil" value="weight">Peso</option>
+            <option class="inpututil" value="dominant_hand">Mano dominante</option>
+            <option class="inpututil" value="country_point">Puntos realizados con su país</option>
+            <option class="inpututil" value="point">Puntos conseguidos</option>
+            <option class="inpututil" value="from-to">Rango de años</option>
+        </select>
+        <br>
+        <br>
+        
+        {#if opcionSeleccionada === 'from-to'}
+            <!-- Campos del formulario 2 -->
+            <label for="from">Desde:</label>
+            <input type="text" id='from {nn}' name="from">
+            <label for="to">Hasta:</label>
+            <input type="text" id='to {nn}' name="to">
+        {:else}
+            <label for="entrada">Introduzca el valor de la búsqueda</label>
+            <input type="text" id='entrada {nn}' name="texto">    
+        {/if}
+        <br>
+        <br>
+    </form>
+{/each}
+
+<button type="button" id="Filtrar"  on:click={ejecutaOrden}> Filtrar </button>
+
+
+<br>
+<br>
+<form>
+    <label for="paginar">Introduzca el numero de elementos que deseas </label>
+    <input type="number" id="paginar" name="number" bind:value={numero}> 
+    <button type="button" id="Paginar" on:click={actualizaLO}> Paginar </button>
 </form>
 
+<br>
+<br>
+
 <ul>
-    {#each volleyball.slice(offset,limit) as volleyball_j}
+    {#each volleyball as volleyball_j}
         <li> <a href="/stats-volleyball/{volleyball_j.nationality}/{volleyball_j.weight}">{volleyball_j.name} - {volleyball_j.nationality}</a>  <button on:click="{deleteVolleyball(volleyball_j.name,volleyball_j.nationality+"/"+volleyball_j.weight)}">Borrar</button> </li>
         
     {/each}
     <br>
+    <div id="container" style="display: block;">
+        {#each Array.from({ length: n2 }, (_, i) => i) as nn}
+            <button on:click={getVolleyball(nn+1)}> {nn + 1}</button>
+        {/each}
+
+    </div>
     <br>
     <button on:click="{createVolleyball}">Crear jugadora volleyball</button> <button on:click="{deleteTodasVolleyball}">Limpiar lista</button>
 </ul>
