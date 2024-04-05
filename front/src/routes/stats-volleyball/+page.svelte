@@ -2,7 +2,6 @@
     import { onMount } from "svelte";
     import {dev} from "$app/environment";
     import Mensaje from "../Mensaje.svelte";
-	import { slide } from "svelte/transition";
      
     let API="/api/v2/stats-volleyball";
     if(dev){
@@ -19,16 +18,13 @@
     let to="";
     let numFormularios=1;
     let API22="";
-    //
     let numero=10;
     let n2=0;
     let limit=false;
-    //
-    //pa no liarme yo
-    let opcionSeleccionada="name";
+    let opcionSeleccionada=Array.from({ length: numFormularios }, () => 'name');;
 
-    function handleSeleccion(event) {
-        opcionSeleccionada=event.target.value ;
+    function handleSeleccion(event, nn) {
+        opcionSeleccionada[nn] = event.target.value;
     }
 
     onMount(()=>{
@@ -36,29 +32,6 @@
     })
 
     async function getVolleyball(numPag=1){
-        // if(limit===true){
-        //     let limite=n;
-        //     offset=n*(m-1);
-
-        //     let API2=API+"?limit="+limite+"&offset="+offset;
-        //     if(param==="from-to"){
-        //         API2=API2+"&from="+from+"&to="+to;
-        //     }else{
-        //         API2=API2+"&"+param+"="+busqueda;
-        //     }
-            
-            
-            
-        //     response=await fetch(API2,{
-        //                     method:"GET"
-        //                 });
-        // }else{
-        //     response=await fetch(API,{
-        //                     method:"GET"
-        //                 });
-
-        // }
-
 
         try{
             let offset=numero*(numPag-1);
@@ -95,7 +68,7 @@
 
                     }else{
                         if(param[i]==="from-to"){
-                            API22=API22+"&from="+from+"&to"+to;
+                            API22=API22+"&from="+from+"&to="+to;
                         }else{
                             API22=API22+"&"+param[i]+"="+busqueda[i];
                         }
@@ -148,8 +121,6 @@
                 var valorSeleccionadoFrom = selectElementFrom.value;
                 from=valorSeleccionadoFrom;
 
-                ////
-
                 var selectElementTo = document.getElementById('to '+i);
                 
                 var valorSeleccionadoTo = selectElementTo.value;
@@ -170,68 +141,12 @@
 
     }
 
-  
-
-    // async function getVolleyballBusquedas(){
-
-    //     try{
-    //         let API2=API+"?limit="+numero+"&offset="+0;
-    //         API2=API2+"&"+param+"="+busqueda;
-    //         if(param==="from-to"){
-    //             API2=API2+"&from="+from+"&to="+to;
-    //         }
-    //         let response=await fetch(API2,{
-    //                         method:"GET"
-    //                     });
-
-            
-    //         let status = await response.status;
-            
-    //         if(status===200){
-    //             msg="Filtrado realizado correctamente";
-    //             let data= await response.json();
-    //             volleyball=data;
-    //         }else{
-    //             errorMsg="code: "+status;
-    //         }
-      
-    //     }catch(e){
-    //         errorMsg=e;
-    //     }
-        
-    //     console.log(volleyball);
-
-    
-    // }
 
     async function ejecutaOrden(){
-        
         await actualizaP();
-
         await getVolleyball();
-        
-        //await getVolleyballBusquedas();
     }
 
-
-    // async function crearBotones() {
-    //     var numero = document.getElementById("paginar").value;
-    //     var container = document.getElementById("container");
-    //     container.innerHTML = ""; // Limpiar contenedor
-    //     let n2=numero+0;
-    //     if(volleyball.length>0){
-    //         n2=Math.ceil(volleyball.length/numero);
-    //     }
-    //     console.log(n2);
-    //     for (var i = 0; i < n2; i++) {
-    //         var btn = document.createElement("button");
-    //         btn.innerHTML =  i+1;
-    //         btn.className = "btn";
-    //         await btn.addEventListener("click",eje()); // Agregar evento click
-    //         container.appendChild(btn);
-    //     }
-    //     console.log("deberia 1");
-    // }
 
     async function actualizaLO(){
         limit=false;
@@ -250,40 +165,10 @@
     }
 
     async function disminuirF(){
-        numFormularios=numFormularios-1;
-        if(numFormularios===-1){
-            numFormularios=0;
+        if (numFormularios > 0) {
+            numFormularios -= 1;
         }
     }
-
-    // async function getVolleyballPaginacion(n,m){
-    //     let limit=n;
-    //     offset=n*(m-1);
-
-    //     try{
-    //         let API2=API+"?limit="+limit+"&offset="+offset;
-            
-    //         let response=await fetch(API2,{
-    //                         method:"GET"
-    //                     });
-
-    //         let status = await response.status;
-            
-    //         if(status===200){
-    //             msg="Filtrado realizado correctamente";
-    //             let data= await response.json();
-    //             volleyball=data;
-    //             console.log(data);
-
-    //         }else{
-    //             errorMsg="code: "+status;
-    //         }
-
-    //     }catch(e){
-    //         errorMsg=e;
-    //     }
-
-    // }
 
 
     async function deleteVolleyball(nom,n){
@@ -349,7 +234,6 @@
         }
 
     }
-//export default volleyball;
 </script>
 
 {#if msg!=""}
@@ -461,43 +345,57 @@
     <button  on:click={disminuirF}> - </button>
 </span>
 
-
-
-
-{#each Array.from({ length: numFormularios }, (_, i) => i) as nn}
-    <form id="FormularioBusqueda" style="display: block;">
-        <label for="opciones">Búsqueda por:</label>
-        <select class="inpututil" id='opciones {nn}' name="opciones" on:change={handleSeleccion}>
-            <option class="inpututil" value="name">Nombre</option>
-            <option class="inpututil" value="ranking">Ranking</option>
-            <option class="inpututil" value="nationality">Nacionalidad</option>
-            <option class="inpututil" value="position">Posición</option>
-            <option class="inpututil" value="birthdate">Fecha de nacimiento</option>
-            <option class="inpututil" value="height">Altura</option>
-            <option class="inpututil" value="weight">Peso</option>
-            <option class="inpututil" value="dominant_hand">Mano dominante</option>
-            <option class="inpututil" value="country_point">Puntos realizados con su país</option>
-            <option class="inpututil" value="point">Puntos conseguidos</option>
-            <option class="inpututil" value="from-to">Rango de años</option>
-        </select>
-        <br>
-        <br>
-        
-        {#if opcionSeleccionada === 'from-to'}
-            <!-- Campos del formulario 2 -->
-            <label for="from">Desde:</label>
+ {#each Array.from({ length: numFormularios }, (_, i) => i) as nn}
+    {#if opcionSeleccionada[nn] === 'from-to'}
+        <form id='FormularioBusqueda {nn}' style="display: block;">
+            <label for="opciones">Búsqueda por:</label>
+            <select class="inpututil" id='opciones {nn}' name="opciones" on:change={e => handleSeleccion(e, nn)}>
+                <option class="inpututil" value="name">Nombre</option>
+                <option class="inpututil" value="ranking">Ranking</option>
+                <option class="inpututil" value="nationality">Nacionalidad</option>
+                <option class="inpututil" value="position">Posición</option>
+                <option class="inpututil" value="birthdate">Fecha de nacimiento</option>
+                <option class="inpututil" value="height">Altura</option>
+                <option class="inpututil" value="weight">Peso</option>
+                <option class="inpututil" value="dominant_hand">Mano dominante</option>
+                <option class="inpututil" value="country_point">Puntos realizados con su país</option>
+                <option class="inpututil" value="point">Puntos conseguidos</option>
+                <option class="inpututil" value="from-to" selected>Rango de años</option>
+            </select>
+            <br>
+            <br>
+            <label for='from'>Desde:</label>
             <input type="text" id='from {nn}' name="from">
-            <label for="to">Hasta:</label>
+            <label for='to'>Hasta:</label>
             <input type="text" id='to {nn}' name="to">
-        {:else}
-            <label for="entrada">Introduzca el valor de la búsqueda</label>
-            <input type="text" id='entrada {nn}' name="texto">    
-        {/if}
-        <br>
-        <br>
-    </form>
+            <br>
+            <br>
+        </form>
+    {:else}
+        <form id='FormularioBusqueda {nn}' style="display: block;">
+            <label for="opciones">Búsqueda por:</label>
+            <select class="inpututil" id='opciones {nn}' name="opciones" on:change={e => handleSeleccion(e, nn)}>
+                <option class="inpututil" value="name">Nombre</option>
+                <option class="inpututil" value="ranking">Ranking</option>
+                <option class="inpututil" value="nationality">Nacionalidad</option>
+                <option class="inpututil" value="position">Posición</option>
+                <option class="inpututil" value="birthdate">Fecha de nacimiento</option>
+                <option class="inpututil" value="height">Altura</option>
+                <option class="inpututil" value="weight">Peso</option>
+                <option class="inpututil" value="dominant_hand">Mano dominante</option>
+                <option class="inpututil" value="country_point">Puntos realizados con su país</option>
+                <option class="inpututil" value="point">Puntos conseguidos</option>
+                <option class="inpututil" value="from-to">Rango de años</option>
+            </select>
+            <br>
+            <br>
+            <label for='entrada'>Introduzca el valor de la búsqueda</label>
+            <input type="text" id='entrada {nn}' name="texto">       
+            <br>
+            <br>
+        </form>
+    {/if}
 {/each}
-
 <button type="button" id="Filtrar"  on:click={ejecutaOrden}> Filtrar </button>
 
 

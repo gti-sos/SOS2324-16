@@ -24,19 +24,150 @@
                     "preferred_foot": "Left", 
                     "team_position": "CF"
                 };
+                let param=[];
+    let busqueda=[];
+    let from="";
+    let to="";
+    let numFormularios=1;
+    let API22="";
+    let numero=10;
+    let n2=0;
+    let limit=false;
+    let opcionSeleccionada=Array.from({ length: numFormularios }, () => 'short_name');
+
+    function handleSeleccion(event, nn) {
+        opcionSeleccionada[nn] = event.target.value;
+    }
 
     onMount(()=>{
         getFootball();
     })
 
-    async function getFootball(){
-        let response=await fetch(API,{
-                            method:"GET"
-                        })
+    async function getFootball(numPag=1){
+        try{
+            let offset=numero*(numPag-1);
+            API22=API;
+            let response="";
 
-        let data=await response.json();
-        Football=data;
-        console.log(data);
+            if(limit===true){
+                if(API22===API){
+                    API22=API+"?limit="+numero+"&offset="+offset;
+                }else{
+                    API22=API22+"&limit="+numero+"&offset="+offset;
+                }
+
+            }
+            if(param.length===0){
+                response=await fetch(API22,{
+                                method:"GET"
+                            });
+            }
+            else{
+
+                let i=0;
+                while(i<param.length){
+                    if(API22===API){
+                        if(param[i]==="from-to"){
+                            API22=API+"?from="+from+"&to="+to;
+                        }else{
+                            API22=API+"?"+param[i]+"="+busqueda[i];
+                        }
+
+                    }else{
+                        if(param[i]==="from-to"){
+                            API22=API22+"&from="+from+"&to="+to;
+                        }else{
+                            API22=API22+"&"+param[i]+"="+busqueda[i];
+                        }
+                        
+
+                    }
+                    i=i+1;
+                }
+                response=await fetch(API22,{
+                                method:"GET"
+                            });
+                
+            }
+
+            console.log(API22);
+            let status = await response.status;
+            
+            if(status===200 ){
+                if(API22!==API){
+                    msg="Filtrado realizado correctamente";
+                }
+                
+                let data= await response.json();
+                Football=data;
+            }else{
+                errorMsg="code: "+status;
+            }
+                
+        }catch(e){
+            errorMsg=e;
+        }
+    }
+
+    async function actualizaP(){
+
+        param=[];
+        busqueda=[];
+        for(let i=0;i<numFormularios;i++){
+            var selectElement = document.getElementById('opciones '+i);
+
+            var valorSeleccionado = selectElement.value;
+            
+            param.push(valorSeleccionado);
+
+            if(param[i]==="from-to"){
+                var selectElementFrom = document.getElementById('from '+i);
+                
+                var valorSeleccionadoFrom = selectElementFrom.value;
+                from=valorSeleccionadoFrom;
+
+                var selectElementTo = document.getElementById('to '+i);
+                
+                var valorSeleccionadoTo = selectElementTo.value;
+                to=valorSeleccionadoTo;
+                busqueda.push("");
+
+            }else{
+                var selectElement2 = document.getElementById('entrada '+i);    
+                var valorSeleccionado2 = selectElement2.value;
+                busqueda.push(valorSeleccionado2) ;
+
+            }
+        }
+    }
+
+
+    async function ejecutaOrden(){
+        await actualizaP();
+        await getFootball();
+    }
+
+
+    async function actualizaLO(){
+        limit=false;
+        await getFootball(1);
+        let numElems=Football.length;
+        if(numElems>0){
+            n2=Math.ceil(numElems/numero) ;
+        }
+        limit=true;
+        await getFootball(1);
+
+    }
+
+    async function aumentarf(){
+        numFormularios=numFormularios+1;
+    }
+
+    async function disminuirF(){
+        if (numFormularios > 0) {
+            numFormularios -= 1;
+        }
     }
 
     async function deleteFootball(nom,n){
@@ -112,6 +243,9 @@
     <div>
     {#if errorMsg=="code: 409"}
         <Mensaje tipo="error" mensaje={`Existe un contacto con nombre ${newFootball.short_name}`}/>
+    {/if}
+    {#if errorMsg=="code: 404"}
+        <Mensaje tipo="error" mensaje={`No existen jugadores con estos filtros`}/>
     {/if}
     </div>
 {/if}
@@ -199,6 +333,77 @@
     </tbody>
 
 </table>
+
+<span>
+    <button on:click={aumentarf}> + </button>
+    <h5>Filtrar</h5>
+    <button  on:click={disminuirF}> - </button>
+</span>
+
+ {#each Array.from({ length: numFormularios }, (_, i) => i) as nn}
+    {#if opcionSeleccionada[nn] === 'from-to'}
+        <form id='FormularioBusqueda {nn}' style="display: block;">
+            <label for="opciones">Búsqueda por:</label>
+            <select class="inpututil" id='opciones {nn}' name="opciones" on:change={e => handleSeleccion(e, nn)}>
+                <option class="inpututil" value="short_name">Nombre</option>
+                <option class="inpututil" value="long_name">Nombre largo</option>
+                <option class="inpututil" value="age">Edad</option>
+                <option class="inpututil" value="club">Club</option>
+                <option class="inpututil" value="dob">Fecha de nacimiento</option>
+                <option class="inpututil" value="height_cm">Altura</option>
+                <option class="inpututil" value="weight_kg">Peso</option>
+                <option class="inpututil" value="preferred_foot">Pie dominante</option>
+                <option class="inpututil" value="nationality">Nacionalidad</option>
+                <option class="inpututil" value="team_position">Posicion</option>
+                <option class="inpututil" value="from-to" selected>Rango de años</option>
+            </select>
+            <br>
+            <br>
+            <label for='from'>Desde:</label>
+            <input type="text" id='from {nn}' name="from">
+            <label for='to'>Hasta:</label>
+            <input type="text" id='to {nn}' name="to">
+            <br>
+            <br>
+        </form>
+    {:else}
+        <form id='FormularioBusqueda {nn}' style="display: block;">
+            <label for="opciones">Búsqueda por:</label>
+            <select class="inpututil" id='opciones {nn}' name="opciones" on:change={e => handleSeleccion(e, nn)}>
+                <option class="inpututil" value="short_name">Nombre</option>
+                <option class="inpututil" value="long_name">Nombre largo</option>
+                <option class="inpututil" value="age">Edad</option>
+                <option class="inpututil" value="club">Club</option>
+                <option class="inpututil" value="dob">Fecha de nacimiento</option>
+                <option class="inpututil" value="height_cm">Altura</option>
+                <option class="inpututil" value="weight_kg">Peso</option>
+                <option class="inpututil" value="preferred_foot">Pie dominante</option>
+                <option class="inpututil" value="nationality">Nacionalidad</option>
+                <option class="inpututil" value="team_position">Posicion</option>
+                <option class="inpututil" value="from-to">Rango de años</option>
+            </select>
+            <br>
+            <br>
+            <label for='entrada'>Introduzca el valor de la búsqueda</label>
+            <input type="text" id='entrada {nn}' name="texto">       
+            <br>
+            <br>
+        </form>
+    {/if}
+{/each}
+<button type="button" id="Filtrar"  on:click={ejecutaOrden}> Filtrar </button>
+
+
+<br>
+<br>
+<form>
+    <label for="paginar">Introduzca el numero de elementos que deseas </label>
+    <input type="number" id="paginar" name="number" bind:value={numero}> 
+    <button type="button" id="Paginar" on:click={actualizaLO}> Paginar </button>
+</form>
+
+<br>
+<br>
 
 <ul>
     {#each Football as football_j}
