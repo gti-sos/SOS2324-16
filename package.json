@@ -4,11 +4,15 @@
   "description": "- **Team:**\r    - [Domingo Morales Calderón](https://github.com/Domingo-Morales-TI-Grupo4)\r    - [Pablo Suarez Sarmiento](https://github.com/Pablosuasar)\r    - [Pablo Ruiz Rivas](https://github.com/pablorivast)",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "(npx newman run ./tests/Football_API_v2.json -e ./tests/environments/gcloud.json) && (npx newman run ./tests/Rugby_API_v2.json -e ./tests/environments/gcloud.json) && (npx newman run ./tests/Volleyball_API_v2.json -e ./tests/environments/gcloud.json)",
-    "test-stats-football": "npx newman run ./tests/Football_API_v2.json -e ./tests/environments/gcloud.json",
-    "test-stats-rugby": "npx newman run ./tests/Rugby_API_v2.json -e ./tests/environments/gcloud.json",
-    "test-stats-volleyball": "npx newman run ./tests/Volleyball_API_v2.json -e ./tests/environments/gcloud.json"
+    "start": "node index",
+    "pretest": "npm start &",
+    "test-integration": "(npx newman run ./tests/integration/Football_API_v2.json -e ./tests/integration/environments/gcloud.json) && (npx newman run ./tests/integration/Rugby_API_v2.json -e ./tests/integration/environments/gcloud.json) && (npx newman run ./tests/integration/Volleyball_API_v2.json -e ./tests/integration/environments/gcloud.json)",
+    "test-stats-football": "npx newman run ./tests/integration/Football_API_v2.json -e ./tests/integration/environments/gcloud.json",
+    "test-stats-rugby": "npx newman run ./tests/integration/Rugby_API_v2.json -e ./tests/integration/environments/gcloud.json",
+    "test-stats-volleyball": "npx newman run ./tests/integration/Volleyball_API_v2.json -e ./tests/integration/environments/gcloud.json",
+    "test-e2e": "npx playwright test",
+    "test": "npm run test-integration && npm run test-e2e",
+    "posttest": "kill `ps -uax | grep \"node index\" | grep -v \"grep\" | grep -v \"sh\" | awk '{print $2}'`"  
   },
   "author": "",
   "license": "ISC",
@@ -20,5 +24,9 @@
     "nedb": "^1.8.0",
     "newman": "^6.1.1"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@playwright/test": "^1.43.0",
+    "@types/node": "^20.12.5"
+  }
 }

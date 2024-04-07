@@ -411,6 +411,12 @@
         
     {/each}
     <br>
+    <div id="container" style="display: block;">
+        {#each Array.from({ length: n2 }, (_, i) => i) as nn}
+            <button on:click={getFootball(nn+1)}> {nn + 1}</button>
+        {/each}
+
+    </div>
     <br>
     <button on:click="{createFootball}">Crear jugador de fútbol</button> <button on:click="{deleteAllFootball}">Limpiar lista</button>
 </ul>
