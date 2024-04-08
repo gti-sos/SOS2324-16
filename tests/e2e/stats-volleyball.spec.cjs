@@ -1,20 +1,49 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 
-test('has title', async ({ page }) => {
-  await page.goto('localhost:10000/cause-of-deaths');
+test('List players', async ({ page }) => {
+  await page.goto('http://localhost:10000');
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/SOS2324-21/);
+  await page.getByRole('navigation').getByRole('link', { name: 'Jugadoras voleibol' }).click();
+  
+  await page.waitForTimeout(2000);
+
+  let personCount = (await page.getByRole('listitem').all()).length;
+  await expect(personCount).toBeGreaterThan(0);
 });
 
-test('list cause of deaths', async ({ page }) => {
-  //await page.goto('http://localhost:10000/api/v1/cause-of-deaths/loadInitialData');
-  await page.goto('http://localhost:10000/cause-of-deaths');
+test('Create a new player', async ({ page }) => {
+  await page.goto('http://localhost:10000');
 
-  //await page.waitForTimeout(2000);
+  await page.getByRole('navigation').getByRole('link', { name: 'Jugadoras voleibol' }).click();
 
-  // Expects the number of reports to be more than 0
-  let deathsCount =  (await page.locator('.listItem').all()).length;  
-  expect(deathsCount).toBeGreaterThan(0);
+  await page.getByRole('button', { name: 'Crear jugadora volleyball'}).click();
+  let messageNewPerson = (await page.getByText('Jugadora creada correctamente'));
+  
+  await expect(messageNewPerson).toBeVisible();
+});
+
+test('Delete a player', async ({ page }) => {
+  await page.goto('http://localhost:10000');
+
+  await page.getByRole('navigation').getByRole('link', { name: 'Jugadoras voleibol' }).click();
+
+  await page.locator('ul > li > button').first().click();
+
+  let messageDeletedPerson = (await page.getByText('Jugadora borrada correctamente'));
+  
+  await expect(messageDeletedPerson).toBeVisible();
+});
+
+test('Delete all', async ({ page }) => {
+  await page.goto('http://localhost:10000');
+
+  await page.getByRole('navigation').getByRole('link', { name: 'Jugadoras voleibol' }).click();
+  await page.waitForTimeout(2000);
+
+  await page.getByRole('button', { name: 'Limpiar lista'}).click();
+
+  let messageDeletedPerson = (await page.getByText('Todas las jugadoras borradas correctamente'));
+
+  await expect(messageDeletedPerson).toBeVisible();
 });
