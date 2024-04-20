@@ -12,7 +12,7 @@
     "test-stats-volleyball": "npx newman run ./tests/integration/Volleyball_API_v2.json -e ./tests/integration/environments/gcloud.json",
     "test-e2e": "npx playwright test",
     "test": "npm run test-integration && npm run test-e2e",
-    "posttest": "kill `ps -uax | grep \"node index\" | grep -v \"grep\" | grep -v \"sh\" | awk '{print $2}'`"  
+    "posttest": "kill `ps -uax | grep \"node index\" | grep -v \"grep\" | grep -v \"sh\" | awk '{print $2}'`"
   },
   "author": "",
   "license": "ISC",

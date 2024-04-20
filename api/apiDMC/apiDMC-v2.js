@@ -439,6 +439,42 @@ app.delete(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
     });
 });
 
+app.get("/data1",(req,res)=>{
+
+    let data=[];
+    let l=datosDMC.length;
+    for(let i=0; i< l; i++){
+        let n=datosDMC[i].height;
+        data.push({ alt:n});
+    }
+    res.send(data);
+});
+
+app.get("/data2",(req,res)=>{
+
+    let data=[];
+    let paisesSet = [];
+    
+    datosDMC.forEach((el) => {
+        
+        if(!(paisesSet.includes(el.nationality))){
+            console.log(el.nationality);
+            paisesSet.push(el.nationality);
+        }
+    });
+
+    console.log(paisesSet);
+
+    for(let i=0;i<paisesSet.length;i++){
+        let p=paisesSet[i];
+        let ar=datosDMC.filter(el => el.nationality === p).map(el => el.name);
+        let n=ar.length/datosDMC.length;
+        console.log(p+"y "+n);
+        data.push({name:p,y:n});
+    }
+    res.send(data);
+});
+
 }
 
 export{loadBackendDMC};

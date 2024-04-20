@@ -424,4 +424,5 @@
     </div>
     <br>
     <button on:click="{createVolleyball}">Crear jugadora volleyball</button> <button on:click="{deleteTodasVolleyball}">Limpiar lista</button>
+    <p> <a href="/stats-volleyball/graph" class="nav-link">Ver las gráficas</a></p>
 </ul>

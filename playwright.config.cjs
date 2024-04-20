@@ -43,6 +43,7 @@ module.exports = defineConfig({
     //   use: { ...devices['Desktop Firefox'] },
     // },
 
+
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
