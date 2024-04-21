@@ -10,16 +10,47 @@
     import {onMount} from "svelte";
     import {dev} from "$app/environment";
 
-    let DATAAPI1 = "/data";
+    let DATAAPI1 = "/stats-volleyball/data3";
+    let DATAAPI2 = "/stats-football/data3";
+    let DATAAPI3 = "/stats-rugby/data3";
     if(dev){
-        DATAAPI1="http://localhost:10000/data";
+        DATAAPI1 = "http://localhost:10000/stats-volleyball/data3";
+        DATAAPI2 = "http://localhost:10000/stats-football/data3";
+        DATAAPI3 = "http://localhost:10000/stats-rugby/data3";
     }
     
     async function getData1(){
         try{
-            const res = await fetch(DATAAPI1);
-            const data = await res.json();
-            console.log(`Data received: ${JSON.stringify(data,null,2)}'`);
+
+            let data=[]
+            const res1 = await fetch(DATAAPI1);
+            const data1 = await res1.json();
+            console.log(`Data received: ${JSON.stringify(data1,null,2)}'`);
+
+            const res2 = await fetch(DATAAPI2);
+            const data2 = await res2.json();
+            console.log(`Data received: ${JSON.stringify(data2,null,2)}'`);
+
+            const res3 = await fetch(DATAAPI3);
+            const data3 = await res3.json();
+            console.log(`Data received: ${JSON.stringify(data3,null,2)}'`);
+
+            for(let i=0;i<data1.length;i++){
+                let elem=data1[i];
+                data.push(elem);
+            }
+
+            for(let i=0;i<data2.length;i++){
+                let elem=data2[i];
+                data.push(elem);
+            }
+
+            for(let i=0;i<data3.length;i++){
+                let elem=data3[i];
+                data.push(elem);
+            }
+
+
             fillChart(data); 
         } catch (error){
             console.log( `Error fetching data: ${error}`);
@@ -41,11 +72,7 @@
                         },
 
                         title: {
-                            text: 'Sugar and fat intake per country'
-                        },
-
-                        subtitle: {
-                            text: 'Source: <a href="http://www.euromonitor.com/">Euromonitor</a> and <a href="https://data.oecd.org/">OECD</a>'
+                            text: 'Altura y peso de los deportistas'
                         },
 
                         accessibility: {
@@ -59,6 +86,9 @@
                             labels: {
                                 format: '{value} kg'
                             },
+                            title: {
+                                    text: 'Peso'
+                                }
                         },
 
                         yAxis: {
@@ -66,6 +96,9 @@
                             labels: {
                                 format: '{value} cm'
                             },
+                            title: {
+                                    text: 'Altura'
+                                }
                         },
 
 

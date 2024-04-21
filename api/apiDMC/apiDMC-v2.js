@@ -1,6 +1,4 @@
 import datosDMC from "./datos.js"
-import jugadores from "/Users/Domingo/Documents/Uni/SOS/SOS2324-16-Domi/SOS2324-16/api/apiPSS/jugadores.js"
-import array from "/Users/Domingo/Documents/Uni/SOS/SOS2324-16-Domi/SOS2324-16/api/apiPRR/array.js";
 
 const API_BASE = "/api/v2";
 
@@ -477,7 +475,7 @@ app.get("/stats-volleyball/data2",(req,res)=>{
 });
 
 
-app.get("/data",(req,res)=>{
+app.get("/stats-volleyball/data3",(req,res)=>{
 
     let data=[];
     for(let i=0;i<datosDMC.length;i++){
@@ -486,24 +484,6 @@ app.get("/data",(req,res)=>{
         let altura=el.height;
         let nom=el.name;
         let pais=el.name;
-        data.push({x:peso,y:altura,z:18,name:nom,country:pais});
-    }
-
-    for(let i=0;i<jugadores.length;i++){
-        let el=jugadores[i];
-        let peso=el.weight_kg;
-        let altura=el.height_cm;
-        let nom=el.short_name;
-        let pais=el.long_name;
-        data.push({x:peso,y:altura,z:18,name:nom,country:pais});
-    }
-
-    for(let i=0;i<array.length;i++){
-        let el=array[i];
-        let peso=el.weight;
-        let altura=el.height;
-        let nom=el.last;
-        let pais=el.first+" "+el.last;
         data.push({x:peso,y:altura,z:18,name:nom,country:pais});
     }
 

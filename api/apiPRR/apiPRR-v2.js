@@ -430,6 +430,23 @@ app.delete(API_BASE+"/stats-rugby/:nationality/:weight", (req,res) => {
     }
     });
 });
+
+app.get("/stats-rugby/data3",(req,res)=>{
+
+    let data=[];
+
+    for(let i=0;i<array.length;i++){
+        let el=array[i];
+        let peso=el.weight;
+        let altura=el.height;
+        let nom=el.last;
+        let pais=el.first+" "+el.last;
+        data.push({x:peso,y:altura,z:18,name:nom,country:pais});
+    }
+
+    res.send(data);
+});
+
 }
 
 export{loadBackendPRR};
