@@ -418,5 +418,67 @@ app.delete(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
     }
     });
 });
+
+app.get("/stats-football/data1",(req,res)=>{
+
+    let data = [];
+    let clubSet=[]
+
+    jugadores.forEach((jg) => {
+
+        if(!(clubSet.includes(jg.club))){
+            clubSet.push(jg.club);
+        }
+    });
+
+    for(let i=0;i<clubSet.length;i++){
+        let club = clubSet[i];
+        let lista = jugadores.filter(jg => jg.club === club).map(jg => jg.short_name);
+        let n = lista.length;
+        data.push([club,n]);
+    }
+
+    data.sort((a, b) => b[1] - a[1]);
+
+    res.send(data);
+});
+
+app.get("/stats-football/data2", (req, res) => {
+    let europaData = [];
+    let restoData = [];
+
+    jugadores.forEach((jg) => {
+        let edad = jg.age;
+        if (enEuropa(jg.nationality)) {
+            europaData.push(edad);
+        } else {
+            restoData.push(edad);
+        }
+    });
+
+    res.send({ "europa": europaData, "resto": restoData });
+});
+
+function enEuropa(pais) {
+    const paises = ["Portugal", "Netherlands", "Sweden", "Germany", "Belgium", "France"];
+    return paises.includes(pais);
 }
+
+app.get("/stats-football/data3",(req,res)=>{
+
+    let data=[];
+
+    for(let i=0;i<jugadores.length;i++){
+        let jg=jugadores[i];
+        let peso=jg.weight_kg;
+        let altura=jg.height_cm;
+        let nom=jg.short_name;
+        let pais=jg.long_name;
+        data.push({x:peso,y:altura,z:18,name:nom,country:pais});
+    }
+
+    res.send(data);
+});
+}
+
 export{loadBackendPSS};

@@ -419,4 +419,5 @@
     </div>
     <br>
     <button on:click="{createFootball}">Crear jugador de fútbol</button> <button on:click="{deleteAllFootball}">Limpiar lista</button>
+    <p><a href="/stats-football/graph" class="nav-link">Ver las gráficas</a></p>
 </ul>
