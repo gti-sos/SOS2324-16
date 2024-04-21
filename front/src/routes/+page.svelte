@@ -6,9 +6,12 @@
 </ul>
 <h2>API's desarrolladas</h2>
 <ul>
-    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-volleyball">Estadísticas de voleibol</a> (desarrollado por Domingo Morales Calderón)</li>
-    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-football">Estadísticas de fútbol</a> (desarrollado por Pablo Suarez Sarmiento)</li>
-    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-rugby">Estadísticas de rugbi</a> (desarrollado por Pablo Ruiz Rivas)</li>
+    <li><a href="https://sos2324-16.appspot.com/api/v1/stats-volleyball">Estadísticas de voleibol (v1)</a> (desarrollado por Domingo Morales Calderón)</li>
+    <li><a href="https://sos2324-16.appspot.com/api/v1/stats-football">Estadísticas de fútbol (v1)</a> (desarrollado por Pablo Suarez Sarmiento)</li>
+    <li><a href="https://sos2324-16.appspot.com/api/v1/stats-rugby">Estadísticas de rugbi (v1)</a> (desarrollado por Pablo Ruiz Rivas)</li>
+    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-volleyball">Estadísticas de voleibol (v2)</a> (desarrollado por Domingo Morales Calderón)</li>
+    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-football">Estadísticas de fútbol (v2)</a> (desarrollado por Pablo Suarez Sarmiento)</li>
+    <li><a href="https://sos2324-16.appspot.com/api/v2/stats-rugby">Estadísticas de rugbi (v2)</a> (desarrollado por Pablo Ruiz Rivas)</li>
 </ul>
 <h3>Repositorio en github</h3>
 <a href="https://github.com/gti-sos/SOS2324-16">gti-sos/SOS2324-16</a>
@@ -18,6 +21,11 @@
     <li><a href="https://github.com/Domingo-Morales-TI-Grupo4">Domingo Morales Calderón</a> (stats-volleyball)</li>
     <li><a href="https://github.com/Pablosuasar">Pablo Suarez Sarmiento</a> (stats-football)</li>
     <li><a href="https://github.com/pablorivast">Pablo Ruiz Rivas</a> (stats-rugby)</li>
+</ul>
+
+<h3>Gráfica compartida</h3>
+<ul>
+    <li><a href="/analytics">Ver gráfica compartida</a></li>
 </ul>
 <style>
     * {

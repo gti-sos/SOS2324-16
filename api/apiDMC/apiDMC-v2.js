@@ -457,18 +457,14 @@ app.get("/stats-volleyball/data2",(req,res)=>{
     
     datosDMC.forEach((el) => {
         if(!(paisesSet.includes(el.nationality))){
-            console.log(el.nationality);
             paisesSet.push(el.nationality);
         }
     });
-
-    console.log(paisesSet);
 
     for(let i=0;i<paisesSet.length;i++){
         let p=paisesSet[i];
         let ar=datosDMC.filter(el => el.nationality === p).map(el => el.name);
         let n=ar.length/datosDMC.length;
-        console.log(p+"y "+n);
         data.push({name:p,y:n});
     }
     res.send(data);

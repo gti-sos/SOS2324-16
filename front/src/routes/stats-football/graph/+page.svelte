@@ -12,9 +12,14 @@
 
 <script>
     import {onMount} from "svelte";
+    import {dev} from "$app/environment";
 
-    let DATAAPI1 = "http://localhost:10000/stats-football/data1";
-    let DATAAPI2 = "http://localhost:10000/stats-football/data2";
+    let DATAAPI1 = "/stats-football/data1";
+    let DATAAPI2 = "/stats-football/data2";
+    if(dev){
+        DATAAPI1="http://localhost:10000/stats-football/data1";
+        DATAAPI2="http://localhost:10000/stats-football/data2";
+    }
     
     async function getData1(){
         try{
