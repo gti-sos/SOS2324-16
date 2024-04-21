@@ -1,4 +1,6 @@
 import datosDMC from "./datos.js"
+import jugadores from "/Users/Domingo/Documents/Uni/SOS/SOS2324-16-Domi/SOS2324-16/api/apiPSS/jugadores.js"
+import array from "/Users/Domingo/Documents/Uni/SOS/SOS2324-16-Domi/SOS2324-16/api/apiPRR/array.js";
 
 const API_BASE = "/api/v2";
 
@@ -439,7 +441,7 @@ app.delete(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
     });
 });
 
-app.get("/data1",(req,res)=>{
+app.get("/stats-volleyball/data1",(req,res)=>{
 
     let data=[];
     let l=datosDMC.length;
@@ -450,13 +452,12 @@ app.get("/data1",(req,res)=>{
     res.send(data);
 });
 
-app.get("/data2",(req,res)=>{
+app.get("/stats-volleyball/data2",(req,res)=>{
 
     let data=[];
     let paisesSet = [];
     
     datosDMC.forEach((el) => {
-        
         if(!(paisesSet.includes(el.nationality))){
             console.log(el.nationality);
             paisesSet.push(el.nationality);
@@ -472,6 +473,40 @@ app.get("/data2",(req,res)=>{
         console.log(p+"y "+n);
         data.push({name:p,y:n});
     }
+    res.send(data);
+});
+
+
+app.get("/data",(req,res)=>{
+
+    let data=[];
+    for(let i=0;i<datosDMC.length;i++){
+        let el=datosDMC[i];
+        let peso=el.weight;
+        let altura=el.height;
+        let nom=el.name;
+        let pais=el.name;
+        data.push({x:peso,y:altura,z:18,name:nom,country:pais});
+    }
+
+    for(let i=0;i<jugadores.length;i++){
+        let el=jugadores[i];
+        let peso=el.weight_kg;
+        let altura=el.height_cm;
+        let nom=el.short_name;
+        let pais=el.long_name;
+        data.push({x:peso,y:altura,z:18,name:nom,country:pais});
+    }
+
+    for(let i=0;i<array.length;i++){
+        let el=array[i];
+        let peso=el.weight;
+        let altura=el.height;
+        let nom=el.last;
+        let pais=el.first+" "+el.last;
+        data.push({x:peso,y:altura,z:18,name:nom,country:pais});
+    }
+
     res.send(data);
 });
 

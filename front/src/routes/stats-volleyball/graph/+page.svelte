@@ -5,9 +5,14 @@
 
 <script>
     import {onMount} from "svelte";
+    import {dev} from "$app/environment";
 
-    let DATAAPI1 = "http://localhost:10000/data1";
-    let DATAAPI2 = "http://localhost:10000/data2";
+    let DATAAPI1 = "/stats-volleyball/data1";
+    let DATAAPI2 = "/stats-volleyball/data2";
+    if(dev){
+        DATAAPI1="http://localhost:10000/stats-volleyball/data1";
+        DATAAPI2="http://localhost:10000/stats-volleyball/data2";
+    }
     
     async function getData1(){
         try{
@@ -68,7 +73,7 @@
         type: 'pie'
     },
     title: {
-        text: 'Egg Yolk Composition'
+        text: 'Porcentaje de paises en la base de datos'
     },
     tooltip: {
         valueSuffix: '%'
