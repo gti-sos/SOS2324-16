@@ -421,4 +421,5 @@
     </div>
     <br>
     <button on:click="{createRugby}">Crear jugador Rugby</button> <button on:click="{deleteAllRugby}">Limpiar lista</button>
+    <p><a href="/stats-rugby/graph" class="nav-link">Ver las gráficas</a></p>
 </ul>
