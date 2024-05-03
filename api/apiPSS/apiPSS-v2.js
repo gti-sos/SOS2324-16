@@ -479,6 +479,25 @@ app.get("/stats-football/data3",(req,res)=>{
 
     res.send(data);
 });
+
+app.get("/stats-football/data4",(req,res)=>{
+    let data=[];
+    let paisesSet = [];
+    
+    jugadores.forEach((jg) => {
+        if(!(paisesSet.includes(jg.nationality))){
+            paisesSet.push(jg.nationality);
+        }
+    });
+
+    for(let i=0;i<paisesSet.length;i++){
+        let pais = paisesSet[i];
+        let lista = jugadores.filter(jg => jg.nationality === pais).map(jg => jg.long_name);
+        let porcentaje = lista.length/jugadores.length * 100.0;
+        data.push([pais, porcentaje]);
+    }
+    res.send(data);
+});
 }
 
 export{loadBackendPSS};
