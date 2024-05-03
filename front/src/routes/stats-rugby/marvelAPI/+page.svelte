@@ -8,32 +8,31 @@
         player = await getData();
     });
 
-    
     async function getData(){
-        const url = 'https://live-golf-data.p.rapidapi.com/leaderboard?orgId=1&tournId=475&year=2023';
+        const url = 'https://gateway.marvel.com:443/v1/public/characters';
         const options = {
             method: 'GET',
             headers: {
-                'X-RapidAPI-Key': '46de8c89d2msh0c5dfe7dff19129p1701a5jsn2e7c3196f15b',
-                'X-RapidAPI-Host': 'live-golf-data.p.rapidapi.com'
+                'apikey': 'd2dcbe61796e4bc64bbe06e46103ceb5',
+                'hash': '294c820bf087a5c78d6d638ae97f92b50ad2079f'
             }
         };
 
         try {
             const response = await fetch(url, options);
-            let result = await response.json();
-            console.log(result);
-            return result.leaderboardRows;
+            const result = await response.json();
+            return result.results;
         } catch (error) {
             console.error(error);
         }
     }
+    
    
 </script>
 
 <ul>
 
     {#each player as x}
-        <li>{x.firstName} {x.lastName}</li>
+        <li>{x.name}</li>
     {/each}
 </ul>

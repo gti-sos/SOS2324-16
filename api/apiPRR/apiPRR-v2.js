@@ -472,6 +472,18 @@ app.get("/stats-rugby/data3",(req,res)=>{
     res.send(data);
 });
 
+app.get("/stats-rugby/data4",(req,res)=>{
+
+    let data=[];
+    let l=array.length;
+    for(let i=0; i< l; i++){
+        let peso = array[i].weight;
+        let altura=array[i].height;
+        data.push([peso,altura]);
+    }
+    res.send(data);
+});
+
 }
 
 export{loadBackendPRR};

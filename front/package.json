@@ -27,5 +27,8 @@
   "description": "Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).",
   "main": "svelte.config.js",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "canvasjs": "^1.8.3"
+  }
 }
