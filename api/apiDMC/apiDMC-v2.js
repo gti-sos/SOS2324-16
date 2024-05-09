@@ -468,6 +468,7 @@ app.get("/stats-volleyball/data2",(req,res)=>{
         data.push({name:p,y:n});
     }
     res.send(data);
+    res.sendStatus(200,"OK");
 });
 
 
@@ -483,8 +484,66 @@ app.get("/stats-volleyball/data3",(req,res)=>{
         data.push({x:peso,y:altura,z:18,name:nom,country:pais});
     }
 
+
     res.send(data);
 });
+
+app.get("/stats-volleyball/nba_players",(req,res)=>{
+
+    let data=[];
+    let ar1=datosDMC.filter(el => el.height<=180).map(el => {
+        return {"nombre":el.name,"altura":el.height};
+    });
+    let p1= ar1.length/datosDMC.length;
+    data.push(-p1*100);
+
+    let ar6=datosDMC.filter(el => el.height>180 && el.height<=190).map(el => el.name);
+    let p6=ar6.length/datosDMC.length;
+    data.push(-p6*100);
+
+    let ar2=datosDMC.filter(el => el.height>190 && el.height<=200).map(el => el.name);
+    let p2=ar2.length/datosDMC.length;
+    data.push(-p2*100);
+
+    let ar3=datosDMC.filter(el => el.height>200 && el.height<=210).map(el => el.name);
+    let p3=ar3.length/datosDMC.length;
+    data.push(-p3*100);
+
+    let ar4=datosDMC.filter(el => el.height>210 && el.height<=220).map(el => el.name);
+    let p4=ar4.length/datosDMC.length;
+    data.push(-p4*100);
+
+    let ar5=datosDMC.filter(el => el.height>220).map(el => el.name);
+    let p5=ar5.length/datosDMC.length;
+    data.push(-p5*100);
+
+    res.send(data);
+});
+
+app.get("/stats-volleyball/paises_serv",(req,res)=>{
+    let paisesSet=[];
+    datosDMC.forEach((el) => {
+        if(!(paisesSet.includes(el.nationality))){
+            paisesSet.push(el.nationality);
+        }
+    });
+    res.send(paisesSet);
+
+});
+
+app.get("/stats-volleyball/calculated_weight",(req,res)=>{
+    
+    
+    let paisesSet=[];
+    datosDMC.forEach((el) => {
+        if(!(paisesSet.includes(el.nationality))){
+            paisesSet.push(el.nationality);
+        }
+    });
+    res.send(paisesSet);
+
+});
+
 
 }
 

@@ -128,7 +128,7 @@ let datosDMC=[
         nationality:"Dominican Republic",
         position:"Outside Hitter",
         birthdate:parseaFechasDMC("11/09/1996"),
-        height:120,
+        height:201,
         weight:83,
         dominant_hand:"Right",
         country_point:108.0,
