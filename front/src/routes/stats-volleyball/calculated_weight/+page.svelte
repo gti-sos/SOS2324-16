@@ -20,12 +20,21 @@
     //import {zingchart, ZC} from 'zingchart/es6';
     //import 'zingchart/modules-es6/zingchart-pareto.min.js';
 
-    // let DATAAPI1 = "/stats-volleyball/data1";
-    // let DATAAPI2 = "/stats-volleyball/data2";
-    // if(dev){
-    //     DATAAPI1="http://localhost:10000/stats-volleyball/data1";
-    //     DATAAPI2="http://localhost:10000/stats-volleyball/data2";
-    // }
+    let DATAAPI = "/stats-volleyball/calculated_weight";
+    if(dev){
+        DATAAPI="http://localhost:10000/stats-volleyball/calculated_weight";
+      }
+
+    async function getData1(){
+        try{
+            const res = await fetch(DATAAPI);
+            const data = await res.json();
+            console.log(`Data received: ${JSON.stringify(data,null,2)}'`);
+            return data; 
+        } catch (error){
+            console.log( `Error fetching data: ${error}`);
+        } 
+    }
 
     async function getDataAPIExterna(alt){
 
@@ -41,6 +50,7 @@
       try {
         const response = await fetch(url, options);
         const result = await response.json();
+        console.log(result.data)
         return result.data;
       } catch (error) {
         console.error(error);
@@ -51,18 +61,33 @@
 
     async function preparaChat(){
 
-      let jugadoras_alt={};
+      let jugadoras_alt=await getData1();
 
       let s=[];
-      let etiq=Object.keys(jugadoras_alt);
+      
+      let etiq=[];
 
-      let alturas=Object.values(jugadoras_alt);
+      let alturas=[];
 
-      for(let i=0;i<alturas;i++){
-        l_alturas=await getDataAPIExterna(alturas[i]);
+      let pesos=[];
 
-        let nombre_jugadora= etiq[i];
-        l_Original.push(jugadoras_alt[nombre_jugadora]);
+      for(let a=0;a<jugadoras_alt.length;a++){
+        let ja=jugadoras_alt[a];
+
+        let n=ja["nombre"];
+        etiq.push(n);
+
+        let alt=ja["altura"];
+        alturas.push(alt);
+
+        pesos.push(ja["peso"]);
+      }
+
+      for(let i=0;i<alturas.length;i++){
+
+        let l_alturas=await getDataAPIExterna(Number(alturas[i]));
+        
+        l_Original.push(pesos[i]);
 
         l_Hamwi.push(l_alturas["Hamwi"]);
         l_Devine.push(l_alturas["Devine"]);
@@ -175,8 +200,8 @@
 
 
     onMount(()=>{
-      getDataAPIExterna(194);
-      fillChart3();
+      preparaChat();
+      //getDataAPIExterna(189);
     })
 
 

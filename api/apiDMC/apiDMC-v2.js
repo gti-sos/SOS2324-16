@@ -488,34 +488,57 @@ app.get("/stats-volleyball/data3",(req,res)=>{
     res.send(data);
 });
 
-app.get("/stats-volleyball/nba_players",(req,res)=>{
+app.get("/stats-volleyball/data4",(req,res)=>{
+
+    let data=[];
+    let ar1=datosDMC.filter(e=>e.point>550).map(e=>e.name);
+    data.push(ar1.length);
+
+    let ar2=datosDMC.filter(e=>e.point>575).map(e=>e.name);
+    data.push(ar2.length);
+
+    let ar3=datosDMC.filter(e=>e.point>600).map(e=>e.name);
+    data.push(ar3.length);
+
+    let ar4=datosDMC.filter(e=>e.point>800).map(e=>e.name);
+    data.push(ar4.length);
+
+    let ar5=datosDMC.filter(e=>e.point>900).map(e=>e.name);
+    data.push(ar5.length);
+
+
+    res.send(data);
+});
+
+
+app.get("/stats-volleyball/nba_player",(req,res)=>{
 
     let data=[];
     let ar1=datosDMC.filter(el => el.height<=180).map(el => {
         return {"nombre":el.name,"altura":el.height};
     });
     let p1= ar1.length/datosDMC.length;
-    data.push(-p1*100);
+    data.push(p1*100);
 
     let ar6=datosDMC.filter(el => el.height>180 && el.height<=190).map(el => el.name);
     let p6=ar6.length/datosDMC.length;
-    data.push(-p6*100);
+    data.push(p6*100);
 
     let ar2=datosDMC.filter(el => el.height>190 && el.height<=200).map(el => el.name);
     let p2=ar2.length/datosDMC.length;
-    data.push(-p2*100);
+    data.push(p2*100);
 
     let ar3=datosDMC.filter(el => el.height>200 && el.height<=210).map(el => el.name);
     let p3=ar3.length/datosDMC.length;
-    data.push(-p3*100);
+    data.push(p3*100);
 
     let ar4=datosDMC.filter(el => el.height>210 && el.height<=220).map(el => el.name);
     let p4=ar4.length/datosDMC.length;
-    data.push(-p4*100);
+    data.push(p4*100);
 
     let ar5=datosDMC.filter(el => el.height>220).map(el => el.name);
     let p5=ar5.length/datosDMC.length;
-    data.push(-p5*100);
+    data.push(p5*100);
 
     res.send(data);
 });
@@ -532,15 +555,15 @@ app.get("/stats-volleyball/paises_serv",(req,res)=>{
 });
 
 app.get("/stats-volleyball/calculated_weight",(req,res)=>{
+    let data=[]
     
-    
-    let paisesSet=[];
-    datosDMC.forEach((el) => {
-        if(!(paisesSet.includes(el.nationality))){
-            paisesSet.push(el.nationality);
-        }
-    });
-    res.send(paisesSet);
+    for(let i=0;i<datosDMC.length;i++){
+        let p=datosDMC[i]
+        data.push({"nombre":p.name,"altura":p.height,"peso":p.weight})
+
+    }
+
+    res.send(data);
 
 });
 
