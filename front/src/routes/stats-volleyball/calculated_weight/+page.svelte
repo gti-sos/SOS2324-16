@@ -17,14 +17,13 @@
 
 // https://rapidapi.com/malaaddincelik/api/fitness-calculator/
 
-    //import {zingchart, ZC} from 'zingchart/es6';
-    //import 'zingchart/modules-es6/zingchart-pareto.min.js';
 
-    let DATAAPI = "/stats-volleyball/calculated_weight";
+    let DATAAPI = "/stats-volleyball/calculated_w";
     if(dev){
-        DATAAPI="http://localhost:10000/stats-volleyball/calculated_weight";
+        DATAAPI="http://localhost:10000/stats-volleyball/calculated_w";
       }
 
+    //Obtengo los datos de la API propia
     async function getData1(){
         try{
             const res = await fetch(DATAAPI);
@@ -36,6 +35,7 @@
         } 
     }
 
+    //Obtengo los pesos que debería tener una jugadora en base a su altura según distintas fórmulas
     async function getDataAPIExterna(alt){
 
       const url = `https://fitness-calculator.p.rapidapi.com/idealweight?gender=female&height=${alt}`;
@@ -85,6 +85,7 @@
 
       for(let i=0;i<alturas.length;i++){
 
+        //Es una lista de pesos
         let l_alturas=await getDataAPIExterna(Number(alturas[i]));
         
         l_Original.push(pesos[i]);
@@ -96,6 +97,7 @@
 
       }
 
+      //Introducimos los datos de la leyenda y de las barras
       s.push( {
             values: l_Original,
             text: 'Pesos originales',
@@ -161,33 +163,6 @@
 
         //Series que me haga la función
         series: s
-        // [
-        //   {
-        //     // plot 1 values, linear data
-        //     values: [23,20,27,29,25,17,15],
-        //     text: 'Week 1',
-        //   },
-        //   {
-        //     // plot 2 values, linear data
-        //     values: [35,42,33,49,35,47,35],
-        //     text: 'Week 2'
-        //   },
-        //   {
-        //     // plot 2 values, linear data
-        //     values: [15,22,13,33,44,27,31],
-        //     text: 'Week 3'
-        //   },
-        //   {
-        //     // plot 2 values, linear data
-        //     values: [15,22,13,33,44,27,31],
-        //     text: 'Week 4'
-        //   },
-        //   {
-        //     // plot 2 values, linear data
-        //     values: [15,22,13,33,44,27,31],
-        //     text: 'Week 5'
-        //   }
-        // ]
       };
 
       zingchart.render({
@@ -201,7 +176,6 @@
 
     onMount(()=>{
       preparaChat();
-      //getDataAPIExterna(189);
     })
 
 
@@ -212,7 +186,3 @@
     <a href="https://www.zingchart.com/" rel="noopener" class="zc-ref">Powered by ZingChart</a>
   </div>
 
-
-  <div id="myChart2" class="chart--container">
-    <a href="https://www.zingchart.com/" rel="noopener" class="zc-ref">Powered by ZingChart</a>
-  </div>

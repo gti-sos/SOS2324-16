@@ -17,6 +17,7 @@
         DATAAPI4="http://localhost:10000/stats-volleyball/data4";
     }
     
+    //Obtenemos las alturas de las jugadoras
     async function getData1(){
         try{
             const res = await fetch(DATAAPI1);
@@ -29,6 +30,7 @@
     }
 
 
+    //Como parámetro de entrada le pasamos una lista con las alturas de las jugadoras
     async function fillChart(d){
         const chart = Highcharts.chart('container', {
                             chart: {
@@ -70,6 +72,7 @@
     }
 
 
+    //El parámetro de entrada es una lista de objetos. Cada objeto contiene el nombre del país y el porcentaje de jugadoras de dicho país
     async function fillChart2(d){
         Highcharts.chart('container2', {
     chart: {
@@ -131,6 +134,7 @@
         } 
     }
 
+    //Recibe una lista con el número de jugadoras que pertenecen a cada intervalo
     async function fillChart4(d){
 
         ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"]; // CHART CONFIG

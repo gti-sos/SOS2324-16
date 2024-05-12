@@ -19,14 +19,13 @@
 
     let jugadores=[];
     onMount(async () => {
-        //jugadores= await getDataAPIExternaJugadores();
         preparaChat();
-        //fillChart2();
     });
 
  
     // https://rapidapi.com/tank01/api/tank01-fantasy-stats/
 
+   //Obtenemos la lista de todos los jugadores para luego poder buscarlo por su id
     async function getDataAPIExternaJugadores(){
         const url = 'https://tank01-fantasy-stats.p.rapidapi.com/getNBAPlayerList';
        
@@ -48,50 +47,7 @@
 
     }
 
-    async function preparaChat(){
-        try{
-
-            let data_m=[]
-            const res1 = await fetch(DATAAPI1);
-            data_m= await res1.json();
-            console.log(`Data received: ${JSON.stringify(data_m,null,2)}'`);
-
-            let d_h=await getListaAlturaJugadores();
-
-            //Falta copiar lo de la api propia y cambiar DMC por d_h
-
-            let data_h=[];
-            let ar1=d_h.filter(el => el<=180)
-            let p1= ar1.length/d_h.length;
-            data_h.push(p1*100);
-
-            let ar2=d_h.filter(el => el>180 && el<=190)
-            let p2= ar2.length/d_h.length;
-            data_h.push(p2*100);
-
-            let ar3=d_h.filter(el => el>190 && el<=200)
-            let p3= ar3.length/d_h.length;
-            data_h.push(p3*100);
-
-            let ar4=d_h.filter(el => el>200 && el<=210)
-            let p4= ar4.length/d_h.length;
-            data_h.push(p4*100);
-
-            let ar5=d_h.filter(el => el>210 && el<=220)
-            let p5= ar5.length/d_h.length;
-            data_h.push(p5*100);
-
-            let ar6=d_h.filter(el => el>220)
-            let p6= ar6.length/data_h.length;
-            data_h.push(p6*100);
-
-
-            fillChart2(data_m,data_h); 
-        } catch (error){
-            console.log( `Error fetching data: ${error}`);
-        } 
-    }
-
+    //Obtenemos la lista con las alturas de los jugadores en centímetros
     async function getListaAlturaJugadores(){
 
         let jugadores2=[]
@@ -127,89 +83,48 @@
         return res;
     }
 
+        //Dividimos la lista completa de alturas en intervalos y llamamos a la función para mostrar la gráfica
+    async function preparaChat(){
+        try{
 
-//     async function fillChart(d_m,d_h){
+            let data_m=[]
+            const res1 = await fetch(DATAAPI1);
+            data_m= await res1.json();
+            console.log(`Data received: ${JSON.stringify(data_m,null,2)}'`);
 
-//         Highcharts.Templating.helpers.abs = value => Math.abs(value);
+            let d_h=await getListaAlturaJugadores();
 
-// // Age altura 170-180-190-200-210-220 [tia:alt,tio:alt],tio 
-//         const alturas= ['-180','180-190','190-200','200-210','210-220','220+']
+            let data_h=[];
+            let ar1=d_h.filter(el => el<=180)
+            let p1= ar1.length/d_h.length;
+            data_h.push(p1*100);
 
-//         const categories = [
-//             '0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-40', '40-45',
-//             '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75-79', '80+'
-//         ];
+            let ar2=d_h.filter(el => el>180 && el<=190)
+            let p2= ar2.length/d_h.length;
+            data_h.push(p2*100);
+
+            let ar3=d_h.filter(el => el>190 && el<=200)
+            let p3= ar3.length/d_h.length;
+            data_h.push(p3*100);
+
+            let ar4=d_h.filter(el => el>200 && el<=210)
+            let p4= ar4.length/d_h.length;
+            data_h.push(p4*100);
+
+            let ar5=d_h.filter(el => el>210 && el<=220)
+            let p5= ar5.length/d_h.length;
+            data_h.push(p5*100);
+
+            let ar6=d_h.filter(el => el>220)
+            let p6= ar6.length/data_h.length;
+            data_h.push(p6*100);
 
 
-//         Highcharts.chart('container', {
-//                         chart: {
-//                             type: 'bar'
-//                         },
-//                         title: {
-//                             text: 'Altura de jugador@s por intervalos',
-//                             align: 'left'
-//                         },
-//                         accessibility: {
-//                             point: {
-//                                 valueDescriptionFormat: '{index}. Altura {xDescription}, {value}%.'
-//                             }
-//                         },
-//                         xAxis: [{
-//                             categories: alturas,
-//                             reversed: false,
-//                             labels: {
-//                                 step: 1
-//                             },
-//                             accessibility: {
-//                                 description: 'Height (male)'
-//                             }
-//                         }, { // mirror axis on right side
-//                             opposite: true,
-//                             reversed: false,
-//                             categories: alturas,
-//                             linkedTo: 0,
-//                             labels: {
-//                                 step: 1
-//                             },
-//                             accessibility: {
-//                                 description: 'Height (female)'
-//                             }
-//                         }],
-//                         yAxis: {
-//                             title: {
-//                                 text: null
-//                             },
-//                             labels: {
-//                                 format: '{abs value}%'
-//                             },
-//                             accessibility: {
-//                                 description: 'Porcentaje altura',
-//                                 rangeDescription: 'Range: 0 to 5%'
-//                             }
-//                         },
-
-//                         plotOptions: {
-//                             series: {
-//                                 stacking: 'normal',
-//                                 borderRadius: '50%'
-//                             }
-//                         },
-
-//                         tooltip: {
-//                             format: '<b>{series.name}, altura {point.category}</b><br/>' +
-//                                 'Population: {(abs point.y):.1f}%'
-//                         },
-
-//                         series: [{
-//                             name: 'Jugadoras volleyball',
-//                             data: d_m
-//                         }, {
-//                             name: 'Jugadores baloncesto',
-//                             data: d_h
-//                         }]
-//                     });
-
-//     }
+            fillChart2(data_m,data_h); 
+        } catch (error){
+            console.log( `Error fetching data: ${error}`);
+        } 
+    }
 
     async function fillChart2(d_m,d_h){
 
@@ -231,15 +146,6 @@
             offsetY: '-6px',
             textAlign: 'left'
         },
-        // subtitle: {
-        //     text: '<span style=\'font-weight:none;\'>Population:</span> <span style=\'font-size:40;font-weight:bold;\'>20,962,000</span>',
-        //     color: '#05669D',
-        //     fontFamily: 'Helvetica',
-        //     fontWeight: 'none',
-        //     offsetX: '-185px',
-        //     offsetY: '-6px',
-        //     textAlign: 'right'
-        // },
         labels: [{
             text: 'Male',
             color: 'white',
@@ -385,16 +291,7 @@
     }
 
 
-
-
 </script>
-<!-- <ul>
-
-    {#each jugadores as x}
-        <li>{x.longName} - {x.team}</li>
-    {/each}
-
-</ul> -->
 
 <figure class="highcharts-figure">
     <div id="container"></div>

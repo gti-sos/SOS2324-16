@@ -19,6 +19,7 @@
         DATAAPI3 = "http://localhost:10000/stats-rugby/data3";
     }
     
+    //Unimos las 3 APIs para integrarlas
     async function getData1(){
         try{
 
@@ -107,8 +108,7 @@
                             headerFormat: '<table>',
                             pointFormat: '<tr><th colspan="2"><h3>{point.country}</h3></th></tr>' +
                                 '<tr><th>Peso:</th><td>{point.x}kg</td></tr>' +
-                                '<tr><th>Altura:</th><td>{point.y}cm</td></tr>' +
-                                '<tr><th>Tamaño (adults):</th><td>{point.z}%</td></tr>',
+                                '<tr><th>Altura:</th><td>{point.y}cm</td></tr>', 
                             footerFormat: '</table>',
                             followPointer: true
                         },

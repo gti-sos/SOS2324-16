@@ -8,9 +8,9 @@
 
     import {dev} from "$app/environment";
 
-    let DATAAPI = "/stats-volleyball/nba_player";
+    let DATAAPI = "/DMC/proxy";
     if(dev){
-        DATAAPI = "http://localhost:10000/stats-volleyball/nba_player";
+        DATAAPI = "http://localhost:10000/DMC/proxy";
         
     }
 
@@ -18,44 +18,18 @@
 
 
     onMount(async () => {
-        //jugadores= await getDataAPIExternaJugadores();
-        comidas=await getVariosPlatos();
+        comidas=await getData();
     });
 
-    async function getDataAPIExterna(num){
-
-        const url = `https://the-vegan-recipes-db.p.rapidapi.com/${num}`;
-        const options = {
-            method: 'GET',
-            headers: {
-                'X-RapidAPI-Key': 'ae855ceae1msh2840b2c00787f80p198e0bjsnbf6b6ed1fe06',
-                'X-RapidAPI-Host': 'the-vegan-recipes-db.p.rapidapi.com'
-            }
-        };
-
-        try {
-            const response = await fetch(url, options);
-            const result = await response.json();
-            console.log([result.title,result.image]);
-            return [result.title,result.image];
-        } catch (error) {
-            console.error(error);
-        }
-
-    }
-
-
-    async function getVariosPlatos(){
-        let res=[];
-        for(let i=1;i<11;i++){
-
-            let e=await getDataAPIExterna(i);
-            res.push(e);
-        }
-
-        
-        return res;
-
+    async function getData(){
+        try{
+            const res = await fetch(DATAAPI);
+            const data = await res.json();
+            console.log(`Data received: ${data}`);
+            return data; 
+        } catch (error){
+            console.log( `Error fetching data: ${error}`);
+        } 
     }
 
 </script>
@@ -64,8 +38,8 @@
 <ul>
     {#each comidas as c}
         <li class="comida-item"> 
-            <h2 class="comida-nombre"> {c[0]} </h2> 
-            <img class="comida-imagen" src="{c[1]}" alt="">
+            <h2 class="comida-nombre"> {c["title"]} </h2> 
+            <img class="comida-imagen" src="{c["image"]}" alt="">
         </li>
 
     {/each}
