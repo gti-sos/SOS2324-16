@@ -12,11 +12,11 @@
     import {onMount} from "svelte";
     import {dev} from "$app/environment";
 
-    let DATAAPI1 = "/stats-rugby/data1";
-    let DATAAPI2 = "/stats-rugby/data2";
+    let DATAAPI1 = "/api/v2/stats-rugby-integrations/data1";
+    let DATAAPI2 = "/api/v2/stats-rugby-integrations/data2";
     if(dev){
-        DATAAPI1="http://localhost:10000/stats-rugby/data1";
-        DATAAPI2="http://localhost:10000/stats-rugby/data2";
+        DATAAPI1="http://localhost:10000/api/v2/stats-rugby-integrations/data1";
+        DATAAPI2="http://localhost:10000/api/v2/stats-rugby-integrations/data2";
     }
     
     async function getData1(){

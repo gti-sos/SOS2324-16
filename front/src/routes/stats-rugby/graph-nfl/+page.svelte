@@ -8,9 +8,9 @@
     import { onMount } from 'svelte';
     import {dev} from "$app/environment";
 
-    let DATAAPI = "/stats-rugby/data4";
+    let DATAAPI = "/api/v2/stats-rugby-integrations/data4";
     if(dev){
-        DATAAPI="http://localhost:10000/stats-rugby/data4";
+        DATAAPI="http://localhost:10000/api/v2/stats-rugby-integrations/data4";
     }
     
     let externalApi = [];
@@ -76,8 +76,8 @@
     }
 
     function renderChart() {
-    const minHeight = Math.min(...chartData.map(([peso, altura]) => altura));
-    const maxHeight = Math.max(...chartData.map(([peso, altura]) => altura));
+        const minHeight = Math.min(...chartData.map(([peso, altura]) => altura));
+        const maxHeight = Math.max(...chartData.map(([peso, altura]) => altura));
 
         var chart = new CanvasJS.Chart("chartContainer", {
             title: {

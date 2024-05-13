@@ -432,56 +432,75 @@ app.delete(API_BASE+"/stats-rugby/:nationality/:weight", (req,res) => {
 });
 
 
-app.get("/stats-rugby/data1",(req,res)=>{
+app.get(API_BASE+"/stats-rugby-integrations/data1",(req,res)=>{
 
-    let data=[];
-    let l=array.length;
-    for(let i=0; i< l; i++){
-        let nombre = array[i].first + " " + array[i].last;
-        let n=array[i].caps;
-        data.push([nombre,n]);
-    }
-    res.send(data);
+    dbRugby.find({}, (err, info) =>{
+        if(err){
+            res.sendStatus(500, "Internal Error");
+        }else {
+            res.send(info.map((c)=> {
+                delete c._id;
+                return [c.first + " " + c.last, c.caps];
+            }));
+        }
+    });
 });
 
-app.get("/stats-rugby/data2",(req,res)=>{
-
-    let data=[];
-    let l=array.length;
-    for(let i=0; i< l; i++){
-        let peso = array[i].weight;
-        let altura=array[i].height;
-        data.push([peso,altura,20]);
-    }
-    res.send(data);
+app.get(API_BASE+"/stats-rugby-integrations/data2",(req,res)=>{
+    
+    dbRugby.find({}, (err, info) =>{
+        if(err){
+            res.sendStatus(500, "Internal Error");
+        }else {
+            res.send(info.map((c)=> {
+                delete c._id;
+                return [c.weight, c.height, 20];
+            }));
+        }
+    });
 });
 
-app.get("/stats-rugby/data3",(req,res)=>{
+app.get(API_BASE+"/stats-rugby-integrations/data3",(req,res)=>{
 
-    let data=[];
-
-    for(let i=0;i<array.length;i++){
-        let el=array[i];
-        let peso=el.weight;
-        let altura=el.height;
-        let nom=el.last;
-        let pais=el.first+" "+el.last;
-        data.push({x:peso,y:altura,z:18,name:nom,country:pais});
-    }
-
-    res.send(data);
+    dbRugby.find({}, (err, info) =>{
+        if(err){
+            res.sendStatus(500, "Internal Error");
+        }else {
+            res.send(info.map((c)=> {
+                delete c._id;
+                return {x:c.weight, y:c.height, z:18, name:c.last, country:c.first+" "+c.last};
+            }));
+        }
+    });
 });
 
-app.get("/stats-rugby/data4",(req,res)=>{
+app.get(API_BASE+"/stats-rugby-integrations/data4",(req,res)=>{
 
-    let data=[];
-    let l=array.length;
-    for(let i=0; i< l; i++){
-        let peso = array[i].weight;
-        let altura=array[i].height;
-        data.push([peso,altura]);
-    }
-    res.send(data);
+    dbRugby.find({}, (err, info) =>{
+        if(err){
+            res.sendStatus(500, "Internal Error");
+        }else {
+            res.send(info.map((c)=> {
+                delete c._id;
+                return [c.weight, c.height];
+            }));
+        }
+    });
+    
+});
+
+app.get(API_BASE+"/stats-rugby-integrations/data5",(req,res)=>{
+
+    dbRugby.find({}, (err, info) =>{
+        if(err){
+            res.sendStatus(500, "Internal Error");
+        }else {
+            res.send(info.map((c)=> {
+                delete c._id;
+                return [c.bplace, c.caps];
+            }));
+        }
+    });
 });
 
 }

@@ -1888,7 +1888,7 @@ let array = [
     "age": 30,
     "height": 191,
     "weight": 104,
-    "bplace": "California, United States",
+    "bplace": "California",
     "bdate": parseaFechasPRR("22/09/1988"),
     "last": "Palamo",
     "first": "Thretton Davis",

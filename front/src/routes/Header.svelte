@@ -1,5 +1,6 @@
 <nav>
     <a href="/" class="nav-link">Inicio</a>
+    <a href="/integrations" class="nav-link">Integraciones</a>
     <a href="/stats-volleyball" class="nav-link">Jugadoras voleibol</a>
     <a href="/stats-football" class="nav-link">Jugadores fútbol</a>
     <a href="/stats-rugby" class="nav-link">Jugadores rugby</a>
