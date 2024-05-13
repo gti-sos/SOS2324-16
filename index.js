@@ -79,7 +79,6 @@ app.use("/DMC/proxy", async function(req, res) {
 
     });
 
-
 app.use(handler);
 
 
