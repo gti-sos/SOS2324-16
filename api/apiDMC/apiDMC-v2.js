@@ -445,19 +445,29 @@ app.delete(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
 });
 
 //Devuelve una lista de objetos, cada objeto tiene la clave la alt con el valor altura de cada jugadora
-app.get("/stats-volleyball/data1",(req,res)=>{
+app.get(API_BASE+"/stats-volleyball-integrations/data1",async (req,res)=>{
 
-    let data=[];
-    let l=datosDMC.length;
+    //Cambiar lo de svelte y meter apibase mas integrations yyyy meter la llamada appspot en todas las apis yyyyy ver si funciona cn dbVolleybaññ
+    let data=[]
+    try{
+        const res = await fetch("https://sos2324-16.ew.r.appspot.com/api/v2/stats-volleyball");
+        data = await res.json();
+        
+    } catch (error){
+        console.log( `Error fetching data: ${error}`);
+    } 
+
+    let data1=[];
+    let l=data.length;
     for(let i=0; i< l; i++){
-        let n=datosDMC[i].height;
-        data.push({ alt:n});
+        let n=data[i].height;
+        data1.push({ alt:n});
     }
-    res.send(data);
+    res.send(data1);
 });
 
 //Obtenemos una lista de objetos, cada objeto tiene el nombre del pais y el porcentaje de jugadoras que son de dicho país
-app.get("/stats-volleyball/data2",(req,res)=>{
+app.get(API_BASE+"/stats-volleyball-integrations/data2",(req,res)=>{
 
     let data=[];
     let paisesSet = [];
@@ -479,8 +489,9 @@ app.get("/stats-volleyball/data2",(req,res)=>{
 });
 
 //Devuelve un objeto con el peso, altura, (el tamaño de la burbuja de la gráfica)  el nombre y el país de cada jugadora
-app.get("/stats-volleyball/data3",(req,res)=>{
+app.get(API_BASE+"/stats-volleyball-integrations/data3",(req,res)=>{
 
+    console.log(`New request to ${API_BASE+"/stats-volleyball/data3t"}`);
     let data=[];
     for(let i=0;i<datosDMC.length;i++){
         let el=datosDMC[i];
@@ -491,12 +502,12 @@ app.get("/stats-volleyball/data3",(req,res)=>{
         data.push({x:peso,y:altura,z:18,name:nom,country:pais});
     }
 
-
+    console.log("Returning "+data.length+ " items");
     res.send(data);
 });
 
 //Lista con el número de jugadoras que sobrepasan la cantidad de puntos indicados
-app.get("/stats-volleyball/data4",(req,res)=>{
+app.get(API_BASE+"/stats-volleyball-integrations/data4",(req,res)=>{
 
     let data=[];
     let ar1=datosDMC.filter(e=>e.point>550).map(e=>e.name);
@@ -519,7 +530,7 @@ app.get("/stats-volleyball/data4",(req,res)=>{
 });
 
 //Devuelve el porcentaje de jugadoras que se encuentran en el intervalo de altura presentado
-app.get("/stats-volleyball/nba_player",(req,res)=>{
+app.get(API_BASE+"/stats-volleyball-integrations/nba_player",(req,res)=>{
 
     let data=[];
     let ar1=datosDMC.filter(el => el.height<=180).map(el => {
@@ -552,7 +563,7 @@ app.get("/stats-volleyball/nba_player",(req,res)=>{
 });
 
 //Obtenemos una lista con los países de las jugadoras
-app.get("/stats-volleyball/paises_serv",(req,res)=>{
+app.get(API_BASE+"/stats-volleyball-integrations/paises_serv",(req,res)=>{
     let paisesSet=[];
     datosDMC.forEach((el) => {
         if(!(paisesSet.includes(el.nationality))){
@@ -564,7 +575,7 @@ app.get("/stats-volleyball/paises_serv",(req,res)=>{
 });
 
 //Obtenemos el nombre, peso y altura de cada jugadora
-app.get("/stats-volleyball/calculated_w",(req,res)=>{
+app.get(API_BASE+"/stats-volleyball-integrations/calculated_w",(req,res)=>{
     let data=[]
     
     for(let i=0;i<datosDMC.length;i++){
@@ -577,6 +588,99 @@ app.get("/stats-volleyball/calculated_w",(req,res)=>{
 
 });
 
+app.get(API_BASE+'/stats-volleyball-integrations/data', (req, res) => {
+    let peticion = req.query; 
+
+    let limit = parseInt(req.query.limit) || 10; 
+    let offset = parseInt(req.query.offset) || 0;
+
+    let from = Number(req.query.from);
+    let to = Number(req.query.to);
+
+    if (Object.keys(peticion).length===0) {
+        datosDMC.find( {} ,(err,info)=> {
+                    if(err){
+                        res.sendStatus(500,"Internal Error");
+                    }else{
+                        res.send(info.map((c)=> {
+                            delete c._id;
+                            return c;
+                        }));
+                    }
+                });
+    }else{
+
+        let valores=Object.values(peticion);
+        let claves=Object.keys(peticion);
+        let cond={};
+
+        //Paginación
+        let indexLimit = claves.indexOf('limit');
+        if (indexLimit !== -1) {
+            claves.splice(indexLimit, 1);
+            valores.splice(indexLimit, 1);
+        }
+        let indexOffset = claves.indexOf('offset');
+        if (indexOffset !== -1) {
+            claves.splice(indexOffset, 1);
+            valores.splice(indexOffset, 1);
+        }
+
+        //Búsquedas
+        if(from>0 && to >0 && from<to){
+
+            let indexFrom = claves.indexOf('from');
+            if (indexFrom !== -1) {
+                claves.splice(indexFrom, 1);
+                valores.splice(indexFrom, 1);
+            }
+            let indexTo = claves.indexOf('to');
+            if (indexTo !== -1) {
+                claves.splice(indexTo, 1);
+                valores.splice(indexTo, 1);
+            }
+
+            cond["birthdate"]={ $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") };
+
+            from=0;
+            to=0;
+
+        }
+
+        let valor=0;
+        let valor_aux=0;
+
+        //Parseo de los valores de entrada correspondientes
+        for(let i=0;i<claves.length;i++){
+
+            let clave=claves[i];
+
+            if((typeof datosDMC[0][clave])==="number"){
+                valor=Number(valores[i]);
+            }else if((typeof datosDMC[0][clave])==="object"){
+                valor_aux=Number(valores[i]);
+                valor={ $gte:new Date(valor_aux+"-01-01"), $lte:new Date(valor_aux+"-12-31") };
+            }else{
+                valor=valores[i];
+            }
+            cond[clave]=valor;
+        }
+
+        //Busca en la base de datos aquellas jugadoras que cumplan las condiciones del objeto "cond",aplicando el limit y offset
+        datosDMC.find(cond).skip(offset).limit(limit).exec((err, info) => {
+            if (err) {
+                res.sendStatus(500,'Error interno del servidor' );
+             }else if(info.length===0){
+                res.sendStatus(404,"Not found");
+            }else {
+                res.send(info.map((c)=> {
+                    delete c._id;
+                    return c;
+        }));
+    }
+    });      
+    }      
+  });
 
 }
 

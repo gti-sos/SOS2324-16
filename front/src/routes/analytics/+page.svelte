@@ -10,13 +10,13 @@
     import {onMount} from "svelte";
     import {dev} from "$app/environment";
 
-    let DATAAPI1 = "/stats-volleyball/data3";
-    let DATAAPI2 = "/stats-football/data3";
-    let DATAAPI3 = "/stats-rugby/data3";
+    let DATAAPI1 = "/api/v2/stats-volleyball-integrations/data3";
+    let DATAAPI2 = "/api/v2/stats-football-integrations/data3";
+    let DATAAPI3 = "/api/v2/stats-rugby-integrations/data3";
     if(dev){
-        DATAAPI1 = "http://localhost:10000/stats-volleyball/data3";
-        DATAAPI2 = "http://localhost:10000/stats-football/data3";
-        DATAAPI3 = "http://localhost:10000/stats-rugby/data3";
+        DATAAPI1 = "http://localhost:10000/api/v2/stats-volleyball-integrations/data3";
+        DATAAPI2 = "http://localhost:10000/api/v2/stats-football-integrations/data3";
+        DATAAPI3 = "http://localhost:10000/api/v2/stats-rugby-integrations/data3";
     }
     
     //Unimos las 3 APIs para integrarlas

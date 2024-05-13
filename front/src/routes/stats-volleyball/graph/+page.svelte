@@ -8,13 +8,13 @@
     import {onMount} from "svelte";
     import {dev} from "$app/environment";
 
-    let DATAAPI1 = "/stats-volleyball/data1";
-    let DATAAPI2 = "/stats-volleyball/data2";
-    let DATAAPI4 = "/stats-volleyball/data4";
+    let DATAAPI1 = "/api/v2/stats-volleyball-integrations/data1";
+    let DATAAPI2 = "/api/v2/stats-volleyball-integrations/data2";
+    let DATAAPI4 = "/api/v2/stats-volleyball-integrations/data4";
     if(dev){
-        DATAAPI1="http://localhost:10000/stats-volleyball/data1";
-        DATAAPI2="http://localhost:10000/stats-volleyball/data2";
-        DATAAPI4="http://localhost:10000/stats-volleyball/data4";
+        DATAAPI1="http://localhost:10000/api/v2/stats-volleyball-integrations/data1";
+        DATAAPI2="http://localhost:10000/api/v2/stats-volleyball-integrations/data2";
+        DATAAPI4="http://localhost:10000/api/v2/stats-volleyball-integrations/data4";
     }
     
     //Obtenemos las alturas de las jugadoras
