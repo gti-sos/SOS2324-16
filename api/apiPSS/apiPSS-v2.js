@@ -498,6 +498,11 @@ app.get("/stats-football/data4",(req,res)=>{
     }
     res.send(data);
 });
+
+app.get("/stats-football/data5", (req, res) => {
+    let data = jugadores.map(jg => jg.height_cm);
+    res.send(data);
+});
 }
 
 export{loadBackendPSS};
