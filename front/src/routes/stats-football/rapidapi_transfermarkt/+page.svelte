@@ -12,9 +12,9 @@
     import { onMount } from 'svelte';
     import { dev } from "$app/environment";
     
-    let DATAAPI = "/stats-football/data4";
+    let DATAAPI = "api/v2/stats-football-integrations/data4";
     if (dev) {
-        DATAAPI = "http://localhost:10000/stats-football/data4";
+        DATAAPI = "http://localhost:10000/api/v2/stats-football-integrations/data4";
     }
 
     //let countries = [];
@@ -116,7 +116,7 @@
                 series.states.create("hidden", {
                     endAngle: -90
                 });
-
+                console.log(mezcla);
                 series.data.setAll(mezcla);
 
                 series.appear(1000, 100);
