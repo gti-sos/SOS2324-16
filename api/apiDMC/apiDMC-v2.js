@@ -444,6 +444,7 @@ app.delete(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
     });
 });
 
+
 //Devuelve una lista de objetos, cada objeto tiene la clave la alt con el valor altura de cada jugadora
 app.get(API_BASE+"/stats-volleyball-integrations/data1",async (req,res)=>{
 
