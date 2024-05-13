@@ -136,6 +136,7 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
         let valor=0;
         let valor_aux=0;
 
+        //Parseo de los valores de entrada correspondientes
         for(let i=0;i<claves.length;i++){
 
             let clave=claves[i];
@@ -151,6 +152,7 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
             cond[clave]=valor;
         }
 
+        //Busca en la base de datos aquellas jugadoras que cumplan las condiciones del objeto "cond",aplicando el limit y offset
         dbVolleyball.find(cond).skip(offset).limit(limit).exec((err, info) => {
             if (err) {
                 res.sendStatus(500,'Error interno del servidor' );
@@ -174,6 +176,7 @@ app.post(API_BASE+"/stats-volleyball", validarDatos, (req,res) => {
         if(err){
             res.sendStatus(500,"Internal Error");
         }else{
+            //Si el tamaño de 'info' es mayor que cero significa que ya hay otra jugadora con dichos datos
             if(info.length===0){
 
                 dbVolleyball.insert(stat, (err,info) => {
@@ -279,6 +282,7 @@ app.get(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
         let valor=0;
         let valor_aux=0;
 
+        //Parseo de los  valores de entrada
         for(let i=0;i<claves.length;i++){
 
             clave=claves[i];
@@ -320,6 +324,7 @@ app.put(API_BASE+"/stats-volleyball/:nationality", (req,res) => {
     const nuevo = req.body;
     let nom=false;
 
+    //Vemos si el nombre de la jugadora que se quiere actualizar está en el request 
     dbVolleyball.find({"nationality":nationality},(err,info)=>{
         if (err) {
             res.sendStatus(500, "Internal Error");
@@ -439,6 +444,7 @@ app.delete(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
     });
 });
 
+//Devuelve una lista de objetos, cada objeto tiene la clave la alt con el valor altura de cada jugadora
 app.get("/stats-volleyball/data1",(req,res)=>{
 
     let data=[];
@@ -450,6 +456,7 @@ app.get("/stats-volleyball/data1",(req,res)=>{
     res.send(data);
 });
 
+//Obtenemos una lista de objetos, cada objeto tiene el nombre del pais y el porcentaje de jugadoras que son de dicho país
 app.get("/stats-volleyball/data2",(req,res)=>{
 
     let data=[];
@@ -468,9 +475,10 @@ app.get("/stats-volleyball/data2",(req,res)=>{
         data.push({name:p,y:n});
     }
     res.send(data);
+    res.sendStatus(200,"OK");
 });
 
-
+//Devuelve un objeto con el peso, altura, (el tamaño de la burbuja de la gráfica)  el nombre y el país de cada jugadora
 app.get("/stats-volleyball/data3",(req,res)=>{
 
     let data=[];
@@ -483,8 +491,92 @@ app.get("/stats-volleyball/data3",(req,res)=>{
         data.push({x:peso,y:altura,z:18,name:nom,country:pais});
     }
 
+
     res.send(data);
 });
+
+//Lista con el número de jugadoras que sobrepasan la cantidad de puntos indicados
+app.get("/stats-volleyball/data4",(req,res)=>{
+
+    let data=[];
+    let ar1=datosDMC.filter(e=>e.point>550).map(e=>e.name);
+    data.push(ar1.length);
+
+    let ar2=datosDMC.filter(e=>e.point>575).map(e=>e.name);
+    data.push(ar2.length);
+
+    let ar3=datosDMC.filter(e=>e.point>600).map(e=>e.name);
+    data.push(ar3.length);
+
+    let ar4=datosDMC.filter(e=>e.point>800).map(e=>e.name);
+    data.push(ar4.length);
+
+    let ar5=datosDMC.filter(e=>e.point>900).map(e=>e.name);
+    data.push(ar5.length);
+
+
+    res.send(data);
+});
+
+//Devuelve el porcentaje de jugadoras que se encuentran en el intervalo de altura presentado
+app.get("/stats-volleyball/nba_player",(req,res)=>{
+
+    let data=[];
+    let ar1=datosDMC.filter(el => el.height<=180).map(el => {
+        return {"nombre":el.name,"altura":el.height};
+    });
+    let p1= ar1.length/datosDMC.length;
+    data.push(p1*100);
+
+    let ar6=datosDMC.filter(el => el.height>180 && el.height<=190).map(el => el.name);
+    let p6=ar6.length/datosDMC.length;
+    data.push(p6*100);
+
+    let ar2=datosDMC.filter(el => el.height>190 && el.height<=200).map(el => el.name);
+    let p2=ar2.length/datosDMC.length;
+    data.push(p2*100);
+
+    let ar3=datosDMC.filter(el => el.height>200 && el.height<=210).map(el => el.name);
+    let p3=ar3.length/datosDMC.length;
+    data.push(p3*100);
+
+    let ar4=datosDMC.filter(el => el.height>210 && el.height<=220).map(el => el.name);
+    let p4=ar4.length/datosDMC.length;
+    data.push(p4*100);
+
+    let ar5=datosDMC.filter(el => el.height>220).map(el => el.name);
+    let p5=ar5.length/datosDMC.length;
+    data.push(p5*100);
+
+    res.send(data);
+});
+
+//Obtenemos una lista con los países de las jugadoras
+app.get("/stats-volleyball/paises_serv",(req,res)=>{
+    let paisesSet=[];
+    datosDMC.forEach((el) => {
+        if(!(paisesSet.includes(el.nationality))){
+            paisesSet.push(el.nationality);
+        }
+    });
+    res.send(paisesSet);
+
+});
+
+//Obtenemos el nombre, peso y altura de cada jugadora
+app.get("/stats-volleyball/calculated_w",(req,res)=>{
+    let data=[]
+    
+    for(let i=0;i<datosDMC.length;i++){
+        let p=datosDMC[i]
+        data.push({"nombre":p.name,"altura":p.height,"peso":p.weight})
+
+    }
+
+    res.send(data);
+
+});
+
 
 }
 

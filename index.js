@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import dataStore from "nedb";
 import cors from "cors";
+import request from "request";
 //Svelte
 import {handler} from "./front/build/handler.js";
 
@@ -54,7 +55,34 @@ loadBackendPSS(app, dbFootball);
 //Llamar a la api de Domingo Morales
 loadBackendDMC(app, dbVolleyball);
 
+//Proxy
+
+app.use("/DMC/proxy", async function(req, res) {
+    
+    const url = `https://the-vegan-recipes-db.p.rapidapi.com/`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': 'ae855ceae1msh2840b2c00787f80p198e0bjsnbf6b6ed1fe06',
+                'X-RapidAPI-Host': 'the-vegan-recipes-db.p.rapidapi.com'
+            }
+        };
+
+        try {
+            const response = await fetch(url, options);
+            const result = await response.json();
+            console.log(result);
+            res.json(result.slice(0,20)) ;
+        } catch (error) {
+            console.error(error);
+        }
+
+    });
+
+
 app.use(handler);
+
+
 
 
 //Iniciar servicio

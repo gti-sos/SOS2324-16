@@ -5,7 +5,7 @@ function parseaFechasDMC(f){
     const mes = parseInt(partesFecha[1], 10); // Convertir el día a un número entero (base 10)
     const anyo = parseInt(partesFecha[2], 10);
 
-    const fecha = new Date(anyo, mes - 1, dia); // Nota: Restamos 1 del mes, ya que los meses en JavaScript van de 0 a 11
+    const fecha = new Date(anyo, mes - 1, dia); // Restamos 1 del mes, ya que los meses en JavaScript van de 0 a 11
 
     return fecha;
 
@@ -128,7 +128,7 @@ let datosDMC=[
         nationality:"Dominican Republic",
         position:"Outside Hitter",
         birthdate:parseaFechasDMC("11/09/1996"),
-        height:120,
+        height:201,
         weight:83,
         dominant_hand:"Right",
         country_point:108.0,

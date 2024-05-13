@@ -4,6 +4,7 @@
 </script>
 
 <div class={tipo === 'exito' ? 'mensaje-exito' : 'mensaje-error'}>
+  
   {mensaje}
 </div>
 
