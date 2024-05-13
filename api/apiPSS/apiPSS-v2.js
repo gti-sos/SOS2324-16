@@ -419,7 +419,7 @@ app.delete(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
     });
 });
 
-app.get("/stats-football/data1",(req,res)=>{
+app.get(API_BASE+"/stats-football-integrations/data1",(req,res)=>{
 
     let data = [];
     let clubSet=[]
@@ -443,7 +443,7 @@ app.get("/stats-football/data1",(req,res)=>{
     res.send(data);
 });
 
-app.get("/stats-football/data2", (req, res) => {
+app.get(API_BASE+"/stats-football-integrations/data2", (req, res) => {
     let europaData = [];
     let restoData = [];
 
@@ -464,7 +464,7 @@ function enEuropa(pais) {
     return paises.includes(pais);
 }
 
-app.get("/stats-football/data3",(req,res)=>{
+app.get(API_BASE+"/stats-football-integrations/data3",(req,res)=>{
 
     let data=[];
 
@@ -480,7 +480,7 @@ app.get("/stats-football/data3",(req,res)=>{
     res.send(data);
 });
 
-app.get("/stats-football/data4",(req,res)=>{
+app.get(API_BASE+"/stats-football-integrations/data4",(req,res)=>{
     let data=[];
     let paisesSet = [];
     
@@ -496,6 +496,11 @@ app.get("/stats-football/data4",(req,res)=>{
         let porcentaje = lista.length/jugadores.length * 100.0;
         data.push([pais, porcentaje]);
     }
+    res.send(data);
+});
+
+app.get(API_BASE+"/stats-football-integrations/data5", (req, res) => {
+    let data = jugadores.map(jg => jg.height_cm);
     res.send(data);
 });
 }

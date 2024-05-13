@@ -5,7 +5,7 @@ function parseaFechasDMC(f){
     const mes = parseInt(partesFecha[1], 10); // Convertir el día a un número entero (base 10)
     const anyo = parseInt(partesFecha[2], 10);
 
-    const fecha = new Date(anyo, mes - 1, dia); // Nota: Restamos 1 del mes, ya que los meses en JavaScript van de 0 a 11
+    const fecha = new Date(anyo, mes - 1, dia); // Restamos 1 del mes, ya que los meses en JavaScript van de 0 a 11
 
     return fecha;
 

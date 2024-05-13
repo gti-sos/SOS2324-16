@@ -29,6 +29,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@amcharts/amcharts5": "^5.9.7",
     "canvasjs": "^1.8.3"
   }
 }

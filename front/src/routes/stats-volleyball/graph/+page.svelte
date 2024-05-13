@@ -1,5 +1,6 @@
 <svelte:head>
     <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
 
 </svelte:head>
 
@@ -7,13 +8,16 @@
     import {onMount} from "svelte";
     import {dev} from "$app/environment";
 
-    let DATAAPI1 = "/stats-volleyball/data1";
-    let DATAAPI2 = "/stats-volleyball/data2";
+    let DATAAPI1 = "/api/v2/stats-volleyball-integrations/data1";
+    let DATAAPI2 = "/api/v2/stats-volleyball-integrations/data2";
+    let DATAAPI4 = "/api/v2/stats-volleyball-integrations/data4";
     if(dev){
-        DATAAPI1="http://localhost:10000/stats-volleyball/data1";
-        DATAAPI2="http://localhost:10000/stats-volleyball/data2";
+        DATAAPI1="http://localhost:10000/api/v2/stats-volleyball-integrations/data1";
+        DATAAPI2="http://localhost:10000/api/v2/stats-volleyball-integrations/data2";
+        DATAAPI4="http://localhost:10000/api/v2/stats-volleyball-integrations/data4";
     }
     
+    //Obtenemos las alturas de las jugadoras
     async function getData1(){
         try{
             const res = await fetch(DATAAPI1);
@@ -26,6 +30,7 @@
     }
 
 
+    //Como parámetro de entrada le pasamos una lista con las alturas de las jugadoras
     async function fillChart(d){
         const chart = Highcharts.chart('container', {
                             chart: {
@@ -67,6 +72,7 @@
     }
 
 
+    //El parámetro de entrada es una lista de objetos. Cada objeto contiene el nombre del país y el porcentaje de jugadoras de dicho país
     async function fillChart2(d){
         Highcharts.chart('container2', {
     chart: {
@@ -118,14 +124,130 @@
 
     }
 
+    async function getData4(){
+        try{
+            const res = await fetch(DATAAPI4);
+            const data = await res.json();
+            fillChart4(data); 
+        } catch (error){
+            console.log( `Error fetching data: ${error}`);
+        } 
+    }
+
+    //Recibe una lista con el número de jugadoras que pertenecen a cada intervalo
+    async function fillChart4(d){
+
+        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"]; // CHART CONFIG
+    // -----------------------------
+        let chartConfig = {
+        type: 'hfunnel',
+        theme: 'classic',
+        backgroundColor: '#fff',
+        backgroundColor2: '#f1f1f1',
+        plot: {
+            tooltip: {
+            shadow: false,
+            },
+            tooltipText: '%v jugadoras',
+            offset: '40px',
+            scales: 'scale-x,scale-y-2',
+        },
+        plotarea: {
+            margin: '75px 25px 50px 80px',
+        },
+        scaleX: {
+            values: ['Jugadoras<br> de <br>Volleyball'],
+            item: {
+            fontSize: '14px',
+            offsetY: '-20px',
+            },
+        },
+        scaleY: {
+            visible: false,
+        },
+        scaleY2: {
+            values: [
+            'Jugadoras con más de 550 puntos',
+            'Jugadoras con más de 575 puntos',
+            'Jugadoras con más de 600 puntos',
+            'Jugadoras con más de 800 puntos',
+            'Jugadoras con más de 900 puntos',
+            ],
+            guide: {
+            items: [{
+                backgroundColor: '#fff',
+                },
+                {
+                backgroundColor: '#eee',
+                },
+                {
+                backgroundColor: '#ddd',
+                },
+                {
+                backgroundColor: '#ccc',
+                },
+                {
+                alpha: 0.2,
+                backgroundColor: 'green',
+                },
+            ],
+            },
+        },
+        series: [{
+            values: [d[0]],
+            backgroundColor: '#5FB4E8',
+            borderColor: '#000000',
+            shadow: false,
+            },
+            {
+            values: [d[1]],
+            backgroundColor: '#EBC765',
+            borderColor: '#000000',
+            shadow: false,
+            },
+            {
+            values: [d[2]],
+            backgroundColor: '#8FB550',
+            borderColor: '#000000',
+            shadow: false,
+            },
+            {
+            values: [d[3]],
+            backgroundColor: '#D17549',
+            borderColor: '#000000',
+            shadow: false,
+            },
+            {
+            values: [d[4]],
+            backgroundColor: '#8E468E',
+            borderColor: '#000000',
+            shadow: false,
+            },
+        ],
+        };
+
+        // RENDER CHARTS
+        // -----------------------------
+        zingchart.render({
+        id: 'myChart',
+        data: chartConfig,
+        });
+    }
+
+
+
     onMount(()=>{
         getData1();
         getData2();
+        getData4();
     })
 
 
 </script>
 
-
+<h2>Las dos primeras gráficas con Highcharts</h2>
 <div id="container" style="width:100%; height:400px;"></div>
 <div id="container2" style="width:100%; height:400px;"></div>
+<br>
+<h2>La gráfica de Zingchart</h2>
+<div id="myChart" ></div>

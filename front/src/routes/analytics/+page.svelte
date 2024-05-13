@@ -10,15 +10,16 @@
     import {onMount} from "svelte";
     import {dev} from "$app/environment";
 
-    let DATAAPI1 = "/stats-volleyball/data3";
-    let DATAAPI2 = "/stats-football/data3";
-    let DATAAPI3 = "/stats-rugby/data3";
+    let DATAAPI1 = "/api/v2/stats-volleyball-integrations/data3";
+    let DATAAPI2 = "/api/v2/stats-football-integrations/data3";
+    let DATAAPI3 = "/api/v2/stats-rugby-integrations/data3";
     if(dev){
-        DATAAPI1 = "http://localhost:10000/stats-volleyball/data3";
-        DATAAPI2 = "http://localhost:10000/stats-football/data3";
-        DATAAPI3 = "http://localhost:10000/stats-rugby/data3";
+        DATAAPI1 = "http://localhost:10000/api/v2/stats-volleyball-integrations/data3";
+        DATAAPI2 = "http://localhost:10000/api/v2/stats-football-integrations/data3";
+        DATAAPI3 = "http://localhost:10000/api/v2/stats-rugby-integrations/data3";
     }
     
+    //Unimos las 3 APIs para integrarlas
     async function getData1(){
         try{
 
@@ -107,8 +108,7 @@
                             headerFormat: '<table>',
                             pointFormat: '<tr><th colspan="2"><h3>{point.country}</h3></th></tr>' +
                                 '<tr><th>Peso:</th><td>{point.x}kg</td></tr>' +
-                                '<tr><th>Altura:</th><td>{point.y}cm</td></tr>' +
-                                '<tr><th>Tamaño (adults):</th><td>{point.z}%</td></tr>',
+                                '<tr><th>Altura:</th><td>{point.y}cm</td></tr>', 
                             footerFormat: '</table>',
                             followPointer: true
                         },

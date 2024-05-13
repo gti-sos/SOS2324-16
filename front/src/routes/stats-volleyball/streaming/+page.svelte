@@ -20,6 +20,8 @@
     }
 
     // https://rapidapi.com/movie-of-the-night-movie-of-the-night-default/api/streaming-availability/
+    
+    //Obtenemos la lista de todos los servicios disponibles
     async function getListaServicios(){
         const url = 'https://streaming-availability.p.rapidapi.com/services';
         const options = {
@@ -33,10 +35,8 @@
         try {
             const response = await fetch(url, options);
             const result = await response.json();
-            //console.log(result.result['all4'])
             let aux=result.result;
             let claves=Object.keys(aux);
-            //console.log(claves);
             return claves;
         } catch (error) {
             console.error(error);
@@ -82,21 +82,23 @@
         let l_servicios=await getListaServicios();
         let paises_serv=await getPaisesServicios();
         let columnas=[];
-        let data=[]
+        let data=[];
+
+        //Obtenemos las columnas de la tabla, que serán los servicios, además la primera que indicará el país
         columnas.push({
                     type: 'text',
                     title:'Nacionalidad',
                     width:90
                 });
 
-        //Por cada pais fory dentro otro for con todos los servicios a ver si coincide o non
-
         for (let i=0;i<l_servicios.length;i++){
             let n=l_servicios[i];
             columnas.push({type: 'checkbox', title:n, width:90});
         }
-        let nombre_corto_paises=Object.keys(paises_serv);
 
+        //Buscamos si los paises de mi API están en la api externa
+        //Si ese es el caso, miramos que servicios contiene cada país
+        let nombre_corto_paises=Object.keys(paises_serv);
 
         for(let i=0;i<paises_api_propia.length;i++){
             let pais=paises_api_propia[i];
@@ -134,6 +136,7 @@
 
     }
 
+    //El parámetro de entradas 'dat' hace referencia al valor de las filas, mientras que 'colum' al de las columnas
     async function getTabla(dat,colum){
 
         var data = dat;

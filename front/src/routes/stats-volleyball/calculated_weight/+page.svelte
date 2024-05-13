@@ -17,16 +17,25 @@
 
 // https://rapidapi.com/malaaddincelik/api/fitness-calculator/
 
-    //import {zingchart, ZC} from 'zingchart/es6';
-    //import 'zingchart/modules-es6/zingchart-pareto.min.js';
 
-    // let DATAAPI1 = "/stats-volleyball/data1";
-    // let DATAAPI2 = "/stats-volleyball/data2";
-    // if(dev){
-    //     DATAAPI1="http://localhost:10000/stats-volleyball/data1";
-    //     DATAAPI2="http://localhost:10000/stats-volleyball/data2";
-    // }
+    let DATAAPI = "/stats-volleyball/calculated_w";
+    if(dev){
+        DATAAPI="http://localhost:10000/stats-volleyball/calculated_w";
+      }
 
+    //Obtengo los datos de la API propia
+    async function getData1(){
+        try{
+            const res = await fetch(DATAAPI);
+            const data = await res.json();
+            console.log(`Data received: ${JSON.stringify(data,null,2)}'`);
+            return data; 
+        } catch (error){
+            console.log( `Error fetching data: ${error}`);
+        } 
+    }
+
+    //Obtengo los pesos que debería tener una jugadora en base a su altura según distintas fórmulas
     async function getDataAPIExterna(alt){
 
       const url = `https://fitness-calculator.p.rapidapi.com/idealweight?gender=female&height=${alt}`;
@@ -41,6 +50,7 @@
       try {
         const response = await fetch(url, options);
         const result = await response.json();
+        console.log(result.data)
         return result.data;
       } catch (error) {
         console.error(error);
@@ -51,18 +61,34 @@
 
     async function preparaChat(){
 
-      let jugadoras_alt={};
+      let jugadoras_alt=await getData1();
 
       let s=[];
-      let etiq=Object.keys(jugadoras_alt);
+      
+      let etiq=[];
 
-      let alturas=Object.values(jugadoras_alt);
+      let alturas=[];
 
-      for(let i=0;i<alturas;i++){
-        l_alturas=await getDataAPIExterna(alturas[i]);
+      let pesos=[];
 
-        let nombre_jugadora= etiq[i];
-        l_Original.push(jugadoras_alt[nombre_jugadora]);
+      for(let a=0;a<jugadoras_alt.length;a++){
+        let ja=jugadoras_alt[a];
+
+        let n=ja["nombre"];
+        etiq.push(n);
+
+        let alt=ja["altura"];
+        alturas.push(alt);
+
+        pesos.push(ja["peso"]);
+      }
+
+      for(let i=0;i<alturas.length;i++){
+
+        //Es una lista de pesos
+        let l_alturas=await getDataAPIExterna(Number(alturas[i]));
+        
+        l_Original.push(pesos[i]);
 
         l_Hamwi.push(l_alturas["Hamwi"]);
         l_Devine.push(l_alturas["Devine"]);
@@ -71,6 +97,7 @@
 
       }
 
+      //Introducimos los datos de la leyenda y de las barras
       s.push( {
             values: l_Original,
             text: 'Pesos originales',
@@ -136,33 +163,6 @@
 
         //Series que me haga la función
         series: s
-        // [
-        //   {
-        //     // plot 1 values, linear data
-        //     values: [23,20,27,29,25,17,15],
-        //     text: 'Week 1',
-        //   },
-        //   {
-        //     // plot 2 values, linear data
-        //     values: [35,42,33,49,35,47,35],
-        //     text: 'Week 2'
-        //   },
-        //   {
-        //     // plot 2 values, linear data
-        //     values: [15,22,13,33,44,27,31],
-        //     text: 'Week 3'
-        //   },
-        //   {
-        //     // plot 2 values, linear data
-        //     values: [15,22,13,33,44,27,31],
-        //     text: 'Week 4'
-        //   },
-        //   {
-        //     // plot 2 values, linear data
-        //     values: [15,22,13,33,44,27,31],
-        //     text: 'Week 5'
-        //   }
-        // ]
       };
 
       zingchart.render({
@@ -175,8 +175,7 @@
 
 
     onMount(()=>{
-      getDataAPIExterna(194);
-      fillChart3();
+      preparaChat();
     })
 
 
@@ -187,7 +186,3 @@
     <a href="https://www.zingchart.com/" rel="noopener" class="zc-ref">Powered by ZingChart</a>
   </div>
 
-
-  <div id="myChart2" class="chart--container">
-    <a href="https://www.zingchart.com/" rel="noopener" class="zc-ref">Powered by ZingChart</a>
-  </div>
