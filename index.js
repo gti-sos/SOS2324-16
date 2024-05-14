@@ -60,24 +60,46 @@ loadBackendDMC(app, dbVolleyball);
 app.use("/DMC/proxy", async function(req, res) {
     
     const url = `https://the-vegan-recipes-db.p.rapidapi.com/`;
-        const options = {
-            method: 'GET',
-            headers: {
-                'X-RapidAPI-Key': 'ae855ceae1msh2840b2c00787f80p198e0bjsnbf6b6ed1fe06',
-                'X-RapidAPI-Host': 'the-vegan-recipes-db.p.rapidapi.com'
-            }
-        };
-
-        try {
-            const response = await fetch(url, options);
-            const result = await response.json();
-            console.log(result);
-            res.json(result.slice(0,20)) ;
-        } catch (error) {
-            console.error(error);
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': 'ae855ceae1msh2840b2c00787f80p198e0bjsnbf6b6ed1fe06',
+            'X-RapidAPI-Host': 'the-vegan-recipes-db.p.rapidapi.com'
         }
+    };
 
-    });
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        console.log(result);
+        res.json(result.slice(0,20)) ;
+    } catch (error) {
+        console.error(error);
+    }
+
+});
+
+app.use("/PRR/proxy/:user", async function(req, res) {
+    
+    const { user } = req.params;
+    const url = `https://instagram-scraper-api2.p.rapidapi.com/v1/info?username_or_id_or_url=${user}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': 'ca542eb6dbmsha5edf4ea0fd0f32p146eb2jsn67517c3e59d5',
+            'X-RapidAPI-Host': 'instagram-scraper-api2.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        res.send(result);
+    } catch (error) {
+        console.error(error);
+    }
+
+});
 
 app.use(handler);
 

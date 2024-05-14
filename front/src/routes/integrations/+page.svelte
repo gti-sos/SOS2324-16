@@ -5,19 +5,15 @@
             <ul>
                 <li class ="li_mod">
                     <a href="/stats-volleyball/calculated_weight">/calculated_weight</a> : Integración con una API que calcula el peso ideal a partir de la altura (https://rapidapi.com/malaaddincelik/api/fitness-calculator/).
-                    <p> </p>
                 </li>
                 <li class ="li_mod">
                     <a href="/stats-volleyball/food">/food</a> : Uso textual de una API de recetas (https://rapidapi.com/rapihub-rapihub-default/api/the-vegan-recipes-db).
-                    <p></p>
                 </li>
                 <li class ="li_mod">
                     <a href="/stats-volleyball/nba_players">/nba_players</a> : Integración de una API con jugadores de baloncesto (https://rapidapi.com/tank01/api/tank01-fantasy-stats/).
-                    <p></p>
                 </li>
                 <li class ="li_mod">
                     <a href="/stats-volleyball/streaming">/streaming</a> : Integración con una API de servicios de streaming mediante una tabla (https://rapidapi.com/movie-of-the-night-movie-of-the-night-default/api/streaming-availability/).
-                    <p></p>
                 </li>
             </ul>
     <h2>Pablo Ruiz Rivas</h2>
