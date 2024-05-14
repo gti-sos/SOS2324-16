@@ -5,6 +5,7 @@
 </svelte:head>
 
 <script>
+    
     import { onMount } from 'svelte';
     import {dev} from "$app/environment";
 
@@ -13,9 +14,9 @@
 
     });
 
-    let DATAAPI1 = "/stats-volleyball/paises_serv";
+    let DATAAPI1 = "/api/v2/stats-volleyball-integrations/paises_serv";
     if(dev){
-        DATAAPI1 = "http://localhost:10000/stats-volleyball/paises_serv";
+        DATAAPI1 = "http://localhost:10000/api/v2/stats-volleyball-integrations/paises_serv";
         
     }
 

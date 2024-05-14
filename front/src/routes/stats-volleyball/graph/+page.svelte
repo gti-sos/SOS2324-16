@@ -129,6 +129,7 @@
             const res = await fetch(DATAAPI4);
             const data = await res.json();
             fillChart4(data); 
+            
         } catch (error){
             console.log( `Error fetching data: ${error}`);
         } 
@@ -137,7 +138,7 @@
     //Recibe una lista con el número de jugadoras que pertenecen a cada intervalo
     async function fillChart4(d){
 
-        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"]; // CHART CONFIG
+        //ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"]; // CHART CONFIG
     // -----------------------------
         let chartConfig = {
         type: 'hfunnel',
@@ -229,9 +230,10 @@
         // RENDER CHARTS
         // -----------------------------
         zingchart.render({
-        id: 'myChart',
-        data: chartConfig,
-        });
+                id: 'myChart',
+                data: chartConfig,
+                });
+        
     }
 
 

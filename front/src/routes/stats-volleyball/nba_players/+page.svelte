@@ -11,9 +11,9 @@
 
     import {dev} from "$app/environment";
 
-    let DATAAPI1 = "/stats-volleyball/nba_player";
+    let DATAAPI1 = "/api/v2/stats-volleyball-integrations/nba_player";
     if(dev){
-        DATAAPI1 = "http://localhost:10000/stats-volleyball/nba_player";
+        DATAAPI1 = "http://localhost:10000/api/v2/stats-volleyball-integrations/nba_player";
         
     }
 

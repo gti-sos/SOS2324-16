@@ -112,6 +112,7 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
             valores.splice(indexOffset, 1);
         }
 
+        let clavesAux=claves.length;
         //Búsquedas
         if(from>0 && to >0 && from<to){
 
@@ -156,7 +157,7 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
         dbVolleyball.find(cond).skip(offset).limit(limit).exec((err, info) => {
             if (err) {
                 res.sendStatus(500,'Error interno del servidor' );
-             }else if(info.length===0){
+             }else if(info.length===0 && clavesAux>0){
                 res.sendStatus(404,"Not found");
             }else {
                 res.send(info.map((c)=> {
@@ -448,240 +449,240 @@ app.delete(API_BASE+"/stats-volleyball/:nationality/:weight", (req,res) => {
 //Devuelve una lista de objetos, cada objeto tiene la clave la alt con el valor altura de cada jugadora
 app.get(API_BASE+"/stats-volleyball-integrations/data1",async (req,res)=>{
 
-    //Cambiar lo de svelte y meter apibase mas integrations yyyy meter la llamada appspot en todas las apis yyyyy ver si funciona cn dbVolleybaññ
-    let data=[]
-    try{
-        const res = await fetch("https://sos2324-16.ew.r.appspot.com/api/v2/stats-volleyball");
-        data = await res.json();
-        
-    } catch (error){
-        console.log( `Error fetching data: ${error}`);
-    } 
+    dbVolleyball.find({}, (err,info) => {
+        if(err){
+            res.sendStatus(404,"Not Found");
+        }
+        else{
+            
+            let data1=[];
+            let l=info.length;
+            for(let i=0; i< l; i++){
+                let n=info[i].height;
+                data1.push({ alt:n});
+            }
+            res.send(data1);
+        }
+    });
 
-    let data1=[];
-    let l=data.length;
-    for(let i=0; i< l; i++){
-        let n=data[i].height;
-        data1.push({ alt:n});
-    }
-    res.send(data1);
 });
 
 //Obtenemos una lista de objetos, cada objeto tiene el nombre del pais y el porcentaje de jugadoras que son de dicho país
 app.get(API_BASE+"/stats-volleyball-integrations/data2",(req,res)=>{
 
-    let data=[];
-    let paisesSet = [];
-    
-    datosDMC.forEach((el) => {
-        if(!(paisesSet.includes(el.nationality))){
-            paisesSet.push(el.nationality);
+    dbVolleyball.find({}, (err,info) => {
+        if(err){
+            res.sendStatus(404,"Not Found");
+        }
+        
+        else{
+            let data=[];
+            let paisesSet = [];
+            
+            info.forEach((el) => {
+                if(!(paisesSet.includes(el.nationality))){
+                    paisesSet.push(el.nationality);
+                }
+            });
+
+            for(let i=0;i<paisesSet.length;i++){
+                let p=paisesSet[i];
+                let ar=info.filter(el => el.nationality === p).map(el => el.name);
+                let n=ar.length/datosDMC.length;
+                data.push({name:p,y:n});
+            }
+            res.send(data);
         }
     });
+    
 
-    for(let i=0;i<paisesSet.length;i++){
-        let p=paisesSet[i];
-        let ar=datosDMC.filter(el => el.nationality === p).map(el => el.name);
-        let n=ar.length/datosDMC.length;
-        data.push({name:p,y:n});
-    }
-    res.send(data);
-    res.sendStatus(200,"OK");
+
+    
+    //res.sendStatus(200,"OK");
 });
 
 //Devuelve un objeto con el peso, altura, (el tamaño de la burbuja de la gráfica)  el nombre y el país de cada jugadora
 app.get(API_BASE+"/stats-volleyball-integrations/data3",(req,res)=>{
 
-    console.log(`New request to ${API_BASE+"/stats-volleyball/data3t"}`);
-    let data=[];
-    for(let i=0;i<datosDMC.length;i++){
-        let el=datosDMC[i];
-        let peso=el.weight;
-        let altura=el.height;
-        let nom=el.name;
-        let pais=el.name;
-        data.push({x:peso,y:altura,z:18,name:nom,country:pais});
-    }
+    //console.log(`New request to ${API_BASE+"/stats-volleyball/data3t"}`);
 
-    console.log("Returning "+data.length+ " items");
-    res.send(data);
+    dbVolleyball.find({}, (err,info) => {
+        if(err){
+            res.sendStatus(404,"Not Found");
+        }
+        else{
+            let data=[];
+            for(let i=0;i<info.length;i++){
+                let el=info[i];
+                let peso=el.weight;
+                let altura=el.height;
+                let nom=el.name;
+                let pais=el.name;
+                data.push({x:peso,y:altura,z:18,name:nom,country:pais});
+            }
+            res.send(data);
+        }
+    });
+    
 });
 
 //Lista con el número de jugadoras que sobrepasan la cantidad de puntos indicados
 app.get(API_BASE+"/stats-volleyball-integrations/data4",(req,res)=>{
 
-    let data=[];
-    let ar1=datosDMC.filter(e=>e.point>550).map(e=>e.name);
-    data.push(ar1.length);
+    dbVolleyball.find({}, (err,info) => {
+        if(err){
+            res.sendStatus(404,"Not Found");
+        }
+        else{
+            let data=[];
+            let ar1=info.filter(e=>e.point>550).map(e=>e.name);
+            data.push(ar1.length);
 
-    let ar2=datosDMC.filter(e=>e.point>575).map(e=>e.name);
-    data.push(ar2.length);
+            let ar2=info.filter(e=>e.point>575).map(e=>e.name);
+            data.push(ar2.length);
 
-    let ar3=datosDMC.filter(e=>e.point>600).map(e=>e.name);
-    data.push(ar3.length);
+            let ar3=info.filter(e=>e.point>600).map(e=>e.name);
+            data.push(ar3.length);
 
-    let ar4=datosDMC.filter(e=>e.point>800).map(e=>e.name);
-    data.push(ar4.length);
+            let ar4=info.filter(e=>e.point>800).map(e=>e.name);
+            data.push(ar4.length);
 
-    let ar5=datosDMC.filter(e=>e.point>900).map(e=>e.name);
-    data.push(ar5.length);
+            let ar5=info.filter(e=>e.point>900).map(e=>e.name);
+            data.push(ar5.length);
+
+            res.send(data);
+        }
+    });
 
 
-    res.send(data);
+    
 });
 
 //Devuelve el porcentaje de jugadoras que se encuentran en el intervalo de altura presentado
 app.get(API_BASE+"/stats-volleyball-integrations/nba_player",(req,res)=>{
 
-    let data=[];
-    let ar1=datosDMC.filter(el => el.height<=180).map(el => {
-        return {"nombre":el.name,"altura":el.height};
+    dbVolleyball.find({}, (err,info) => {
+        if(err){
+            res.sendStatus(404,"Not Found");
+        }
+        else{
+            let data=[];
+            let ar1=info.filter(el => el.height<=180).map(el => {
+                return {"nombre":el.name,"altura":el.height};
+            });
+            let p1= ar1.length/info.length;
+            data.push(p1*100);
+
+            let ar6=info.filter(el => el.height>180 && el.height<=190).map(el => el.name);
+            let p6=ar6.length/info.length;
+            data.push(p6*100);
+
+            let ar2=info.filter(el => el.height>190 && el.height<=200).map(el => el.name);
+            let p2=ar2.length/info.length;
+            data.push(p2*100);
+
+            let ar3=info.filter(el => el.height>200 && el.height<=210).map(el => el.name);
+            let p3=ar3.length/info.length;
+            data.push(p3*100);
+
+            let ar4=info.filter(el => el.height>210 && el.height<=220).map(el => el.name);
+            let p4=ar4.length/info.length;
+            data.push(p4*100);
+
+            let ar5=info.filter(el => el.height>220).map(el => el.name);
+            let p5=ar5.length/info.length;
+            data.push(p5*100);
+
+            res.send(data);
+
+        }
     });
-    let p1= ar1.length/datosDMC.length;
-    data.push(p1*100);
 
-    let ar6=datosDMC.filter(el => el.height>180 && el.height<=190).map(el => el.name);
-    let p6=ar6.length/datosDMC.length;
-    data.push(p6*100);
 
-    let ar2=datosDMC.filter(el => el.height>190 && el.height<=200).map(el => el.name);
-    let p2=ar2.length/datosDMC.length;
-    data.push(p2*100);
 
-    let ar3=datosDMC.filter(el => el.height>200 && el.height<=210).map(el => el.name);
-    let p3=ar3.length/datosDMC.length;
-    data.push(p3*100);
-
-    let ar4=datosDMC.filter(el => el.height>210 && el.height<=220).map(el => el.name);
-    let p4=ar4.length/datosDMC.length;
-    data.push(p4*100);
-
-    let ar5=datosDMC.filter(el => el.height>220).map(el => el.name);
-    let p5=ar5.length/datosDMC.length;
-    data.push(p5*100);
-
-    res.send(data);
+   
 });
 
 //Obtenemos una lista con los países de las jugadoras
 app.get(API_BASE+"/stats-volleyball-integrations/paises_serv",(req,res)=>{
-    let paisesSet=[];
-    datosDMC.forEach((el) => {
-        if(!(paisesSet.includes(el.nationality))){
-            paisesSet.push(el.nationality);
+    
+    
+    dbVolleyball.find({}, (err,info) => {
+        if(err){
+            res.sendStatus(404,"Not Found");
+        }
+        else{
+            let paisesSet=[];
+            info.forEach((el) => {
+                if(!(paisesSet.includes(el.nationality))){
+                    paisesSet.push(el.nationality);
+                }
+            });
+            res.send(paisesSet);
         }
     });
-    res.send(paisesSet);
+    
+    
+
 
 });
 
 //Obtenemos el nombre, peso y altura de cada jugadora
 app.get(API_BASE+"/stats-volleyball-integrations/calculated_w",(req,res)=>{
-    let data=[]
     
-    for(let i=0;i<datosDMC.length;i++){
-        let p=datosDMC[i]
-        data.push({"nombre":p.name,"altura":p.height,"peso":p.weight})
+    dbVolleyball.find({}, (err,info) => {
+        if(err){
+            res.sendStatus(404,"Not Found");
+        }
+        else{
+            let data=[]
+                
+                for(let i=0;i<info.length;i++){
+                    let p=info[i]
+                    data.push({"nombre":p.name,"altura":p.height,"peso":p.weight})
 
-    }
+                }
 
-    res.send(data);
+                res.send(data);
+
+        }
+    });
+    
+    
+    
 
 });
 
+
+//URL para las personas que quieran utilizar mi API en la integración
 app.get(API_BASE+'/stats-volleyball-integrations/data', (req, res) => {
-    let peticion = req.query; 
 
-    let limit = parseInt(req.query.limit) || 10; 
-    let offset = parseInt(req.query.offset) || 0;
+    res.send(datosDMC);
 
-    let from = Number(req.query.from);
-    let to = Number(req.query.to);
+});
 
-    if (Object.keys(peticion).length===0) {
-        datosDMC.find( {} ,(err,info)=> {
-                    if(err){
-                        res.sendStatus(500,"Internal Error");
-                    }else{
-                        res.send(info.map((c)=> {
-                            delete c._id;
-                            return c;
-                        }));
-                    }
-                });
-    }else{
+app.get(API_BASE+'/stats-volleyball-restore', (req, res) => {
 
-        let valores=Object.values(peticion);
-        let claves=Object.keys(peticion);
-        let cond={};
+    dbVolleyball.remove({},{ multi: true},(err,numRemoved) => {
+        if(err){
+            res.sendStatus(500,"Internal Error");
+        }else{
+            dbVolleyball.insert(datosDMC);
 
-        //Paginación
-        let indexLimit = claves.indexOf('limit');
-        if (indexLimit !== -1) {
-            claves.splice(indexLimit, 1);
-            valores.splice(indexLimit, 1);
+            dbVolleyball.find( {} ,(err,info)=> {
+                if(err){
+                    res.sendStatus(500,"Internal Error");
+                }else{
+                    res.send(info.map((c)=> {
+                        delete c._id;
+                        return c;
+                    }));
+                }
+            });
+            
         }
-        let indexOffset = claves.indexOf('offset');
-        if (indexOffset !== -1) {
-            claves.splice(indexOffset, 1);
-            valores.splice(indexOffset, 1);
-        }
-
-        //Búsquedas
-        if(from>0 && to >0 && from<to){
-
-            let indexFrom = claves.indexOf('from');
-            if (indexFrom !== -1) {
-                claves.splice(indexFrom, 1);
-                valores.splice(indexFrom, 1);
-            }
-            let indexTo = claves.indexOf('to');
-            if (indexTo !== -1) {
-                claves.splice(indexTo, 1);
-                valores.splice(indexTo, 1);
-            }
-
-            cond["birthdate"]={ $gte:new Date(from+"-01-01"), $lte:new Date(to+"-12-31") };
-
-            from=0;
-            to=0;
-
-        }
-
-        let valor=0;
-        let valor_aux=0;
-
-        //Parseo de los valores de entrada correspondientes
-        for(let i=0;i<claves.length;i++){
-
-            let clave=claves[i];
-
-            if((typeof datosDMC[0][clave])==="number"){
-                valor=Number(valores[i]);
-            }else if((typeof datosDMC[0][clave])==="object"){
-                valor_aux=Number(valores[i]);
-                valor={ $gte:new Date(valor_aux+"-01-01"), $lte:new Date(valor_aux+"-12-31") };
-            }else{
-                valor=valores[i];
-            }
-            cond[clave]=valor;
-        }
-
-        //Busca en la base de datos aquellas jugadoras que cumplan las condiciones del objeto "cond",aplicando el limit y offset
-        datosDMC.find(cond).skip(offset).limit(limit).exec((err, info) => {
-            if (err) {
-                res.sendStatus(500,'Error interno del servidor' );
-             }else if(info.length===0){
-                res.sendStatus(404,"Not found");
-            }else {
-                res.send(info.map((c)=> {
-                    delete c._id;
-                    return c;
-        }));
-    }
-    });      
-    }      
-  });
+    })
+});
 
 }
 

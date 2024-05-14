@@ -18,9 +18,9 @@
 // https://rapidapi.com/malaaddincelik/api/fitness-calculator/
 
 
-    let DATAAPI = "/stats-volleyball/calculated_w";
+    let DATAAPI = "/api/v2/stats-volleyball-integrations/calculated_w";
     if(dev){
-        DATAAPI="http://localhost:10000/stats-volleyball/calculated_w";
+        DATAAPI="http://localhost:10000/api/v2/stats-volleyball-integrations/calculated_w";
       }
 
     //Obtengo los datos de la API propia
