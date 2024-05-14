@@ -28,6 +28,7 @@
     "nedb": "^1.8.0",
     "newman": "^6.1.1",
     "request": "^2.88.2",
+    "svelte-image-gallery": "^1.7.1",
     "zingchart": "^2.9.13"
   },
   "type": "module",

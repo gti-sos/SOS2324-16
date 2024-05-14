@@ -79,6 +79,49 @@ app.use("/DMC/proxy", async function(req, res) {
 
     });
 
+app.use("/PSS/proxy", async function(req, res) {
+    const url = 'https://maps-data.p.rapidapi.com/photos.php?business_id=0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0&lang=en&country=us';
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': 'b0f281d7f3msh13de4455d1b8a25p1c2a06jsn2bd53ab1a197',
+            'X-RapidAPI-Host': 'maps-data.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        const lugar = await result.data;
+        res.json(lugar);
+    } catch (error) {
+        console.error(error);
+    }
+
+});
+
+app.use("/PRR/proxy/:user", async function(req, res) {
+    
+    const { user } = req.params;
+    const url = `https://instagram-scraper-api2.p.rapidapi.com/v1/info?username_or_id_or_url=${user}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': 'ca542eb6dbmsha5edf4ea0fd0f32p146eb2jsn67517c3e59d5',
+            'X-RapidAPI-Host': 'instagram-scraper-api2.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        res.send(result);
+    } catch (error) {
+        console.error(error);
+    }
+
+});
+
 app.use(handler);
 
 

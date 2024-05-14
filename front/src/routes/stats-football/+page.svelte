@@ -33,14 +33,15 @@
     let numero=10;
     let n2=0;
     let limit=false;
+    let rest = false;
     let opcionSeleccionada=Array.from({ length: numFormularios }, () => 'short_name');
 
     function handleSeleccion(event, nn) {
         opcionSeleccionada[nn] = event.target.value;
     }
 
-    onMount(()=>{
-        getFootball();
+    onMount(async()=>{
+        await getFootball();
     })
 
     async function getFootball(numPag=1){
@@ -49,12 +50,15 @@
             API22=API;
             let response="";
 
+            console.log(param.length);
             if(limit===true){
-                if(API22===API){
-                    API22=API+"?limit="+numero+"&offset="+offset;
-                }else{
-                    API22=API22+"&limit="+numero+"&offset="+offset;
-                }
+                console.log("API22 es "+API22);
+                API22=API+"?limit="+numero+"&offset="+offset;
+                // if(API22===API){
+                //     API22=API+"?limit="+numero+"&offset="+offset;
+                // }else{
+                //     API22=API22+"&limit="+numero+"&offset="+offset;
+                // }
 
             }
             if(param.length===0){
@@ -144,18 +148,22 @@
 
     async function ejecutaOrden(){
         await actualizaP();
-        await getFootball();
+        rest=false
+        await actualizaLO();
+        //await getFootball();
     }
 
 
     async function actualizaLO(){
         limit=false;
+        rest=false;
         await getFootball(1);
         let numElems=Football.length;
         if(numElems>0){
             n2=Math.ceil(numElems/numero) ;
         }
         limit=true;
+        rest=false;
         await getFootball(1);
 
     }
@@ -170,6 +178,37 @@
         }
     }
 
+    async function restauraValores(){
+        console.log(`Restaurando a valores por defecto`);
+
+        try{
+            let response=await fetch(API+"-restore",{
+                                method:"GET"
+                            })
+
+            let status = await response.status;
+            
+            if(status===200 ){
+                if(API22!==API){
+                    //
+                    //actualizaLO();
+                    msg="Se han establecido correctamente los valores por defecto";
+                }
+                
+                let data= await response.json();
+                volleyball=data;
+                param=[];
+                busqueda=[];
+                rest=true;
+            }else{
+                errorMsg="code: "+status;
+            }
+
+        }catch(e){
+            errorMsg=e;
+        }
+    }
+
     async function deleteFootball(nom,n){
         console.log(`Deleting ${nom}`);
 
@@ -179,6 +218,8 @@
                             })
 
             if(response.status===200){
+                rest=false;
+                actualizaLO();
                 getFootball();
                 msg="Jugador borrado correctamente";
             }else{
@@ -198,6 +239,9 @@
                             })
 
             if(response.status===200){
+                rest=false;
+                param=[];
+                busqueda=[];
                 getFootball();
                 msg="Todos los jugadores borrados correctamente";
             }else{
@@ -222,6 +266,7 @@
             let status=await response.status;
             console.log(`Creation response status ${status}`);
             if(status===201){
+                rest=false;
                 getFootball();
                 msg="Jugador creado correctamente";
             }else{
@@ -334,11 +379,17 @@
 
 </table>
 
+<br>
+<br>
+
 <span>
-    <button on:click={aumentarf}> + </button>
+    
     <h5>Filtrar</h5>
-    <button  on:click={disminuirF}> - </button>
+    <button on:click={aumentarf}> Añadir filtro </button>
+    <button  on:click={disminuirF}> Quitar filtro </button>
+   <br>
 </span>
+<br>
 
  {#each Array.from({ length: numFormularios }, (_, i) => i) as nn}
     {#if opcionSeleccionada[nn] === 'from-to'}
@@ -418,6 +469,6 @@
 
     </div>
     <br>
-    <button on:click="{createFootball}">Crear jugador de fútbol</button> <button on:click="{deleteAllFootball}">Limpiar lista</button>
+    <button on:click="{createFootball}">Crear jugador de fútbol</button> <button on:click="{deleteAllFootball}">Limpiar lista</button> <button on:click="{restauraValores}">Volver a la lista inicial</button>
     <p><a href="/stats-football/graph" class="nav-link">Ver las gráficas</a></p>
 </ul>

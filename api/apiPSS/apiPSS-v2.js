@@ -111,6 +111,8 @@ app.get(API_BASE+'/stats-football', (req, res) => {
             valores.splice(indexOffset, 1);
         }
 
+        let clavesAux = claves.length;
+
         //Búsquedas
         if(from>0 && to >0 && from<to){
 
@@ -152,7 +154,7 @@ app.get(API_BASE+'/stats-football', (req, res) => {
         dbFootball.find(cond).skip(offset).limit(limit).exec((err, info) => {
             if (err) {
                 res.sendStatus(500,'Error interno del servidor' );
-            }else if(info.length===0){
+            }else if(info.length===0 && clavesAux>0){
                 res.sendStatus(404,"Not found");
 
             }else {
@@ -420,43 +422,54 @@ app.delete(API_BASE+"/stats-football/:nationality/:height_cm", (req,res) => {
 });
 
 app.get(API_BASE+"/stats-football-integrations/data1",(req,res)=>{
+   
+    dbFootball.find({}, (err, jugadores) =>{
+        if(err){
+            res.sendStatus(500, "Internal Error");
+        } else {
+            let data = [];
+            let clubSet=[];
 
-    let data = [];
-    let clubSet=[]
+            jugadores.forEach((jg) => {
+                if(!(clubSet.includes(jg.club))){
+                    clubSet.push(jg.club);
+                }
+            });
 
-    jugadores.forEach((jg) => {
+            for(let i=0; i<clubSet.length; i++){
+                let club = clubSet[i];
+                let lista = jugadores.filter(jg => jg.club === club).map(jg => jg.short_name);
+                let n = lista.length;
+                data.push([club, n]);
+            }
 
-        if(!(clubSet.includes(jg.club))){
-            clubSet.push(jg.club);
+            data.sort((a, b) => b[1] - a[1]);
+
+            res.send(data);
         }
     });
-
-    for(let i=0;i<clubSet.length;i++){
-        let club = clubSet[i];
-        let lista = jugadores.filter(jg => jg.club === club).map(jg => jg.short_name);
-        let n = lista.length;
-        data.push([club,n]);
-    }
-
-    data.sort((a, b) => b[1] - a[1]);
-
-    res.send(data);
 });
 
 app.get(API_BASE+"/stats-football-integrations/data2", (req, res) => {
-    let europaData = [];
-    let restoData = [];
-
-    jugadores.forEach((jg) => {
-        let edad = jg.age;
-        if (enEuropa(jg.nationality)) {
-            europaData.push(edad);
+    dbFootball.find({}, (err, jugadores) => {
+        if (err) {
+            res.sendStatus(500, "Internal Error");
         } else {
-            restoData.push(edad);
+            let europaData = [];
+            let restoData = [];
+
+            jugadores.forEach((jg) => {
+                let edad = jg.age;
+                if (enEuropa(jg.nationality)) {
+                    europaData.push(edad);
+                } else {
+                    restoData.push(edad);
+                }
+            });
+
+            res.send({ "europa": europaData, "resto": restoData });
         }
     });
-
-    res.send({ "europa": europaData, "resto": restoData });
 });
 
 function enEuropa(pais) {
@@ -465,43 +478,87 @@ function enEuropa(pais) {
 }
 
 app.get(API_BASE+"/stats-football-integrations/data3",(req,res)=>{
+    dbFootball.find({}, (err, jugadores) =>{
+        if(err){
+            res.sendStatus(500, "Internal Error");
+        } else {
+            let data = [];
 
-    let data=[];
+            jugadores.forEach((jg) => {
+                let peso = jg.weight_kg;
+                let altura = jg.height_cm;
+                let nom = jg.short_name;
+                let pais = jg.long_name;
+                data.push({x: peso, y: altura, z: 18, name: nom, country: pais});
+            });
 
-    for(let i=0;i<jugadores.length;i++){
-        let jg=jugadores[i];
-        let peso=jg.weight_kg;
-        let altura=jg.height_cm;
-        let nom=jg.short_name;
-        let pais=jg.long_name;
-        data.push({x:peso,y:altura,z:18,name:nom,country:pais});
-    }
-
-    res.send(data);
+            res.send(data);
+        }
+    });
 });
 
 app.get(API_BASE+"/stats-football-integrations/data4",(req,res)=>{
-    let data=[];
-    let paisesSet = [];
-    
-    jugadores.forEach((jg) => {
-        if(!(paisesSet.includes(jg.nationality))){
-            paisesSet.push(jg.nationality);
+    dbFootball.find({}, (err, jugadores) =>{
+        if(err){
+            res.sendStatus(500, "Internal Error");
+        } else {
+            let data = [];
+            let paisesSet = [];
+
+            jugadores.forEach((jg) => {
+                if(!(paisesSet.includes(jg.nationality))){
+                    paisesSet.push(jg.nationality);
+                }
+            });
+
+            for(let i=0;i<paisesSet.length;i++){
+                let pais = paisesSet[i];
+                let lista = jugadores.filter(jg => jg.nationality === pais).map(jg => jg.long_name);
+                let porcentaje = (lista.length / jugadores.length) * 100.0;
+                data.push([pais, porcentaje]);
+            }
+
+            res.send(data);
         }
     });
-
-    for(let i=0;i<paisesSet.length;i++){
-        let pais = paisesSet[i];
-        let lista = jugadores.filter(jg => jg.nationality === pais).map(jg => jg.long_name);
-        let porcentaje = lista.length/jugadores.length * 100.0;
-        data.push([pais, porcentaje]);
-    }
-    res.send(data);
 });
 
 app.get(API_BASE+"/stats-football-integrations/data5", (req, res) => {
-    let data = jugadores.map(jg => jg.height_cm);
-    res.send(data);
+    dbFootball.find({}, (err, jugadores) => {
+        if (err) {
+            res.sendStatus(500, "Internal Error");
+        } else {
+            let data = jugadores.map(jg => jg.height_cm);
+            res.send(data);
+        }
+    });
+});
+
+//URL para las personas que quieran utilizar mi API en la integración
+app.get(API_BASE+'/stats-volleyball-integrations/data', (req, res) => {
+    res.send(jugadores);
+});
+
+app.get(API_BASE+'/stats-football-restore', (req, res) => {
+
+    dbFootball.remove({},{ multi: true},(err,numRemoved) => {
+        if(err){
+            res.sendStatus(500,"Internal Error");
+        }else{
+            dbFootball.insert(jugadores);
+
+            dbFootball.find( {} ,(err,info)=> {
+                if(err){
+                    res.sendStatus(500,"Internal Error");
+                }else{
+                    res.send(info.map((c)=> {
+                        delete c._id;
+                        return c;
+                    }));
+                }
+            });
+        }
+    })
 });
 }
 
