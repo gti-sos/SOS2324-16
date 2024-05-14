@@ -28,10 +28,10 @@
                     <a href="/stats-rugby/graph-mlb">MLB gráfica</a> -  Gráfica coomaparando la cantidad de premisos conseguidos por nacionalidad de jugadores.
                 </li>
                 <li class ="li_mod">
-                    <a href="/stats-rugby/moviesAPI">IMDb Top 100 películas</a> - Uso de la api oficial de IMDb mostrando las 100 películas.
+                    <a href="/stats-rugby/moviesAPI">IMDb Top 100 películas</a> - Uso de la api rapidapi de IMDb mostrando las 100 películas.
                 </li>
                 <li class ="li_mod">
-                    <a href="/stats-rugby/###">/graph_nba</a> - Uso de una api externa con un widget(NBA).
+                    <a href="/stats-rugby/instagramAPI">/Usuarios de Instagram</a> - Uso de una api scraper de Instagram.
                 </li>
             </ul>
     <h2>Pablo Suarez Sarmiento</h2>
