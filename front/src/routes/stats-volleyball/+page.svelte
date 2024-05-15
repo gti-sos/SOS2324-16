@@ -48,7 +48,6 @@
             API22=API;
             let response="";
 
-            console.log(param.length);
             if(limit===true){
                 console.log("API22 es "+API22);
                 API22=API+"?limit="+numero+"&offset="+offset;
@@ -211,7 +210,8 @@
                 let data= await response.json();
                 volleyball=data;
                 //
-                actualizaLO();
+                await actualizaLO();
+                msg="Se han establecido correctamente los valores por defecto";
                 param=[];
                 busqueda=[];
                 rest=true;
@@ -235,8 +235,8 @@
 
             if(response.status===200){
                 rest=false;
-                //await actualizaLO();
-                getVolleyball();
+                await actualizaLO();
+                //await getVolleyball();
                 msg="Jugadora borrada correctamente";
             }else{
                 errorMsg="code: "+response.status;
@@ -285,7 +285,7 @@
                 rest=false;
                 //
                 //await actualizaLO();
-            getVolleyball();
+                getVolleyball();
                 msg="Jugadora creada correctamente";
             }else{
                 errorMsg="code: "+status;
