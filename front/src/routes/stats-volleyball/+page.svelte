@@ -317,8 +317,6 @@
             }else{
                 errorMsg="code: "+status;
             }
-
-
        
         for(let i=0;i<volleyball_c.length;i++){
             let el=volleyball_c[i];
