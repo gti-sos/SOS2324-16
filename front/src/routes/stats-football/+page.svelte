@@ -196,7 +196,9 @@
                 }
                 
                 let data= await response.json();
-                volleyball=data;
+                Football=data;
+                console.log("llega?");
+                actualizaLO();
                 param=[];
                 busqueda=[];
                 rest=true;
@@ -219,8 +221,8 @@
 
             if(response.status===200){
                 rest=false;
-                actualizaLO();
-                getFootball();
+                await actualizaLO();
+                //getFootball();
                 msg="Jugador borrado correctamente";
             }else{
                 errorMsg="code: "+response.status;
@@ -242,7 +244,7 @@
                 rest=false;
                 param=[];
                 busqueda=[];
-                getFootball();
+                await getFootball();
                 msg="Todos los jugadores borrados correctamente";
             }else{
                 errorMsg="code: "+response.status;
