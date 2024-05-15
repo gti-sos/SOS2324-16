@@ -654,6 +654,7 @@ app.get(API_BASE+"/stats-volleyball-integrations/calculated_w",(req,res)=>{
 });
 
 
+
 //URL para las personas que quieran utilizar mi API en la integración
 app.get(API_BASE+'/stats-volleyball-integrations/data', (req, res) => {
 
