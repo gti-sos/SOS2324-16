@@ -296,7 +296,6 @@
 
     }
 
-
     async function getTabla(){
 
         let volleyball_c=[];
