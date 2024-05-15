@@ -1,3 +1,9 @@
+<svelte:head>
+    <script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script> 
+    <script src="https://jsuites.net/v4/jsuites.js"></script>
+
+</svelte:head>
+
 <script>
     import { onMount } from "svelte";
     import {dev} from "$app/environment";
@@ -31,6 +37,7 @@
     onMount(async()=>{
         //await actualizaLO();
         await getVolleyball();
+        //await getTabla();
         
     })
 
@@ -109,6 +116,7 @@
         }
 
         //await actualizaLO();
+        await getTabla();
         console.log(volleyball);
         
     }
@@ -202,6 +210,8 @@
                 
                 let data= await response.json();
                 volleyball=data;
+                //
+                actualizaLO();
                 param=[];
                 busqueda=[];
                 rest=true;
@@ -225,8 +235,8 @@
 
             if(response.status===200){
                 rest=false;
-                actualizaLO();
-                getVolleyball();
+                await actualizaLO();
+                //getVolleyball();
                 msg="Jugadora borrada correctamente";
             }else{
                 errorMsg="code: "+response.status;
@@ -248,7 +258,7 @@
                 rest=false;
                 param=[];
                 busqueda=[];
-                getVolleyball();
+                await getVolleyball();
                 msg="Todas las jugadoras borradas correctamente";
             }else{
                 errorMsg="code: "+response.status;
@@ -273,7 +283,9 @@
             console.log(`Creation response status ${status}`);
             if(status===201){
                 rest=false;
-                getVolleyball();
+                //
+                await actualizaLO();
+                //getVolleyball();
                 msg="Jugadora creada correctamente";
             }else{
                 errorMsg="code: "+status;
@@ -283,6 +295,66 @@
         }
 
     }
+
+
+    async function getTabla(){
+
+        let volleyball_c=[];
+        let dat=[];
+        var elem2 = document.getElementById("spreadsheet");
+        
+        // Vacía el contenido del elemento div
+        elem2.innerHTML = "";
+
+        let response=await fetch(API,{
+                                method:"GET"
+                            });
+
+        let status = await response.status;
+            
+            if(status===200 ){
+                let data= await response.json();
+                volleyball_c=data;
+            }else{
+                errorMsg="code: "+status;
+            }
+
+
+       
+        for(let i=0;i<volleyball_c.length;i++){
+            let el=volleyball_c[i];
+            dat.push([el.name,el.nationality,el.birthdate.substring(0,10),el.position]);
+        }
+        var data = dat;
+
+        jspreadsheet(document.getElementById('spreadsheet'), {
+            data:data,
+            columns: [
+                {
+                    type: 'text',
+                    title:'Nombre de la jugadora',
+                    width:150
+                },
+                {
+                    type: 'text',
+                    title:'País',
+                    width:150
+                },
+                {
+                    type: 'text',
+                    title:'Fecha de nacimiento',
+                    width:150
+                },
+                {
+                    type: 'text',
+                    title:'Posición',
+                    width:150
+                }
+            ]
+        });
+
+}
+
 </script>
 
 {#if msg!=""}
@@ -478,3 +550,28 @@
      <button on:click="{createVolleyball}">Crear jugadora volleyball</button> <button on:click="{deleteTodasVolleyball}">Limpiar lista</button> <button on:click="{restauraValores}">Volver a la lista inicial</button>  
     <p> <a href="/stats-volleyball/graph" class="nav-link">Ver las gráficas</a></p>
 </ul>
+
+<div id="spreadsheet"></div>
+<!-- nuevo -->
+<!-- <title>Listado en dos columnas</title>
+<style>
+    .columnas {
+        column-count: 2; /* Divide en dos columnas */
+        column-gap: 20px; /* Espacio entre columnas */
+    }
+</style>
+
+
+    <div class="columnas">
+        <ul>
+            <li>tabla</li>
+            <li>
+                {#each volleyball as volleyball_j}
+                    <li> <a href="/stats-volleyball/{volleyball_j.nationality}/{volleyball_j.weight}">{volleyball_j.name} - {volleyball_j.nationality}</a>  <button on:click="{deleteVolleyball(volleyball_j.name,volleyball_j.nationality+"/"+volleyball_j.weight)}">Borrar</button> </li>
+                    
+                {/each}
+            </li>
+           
+             Agrega más elementos aquí -->
+        <!-- </ul>
+    </div> --> 
