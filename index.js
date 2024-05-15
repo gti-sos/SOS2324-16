@@ -114,34 +114,11 @@ app.use("/PSS/proxy", async function(req, res) {
     try {
         const response = await fetch(url, options);
         const result = await response.json();
-        const lugar = await result.data;
+        const lugar = result.data;
         res.json(lugar);
     } catch (error) {
         console.error(error);
     }
-
-});
-
-app.use("/PRR/proxy/:user", async function(req, res) {
-    
-    const { user } = req.params;
-    const url = `https://instagram-scraper-api2.p.rapidapi.com/v1/info?username_or_id_or_url=${user}`;
-    const options = {
-        method: 'GET',
-        headers: {
-            'X-RapidAPI-Key': 'ca542eb6dbmsha5edf4ea0fd0f32p146eb2jsn67517c3e59d5',
-            'X-RapidAPI-Host': 'instagram-scraper-api2.p.rapidapi.com'
-        }
-    };
-
-    try {
-        const response = await fetch(url, options);
-        const result = await response.json();
-        res.send(result);
-    } catch (error) {
-        console.error(error);
-    }
-
 });
 
 app.use(handler);
