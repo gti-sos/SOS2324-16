@@ -235,8 +235,8 @@
 
             if(response.status===200){
                 rest=false;
-                await actualizaLO();
-                //getVolleyball();
+                //await actualizaLO();
+                getVolleyball();
                 msg="Jugadora borrada correctamente";
             }else{
                 errorMsg="code: "+response.status;
@@ -284,8 +284,8 @@
             if(status===201){
                 rest=false;
                 //
-                await actualizaLO();
-                //getVolleyball();
+                //await actualizaLO();
+            getVolleyball();
                 msg="Jugadora creada correctamente";
             }else{
                 errorMsg="code: "+status;
