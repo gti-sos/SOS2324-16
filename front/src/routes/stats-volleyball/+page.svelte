@@ -235,7 +235,7 @@
 
             if(response.status===200){
                 rest=false;
-                await actualizaLO();
+                actualizaLO();
                  //getVolleyball();
                 msg="Jugadora borrada correctamente";
             }else{
