@@ -101,6 +101,7 @@
                 if(API22!==API){
                     //
                     //actualizaLO();
+                    console.log("entra en lo del filtrado realizado correctamente");
                     msg="Filtrado realizado correctamente";
                 }
                 
@@ -235,7 +236,8 @@
 
             if(response.status===200){
                 rest=false;
-                actualizaLO();
+                msg="Jugadora borrada correctamente";
+                await actualizaLO();
                  //getVolleyball();
                 msg="Jugadora borrada correctamente";
             }else{
@@ -283,10 +285,11 @@
             console.log(`Creation response status ${status}`);
             if(status===201){
                 rest=false;
-                //
-                //await actualizaLO();
+                
                 console.log("Debería salir lo del getVolley")
-                getVolleyball();
+                msg="Jugadora creada correctamente";
+                await actualizaLO();
+                //await getVolleyball();
                 console.log("ultíma linea")
                 msg="Jugadora creada correctamente";
             }else{
