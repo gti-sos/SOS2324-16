@@ -116,7 +116,7 @@
         }
 
         //await actualizaLO();
-        await getTabla();
+        //await getTabla();
         console.log(volleyball);
         
     }
