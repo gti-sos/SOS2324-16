@@ -99,7 +99,6 @@
             
             if(status===200 ){
                 if(API22!==API){
-                    console.log("entra en lo del filtrado realizado correctamente");
                     msg="Filtrado realizado correctamente";
                 }
                 
