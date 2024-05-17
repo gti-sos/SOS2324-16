@@ -157,9 +157,11 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
         dbVolleyball.find(cond).skip(offset).limit(limit).exec((err, info) => {
             if (err) {
                 res.sendStatus(500,'Error interno del servidor' );
-             }else if(info.length===0 && clavesAux>0){
-                res.sendStatus(404,"Not found");
-            }else {
+             }
+            //  else if(info.length===0 && clavesAux>0){
+            //     res.sendStatus(404,"Not found");
+            // }
+            else {
                 res.send(info.map((c)=> {
                     delete c._id;
                     return c;
@@ -173,7 +175,8 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
 app.post(API_BASE+"/stats-volleyball", validarDatos, (req,res) => {
     let stat=req.body;
 
-    dbVolleyball.find({"name":stat.name,"ranking":stat.ranking,"nationality":stat.nationality,"position":stat.position,"height":stat.height,"weight":stat.weight,"dominant_hand":stat.dominant_hand,"country_point":stat.country_point,"point":stat.point}, (err,info) => {
+    //"ranking":stat.ranking,"nationality":stat.nationality,"position":stat.position,"height":stat.height,"weight":stat.weight,"dominant_hand":stat.dominant_hand,"country_point":stat.country_point,"point":stat.point
+    dbVolleyball.find({"name":stat.name}, (err,info) => {
         if(err){
             res.sendStatus(500,"Internal Error");
         }else{

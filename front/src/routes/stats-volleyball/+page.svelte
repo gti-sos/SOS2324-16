@@ -12,8 +12,10 @@
     let API="/api/v2/stats-volleyball";
     if(dev){
         API="http://localhost:10000/api/v2/stats-volleyball";
+        
     }
 
+    let volleyball_c=[];
     let volleyball=[];
     let errorMsg="";
     let msg="";
@@ -27,7 +29,7 @@
     let numero=10;
     let n2=0;
     let limit=false;
-    let rest=false;
+    //let rest=false;
     let opcionSeleccionada=Array.from({ length: numFormularios }, () => 'name');;
 
     function handleSeleccion(event, nn) {
@@ -35,13 +37,18 @@
     }
 
     onMount(async()=>{
-        //await actualizaLO();
-        await getVolleyball();
-        //await getTabla();
+        await getVolleyball(1,"");
+        // console.log("aparece"+volleyball.length);
         
     })
 
-    async function getVolleyball(numPag=1){
+    async function getVolleyball(numPag=1,msgEnv){
+        if(typeof msgEnv==='string'){
+            msg=msgEnv;
+        }else{
+            msg="";
+        }
+        
 
         try{
             let offset=numero*(numPag-1);
@@ -49,17 +56,10 @@
             let response="";
 
             if(limit===true){
-                console.log("API22 es "+API22);
+                //console.log("API22 es "+API22);
                 API22=API+"?limit="+numero+"&offset="+offset;
-                // if(API22===API){
-                //     console.log("ll");
-                //     API22=API+"?limit="+numero+"&offset="+offset;
-                    
-                // }else{
-                //     API22=API22+"&limit="+numero+"&offset="+offset;
-                // }
-
             }
+            //console.log("debería ser api?limit=2")
             if(param.length===0){
                 response=await fetch(API22,{
                                 method:"GET"
@@ -67,7 +67,7 @@
             }
             else{
 
-                console.log("entra?"+API22);
+                //console.log("entra?"+API22);
                 let i=0;
                 while(i<param.length){
                     if(API22===API){
@@ -88,40 +88,47 @@
                     }
                     i=i+1;
                 }
+                console.log(param);
+                //msg="Filtrado realizado correctamente";
                 response=await fetch(API22,{
                                 method:"GET"
                             });
                 
             }
 
-            console.log(API22);
+            //console.log(API22);
             let status = await response.status;
             
             if(status===200 ){
-                if(API22!==API){
-                    //
-                    //actualizaLO();
-                    console.log("entra en lo del filtrado realizado correctamente");
-                    msg="Filtrado realizado correctamente";
-                }
+                // if(API22!==API){
+                //     //
+                //     //actualizaLO();
+                //     //console.log("entra en lo del filtrado realizado correctamente");
+                    
+                // }
                 
                 let data= await response.json();
                 volleyball=data;
             }else{
                 errorMsg="code: "+status;
+                msg="";
             }
                 
         }catch(e){
             errorMsg=e;
+            msg="";
         }
 
         //await actualizaLO();
-        //await getTabla();
+        await getTabla();
+        console.log("Mostrando los elementos de "+API22);
         console.log(volleyball);
+        console.log(msg);
         
     }
 
     async function actualizaP(){
+        console.log(volleyball.length);
 
         param=[];
         busqueda=[];
@@ -153,31 +160,46 @@
 
 
         }
-        console.log(param);
-        console.log(busqueda);
+        //console.log(param);
+        //console.log(busqueda);
 
     }
 
 
     async function ejecutaOrden(){
+        console.log("antes del p"+volleyball.length);
         await actualizaP();
-        rest=false
-        await actualizaLO();
+        //rest=false
+        await actualizaLO("Filtrado realizado correctamente");
         //await getVolleyball();
     }
 
 
-    async function actualizaLO(){
+    async function actualizaLO(msgEnv){
+        
         limit=false;
-        rest=false;
-        await getVolleyball(1);
+        //rest=false;
+        //await getVolleyball(1);
+        if(typeof msgEnv ==='string'){
+            await getVolleyball(1,msgEnv);
+        }else{
+            await getVolleyball(1,"Paginación realizada correctamente");
+        }
+        // console.log("sale 10?"+volleyball_c.length);
+        //console.log(volleyball.length)
         let numElems=volleyball.length;
         if(numElems>0){
             n2=Math.ceil(numElems/numero) ;
         }
         limit=true;
-        rest=false;
-        await getVolleyball(1);
+        //rest=false;
+        if(typeof msgEnv ==='string'){
+            await getVolleyball(1,msgEnv);
+        }else{
+            await getVolleyball(1,"Paginación realizada correctamente");
+        }
+        
+        
         
     }
     
@@ -202,26 +224,33 @@
             let status = await response.status;
             
             if(status===200 ){
-                if(API22!==API){
-                    //
-                    //actualizaLO();
-                    msg="Se han establecido correctamente los valores por defecto";
-                }
-                
+                // if(API22!==API){
+                //     //
+                //     //actualizaLO();
+                //     msg="Se han establecido correctamente los valores por defecto";
+                // }
+
                 let data= await response.json();
                 volleyball=data;
-                //
-                await actualizaLO();
-                msg="Se han establecido correctamente los valores por defecto";
+                //volleyball_c=data;
                 param=[];
                 busqueda=[];
-                rest=true;
+                await actualizaLO("Se han establecido correctamente los valores por defecto");
+                
+                
+                //
+                //await actualizaLO();
+                // msg="Se han establecido correctamente los valores por defecto";
+                
+                //rest=true;
             }else{
                 errorMsg="code: "+status;
+                msg="";
             }
 
         }catch(e){
             errorMsg=e;
+            msg="";
         }
     }
 
@@ -235,16 +264,18 @@
                             })
 
             if(response.status===200){
-                rest=false;
-                msg="Jugadora borrada correctamente";
-                await actualizaLO();
+                //rest=false;
+                //msg="Jugadora borrada correctamente";
+                await actualizaLO("Jugadora borrada correctamente");
                  //getVolleyball();
-                msg="Jugadora borrada correctamente";
+                //msg="Jugadora borrada correctamente";
             }else{
                 errorMsg="code: "+response.status;
+                msg="";
             }
         }catch(e){
             errorMsg=e;
+            msg="";
         }
     }
 
@@ -257,20 +288,24 @@
                             })
 
             if(response.status===200){
-                rest=false;
+                //rest=false;
                 param=[];
                 busqueda=[];
-                await getVolleyball();
-                msg="Todas las jugadoras borradas correctamente";
+                await getVolleyball(1,"Todas las jugadoras borradas correctamente");
+                //console.log(msg);
+                //msg="Todas las jugadoras borradas correctamente";
             }else{
                 errorMsg="code: "+response.status;
+                msg="";
             }
         }catch(e){
             errorMsg=e;
+            msg="";
         }
     }
 
     async function createVolleyball(){
+        console.log("Creando jugadora "+newVolleyball["name"])
 
         try{
             let response=await fetch(API,{
@@ -282,28 +317,28 @@
                             })
 
             let status=await response.status;
-            console.log(`Creation response status ${status}`);
+            //console.log(`Creation response status ${status}`);
             if(status===201){
-                rest=false;
+                //rest=false;
                 
-                console.log("Debería salir lo del getVolley")
-                msg="Jugadora creada correctamente";
-                await actualizaLO();
+                
+                //msg="Jugadora creada correctamente";
+                await actualizaLO("Jugadora creada correctamente");
                 //await getVolleyball();
-                console.log("ultíma linea")
-                msg="Jugadora creada correctamente";
+                //msg="Jugadora creada correctamente";
             }else{
                 errorMsg="code: "+status;
+                msg="";
             }
         }catch(e){
             errorMsg=e;
+            msg="";
         }
 
     }
 
     async function getTabla(){
 
-        let volleyball_c=[];
         let dat=[];
         var elem2 = document.getElementById("spreadsheet");
         
@@ -321,6 +356,7 @@
                 volleyball_c=data;
             }else{
                 errorMsg="code: "+status;
+                msg="";
             }
        
         for(let i=0;i<volleyball_c.length;i++){
@@ -461,6 +497,9 @@
 
 <br>
 <br>
+<h2>Datos de las jugadoras almacenadas</h2>
+<div id="spreadsheet"></div>
+<br>
 
 <span>
     
@@ -553,7 +592,7 @@
     <p> <a href="/stats-volleyball/graph" class="nav-link">Ver las gráficas</a></p>
 </ul>
 
-<div id="spreadsheet"></div>
+
 <!-- nuevo -->
 <!-- <title>Listado en dos columnas</title>
 <style>
