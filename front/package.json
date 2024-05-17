@@ -30,7 +30,6 @@
   "license": "ISC",
   "dependencies": {
     "@amcharts/amcharts5": "^5.9.7",
-    "canvasjs": "^1.8.3",
-    "svelte-image-gallery": "^1.7.1"
+    "canvasjs": "^1.8.3"
   }
 }

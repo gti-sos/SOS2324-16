@@ -37,16 +37,16 @@
     <h2>Pablo Suarez Sarmiento</h2>
             <ul>
                 <li class ="li_mod">
-                    <a href="/stats-football/###">/Twitch API</a> - Uso de una api de twitch para ver todas las canciones de una playlist mediante su id(Oauth).
+                    <a href="/stats-football/rapidapi_basketAPI">/rapidapi_basketAPI</a> - Integración de una api con jugadores de baloncesto.
                 </li>
                 <li class ="li_mod">
-                    <a href="/stats-football/###">/graph_coins</a> - Uso de una api externa con un widget(coins).
+                    <a href="/stats-football/rapidapi_transfermarkt">/rapidapi_transfermarkt</a> - Integración de una api con jugadores de fútbol.
                 </li>
                 <li class ="li_mod">
-                    <a href="/stats-football/###">/graph_nba</a> - Uso de una api externa con un widget(NBA).
+                    <a href="/stats-football/rapidapi_bet365">/rapidapi_bet365</a> - Uso de una api externa que devuelve un listado de partidos.
                 </li>
                 <li class ="li_mod">
-                    <a href="/stats-football/###">/graph_proxy</a> - Uso de una api de sos(G22) a través de un proxy propio.
+                    <a href="/stats-football/rapidapi_maps">/rapidapi_maps</a> - Uso de una api externa a través de un proxy propio.
                 </li>
             </ul>
 

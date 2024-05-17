@@ -12,7 +12,7 @@
     import { onMount } from 'svelte';
     import { dev } from "$app/environment";
     
-    let DATAAPI = "api/v2/stats-football-integrations/data4";
+    let DATAAPI = "/api/v2/stats-football-integrations/data4";
     if (dev) {
         DATAAPI = "http://localhost:10000/api/v2/stats-football-integrations/data4";
     }

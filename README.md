@@ -15,3 +15,7 @@
    - [https://sos2324-16.appspot.com/api/v2/stats-volleyball/docs](https://sos2324-16.appspot.com/api/v2/stats-volleyball/docs) (v2 developed by Domingo Morales Calderon)
    - [https://sos2324-16.appspot.com/api/v1/stats-rugby/docs](https://sos2324-16.appspot.com/api/v1/stats-rugby/docs) (v1 developed by Pablo Ruiz Rivas)
    - [https://sos2324-16.appspot.com/api/v2/stats-rugby/docs](https://sos2324-16.appspot.com/api/v2/stats-rugby/docs) (v2 developed by Pablo Ruiz Rivas)
+
+- **Docker:**
+   - `docker run -p 8080:10000 -d pablosuarez10/sos2324-16:latest`
+`

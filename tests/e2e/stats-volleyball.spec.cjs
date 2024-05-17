@@ -6,7 +6,7 @@ test('List players', async ({ page }) => {
 
   await page.getByRole('navigation').getByRole('link', { name: 'Jugadoras voleibol' }).click();
   
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(10000);
 
   let personCount = (await page.getByRole('listitem').all()).length;
   await expect(personCount).toBeGreaterThan(0);
@@ -39,7 +39,7 @@ test('Delete all', async ({ page }) => {
   await page.goto('http://localhost:10000');
 
   await page.getByRole('navigation').getByRole('link', { name: 'Jugadoras voleibol' }).click();
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(10000);
 
   await page.getByRole('button', { name: 'Limpiar lista'}).click();
 
