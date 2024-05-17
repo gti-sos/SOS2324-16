@@ -17,6 +17,6 @@
    - [https://sos2324-16.appspot.com/api/v2/stats-rugby/docs](https://sos2324-16.appspot.com/api/v2/stats-rugby/docs) (v2 developed by Pablo Ruiz Rivas)
 
 - **Docker:**
--  Use this comand to create a docker container with us project:
+   -  Use this comand to create a docker container with us project:
    - `docker run -p 8080:10000 -d pablosuarez10/sos2324-16:latest`
 `
