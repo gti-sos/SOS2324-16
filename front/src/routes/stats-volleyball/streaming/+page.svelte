@@ -22,7 +22,7 @@
 
     // https://rapidapi.com/movie-of-the-night-movie-of-the-night-default/api/streaming-availability/
     
-    //Obtenemos la lista de todos los servicios disponibles
+    //Obtenemos la lista de todos los servicios disponibles de la API
     async function getListaServicios(){
         const url = 'https://streaming-availability.p.rapidapi.com/services';
         const options = {
@@ -66,7 +66,6 @@
             console.error(error);
         }
     }
-
 
     async function getDataTable(){
         let paises_api_propia=[]
