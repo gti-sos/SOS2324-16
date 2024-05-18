@@ -158,9 +158,6 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
             if (err) {
                 res.sendStatus(500,'Error interno del servidor' );
              }
-            //  else if(info.length===0 && clavesAux>0){
-            //     res.sendStatus(404,"Not found");
-            // }
             else {
                 res.send(info.map((c)=> {
                     delete c._id;
@@ -175,7 +172,13 @@ app.get(API_BASE+'/stats-volleyball', (req, res) => {
 app.post(API_BASE+"/stats-volleyball", validarDatos, (req,res) => {
     let stat=req.body;
 
-    //"ranking":stat.ranking,"nationality":stat.nationality,"position":stat.position,"height":stat.height,"weight":stat.weight,"dominant_hand":stat.dominant_hand,"country_point":stat.country_point,"point":stat.point
+    const partesFecha = stat.birthdate.split("/"); 
+    const dia = parseInt(partesFecha[0], 10); 
+    const mes = parseInt(partesFecha[1], 10); 
+    const anyo = parseInt(partesFecha[2], 10);
+    const fecha = new Date(anyo, mes - 1, dia);
+    stat["birthdate"]=fecha;
+
     dbVolleyball.find({"name":stat.name}, (err,info) => {
         if(err){
             res.sendStatus(500,"Internal Error");

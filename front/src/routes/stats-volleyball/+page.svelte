@@ -19,7 +19,7 @@
     let volleyball=[];
     let errorMsg="";
     let msg="";
-    let newVolleyball={name:"nombreJugadora",ranking:11,nationality:"Spain",position:"Outside Hitter",birthdate:"19/06/2006",height:188,weight:89,dominant_hand:"Right",country_point:221.0,point:666.0};
+    let newVolleyball={name:"nombreJugadora",ranking:11,nationality:"Spain",position:"Outside Hitter",birthdate:"16/06/2006",height:188,weight:89,dominant_hand:"Right",country_point:221.0,point:666.0};
     let param=[];
     let busqueda=[];
     let from="";
@@ -29,7 +29,6 @@
     let numero=10;
     let n2=0;
     let limit=false;
-    //let rest=false;
     let opcionSeleccionada=Array.from({ length: numFormularios }, () => 'name');;
 
     function handleSeleccion(event, nn) {
@@ -38,7 +37,6 @@
 
     onMount(async()=>{
         await getVolleyball(1,"");
-        // console.log("aparece"+volleyball.length);
         
     })
 
@@ -56,18 +54,14 @@
             let response="";
 
             if(limit===true){
-                //console.log("API22 es "+API22);
                 API22=API+"?limit="+numero+"&offset="+offset;
             }
-            //console.log("debería ser api?limit=2")
             if(param.length===0){
                 response=await fetch(API22,{
                                 method:"GET"
                             });
             }
             else{
-
-                //console.log("entra?"+API22);
                 let i=0;
                 while(i<param.length){
                     if(API22===API){
@@ -88,24 +82,15 @@
                     }
                     i=i+1;
                 }
-                console.log(param);
-                //msg="Filtrado realizado correctamente";
                 response=await fetch(API22,{
                                 method:"GET"
                             });
                 
             }
 
-            //console.log(API22);
             let status = await response.status;
             
             if(status===200 ){
-                // if(API22!==API){
-                //     //
-                //     //actualizaLO();
-                //     //console.log("entra en lo del filtrado realizado correctamente");
-                    
-                // }
                 
                 let data= await response.json();
                 volleyball=data;
@@ -119,11 +104,9 @@
             msg="";
         }
 
-        //await actualizaLO();
         await getTabla();
         console.log("Mostrando los elementos de "+API22);
         console.log(volleyball);
-        console.log(msg);
         
     }
 
@@ -160,8 +143,6 @@
 
 
         }
-        //console.log(param);
-        //console.log(busqueda);
 
     }
 
@@ -169,30 +150,23 @@
     async function ejecutaOrden(){
         console.log("antes del p"+volleyball.length);
         await actualizaP();
-        //rest=false
         await actualizaLO("Filtrado realizado correctamente");
-        //await getVolleyball();
     }
 
 
     async function actualizaLO(msgEnv){
         
         limit=false;
-        //rest=false;
-        //await getVolleyball(1);
         if(typeof msgEnv ==='string'){
             await getVolleyball(1,msgEnv);
         }else{
             await getVolleyball(1,"Paginación realizada correctamente");
         }
-        // console.log("sale 10?"+volleyball_c.length);
-        //console.log(volleyball.length)
         let numElems=volleyball.length;
         if(numElems>0){
             n2=Math.ceil(numElems/numero) ;
         }
         limit=true;
-        //rest=false;
         if(typeof msgEnv ==='string'){
             await getVolleyball(1,msgEnv);
         }else{
@@ -224,25 +198,13 @@
             let status = await response.status;
             
             if(status===200 ){
-                // if(API22!==API){
-                //     //
-                //     //actualizaLO();
-                //     msg="Se han establecido correctamente los valores por defecto";
-                // }
 
                 let data= await response.json();
                 volleyball=data;
-                //volleyball_c=data;
                 param=[];
                 busqueda=[];
                 await actualizaLO("Se han establecido correctamente los valores por defecto");
                 
-                
-                //
-                //await actualizaLO();
-                // msg="Se han establecido correctamente los valores por defecto";
-                
-                //rest=true;
             }else{
                 errorMsg="code: "+status;
                 msg="";
@@ -264,11 +226,7 @@
                             })
 
             if(response.status===200){
-                //rest=false;
-                //msg="Jugadora borrada correctamente";
                 await actualizaLO("Jugadora borrada correctamente");
-                 //getVolleyball();
-                //msg="Jugadora borrada correctamente";
             }else{
                 errorMsg="code: "+response.status;
                 msg="";
@@ -288,12 +246,9 @@
                             })
 
             if(response.status===200){
-                //rest=false;
                 param=[];
                 busqueda=[];
                 await getVolleyball(1,"Todas las jugadoras borradas correctamente");
-                //console.log(msg);
-                //msg="Todas las jugadoras borradas correctamente";
             }else{
                 errorMsg="code: "+response.status;
                 msg="";
@@ -317,15 +272,8 @@
                             })
 
             let status=await response.status;
-            //console.log(`Creation response status ${status}`);
             if(status===201){
-                //rest=false;
-                
-                
-                //msg="Jugadora creada correctamente";
                 await actualizaLO("Jugadora creada correctamente");
-                //await getVolleyball();
-                //msg="Jugadora creada correctamente";
             }else{
                 errorMsg="code: "+status;
                 msg="";
@@ -591,28 +539,3 @@
      <button on:click="{createVolleyball}">Crear jugadora volleyball</button> <button on:click="{deleteTodasVolleyball}">Limpiar lista</button> <button on:click="{restauraValores}">Volver a la lista inicial</button>  
     <p> <a href="/stats-volleyball/graph" class="nav-link">Ver las gráficas</a></p>
 </ul>
-
-
-<!-- nuevo -->
-<!-- <title>Listado en dos columnas</title>
-<style>
-    .columnas {
-        column-count: 2; /* Divide en dos columnas */
-        column-gap: 20px; /* Espacio entre columnas */
-    }
-</style>
-
-
-    <div class="columnas">
-        <ul>
-            <li>tabla</li>
-            <li>
-                {#each volleyball as volleyball_j}
-                    <li> <a href="/stats-volleyball/{volleyball_j.nationality}/{volleyball_j.weight}">{volleyball_j.name} - {volleyball_j.nationality}</a>  <button on:click="{deleteVolleyball(volleyball_j.name,volleyball_j.nationality+"/"+volleyball_j.weight)}">Borrar</button> </li>
-                    
-                {/each}
-            </li>
-           
-             Agrega más elementos aquí -->
-        <!-- </ul>
-    </div> --> 
