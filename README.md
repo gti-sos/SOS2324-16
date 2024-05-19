@@ -18,5 +18,5 @@
 
 - **Docker:**
    -  Use this comand to create a docker container with us project:
-   - `docker run -p 8080:10000 -d pablosuarez10/sos2324-16:latest`
+   - `docker run -p 8080:10000 -d domimam/sos2324-16:latest`
 `

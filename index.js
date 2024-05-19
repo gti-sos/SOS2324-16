@@ -106,7 +106,7 @@ app.use("/PSS/proxy", async function(req, res) {
     const options = {
         method: 'GET',
         headers: {
-            'X-RapidAPI-Key': 'b0f281d7f3msh13de4455d1b8a25p1c2a06jsn2bd53ab1a197',
+            'X-RapidAPI-Key': '0ce0fceddamsh6c7a31cf44a49a9p10f399jsna366b1dbf9cf',
             'X-RapidAPI-Host': 'maps-data.p.rapidapi.com'
         }
     };
