@@ -56,7 +56,6 @@ loadBackendPSS(app, dbFootball);
 loadBackendDMC(app, dbVolleyball);
 
 //Proxy
-
 app.use("/DMC/proxy", async function(req, res) {
     
     const url = `https://the-vegan-recipes-db.p.rapidapi.com/`;
