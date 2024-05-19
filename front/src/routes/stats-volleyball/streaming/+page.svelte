@@ -28,7 +28,7 @@
         const options = {
             method: 'GET',
             headers: {
-                'X-RapidAPI-Key': 'fb49f1e462msh8a010d27648a284p1aba51jsn103cf0bf3a43',
+                'X-RapidAPI-Key': '02fd5dab91mshc8309e479aef784p19dbacjsn34a3a471ade7',
                 'X-RapidAPI-Host': 'streaming-availability.p.rapidapi.com'
             }
         };
@@ -51,7 +51,7 @@
         const options = {
             method: 'GET',
             headers: {
-                'X-RapidAPI-Key': 'fb49f1e462msh8a010d27648a284p1aba51jsn103cf0bf3a43',
+                'X-RapidAPI-Key': '02fd5dab91mshc8309e479aef784p19dbacjsn34a3a471ade7',
                 'X-RapidAPI-Host': 'streaming-availability.p.rapidapi.com'
             }
         };
