@@ -94,6 +94,7 @@
                 
                 let data= await response.json();
                 volleyball=data;
+                errorMsg="";
             }else{
                 errorMsg="code: "+status;
                 msg="";
@@ -204,6 +205,7 @@
                 param=[];
                 busqueda=[];
                 await actualizaLO("Se han establecido correctamente los valores por defecto");
+                errorMsg="";
                 
             }else{
                 errorMsg="code: "+status;
@@ -227,6 +229,7 @@
 
             if(response.status===200){
                 await actualizaLO("Jugadora borrada correctamente");
+                errorMsg="";
             }else{
                 errorMsg="code: "+response.status;
                 msg="";
@@ -249,6 +252,7 @@
                 param=[];
                 busqueda=[];
                 await getVolleyball(1,"Todas las jugadoras borradas correctamente");
+                errorMsg="";
             }else{
                 errorMsg="code: "+response.status;
                 msg="";
@@ -274,6 +278,7 @@
             let status=await response.status;
             if(status===201){
                 await actualizaLO("Jugadora creada correctamente");
+                errorMsg="";
             }else{
                 errorMsg="code: "+status;
                 msg="";

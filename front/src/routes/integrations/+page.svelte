@@ -15,6 +15,9 @@
                 <li class ="li_mod">
                     <a href="/stats-volleyball/streaming">/streaming</a> : Integración con una API de servicios de streaming mediante una tabla (https://rapidapi.com/movie-of-the-night-movie-of-the-night-default/api/streaming-availability/).
                 </li>
+                <li class ="li_mod">
+                    <a href="/stats-volleyball/free-apps">/free-apps</a> : Uso con una API que muestra las aplicaciones gratuitas más utilizadas(https://rapidapi.com/letscrape-6bRBa3QguO5/api/store-apps).
+                </li>
             </ul>
     <h2>Pablo Ruiz Rivas</h2>
             <ul>
