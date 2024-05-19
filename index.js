@@ -63,7 +63,7 @@ app.use("/DMC/proxy", async function(req, res) {
     const options = {
         method: 'GET',
         headers: {
-            'X-RapidAPI-Key': 'ae855ceae1msh2840b2c00787f80p198e0bjsnbf6b6ed1fe06',
+            'X-RapidAPI-Key': 'fb49f1e462msh8a010d27648a284p1aba51jsn103cf0bf3a43',
             'X-RapidAPI-Host': 'the-vegan-recipes-db.p.rapidapi.com'
         }
     };

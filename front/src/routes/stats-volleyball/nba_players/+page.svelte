@@ -32,7 +32,7 @@
         const options = {
             method: 'GET',
             headers: {
-                'X-RapidAPI-Key': '091e0bcec8msh63bb62660ef5b0cp134125jsn9307b8f17903',
+                'X-RapidAPI-Key': 'fb49f1e462msh8a010d27648a284p1aba51jsn103cf0bf3a43',
                 'X-RapidAPI-Host': 'tank01-fantasy-stats.p.rapidapi.com'
             }
         };
@@ -62,7 +62,7 @@
             const options = {
                 method: 'GET',
                 headers: {
-                    'X-RapidAPI-Key': '091e0bcec8msh63bb62660ef5b0cp134125jsn9307b8f17903',
+                    'X-RapidAPI-Key': 'fb49f1e462msh8a010d27648a284p1aba51jsn103cf0bf3a43',
                     'X-RapidAPI-Host': 'tank01-fantasy-stats.p.rapidapi.com'
                 }
             };
