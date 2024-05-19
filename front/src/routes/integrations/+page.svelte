@@ -52,5 +52,4 @@
                     <a href="/stats-football/rapidapi_maps">/rapidapi_maps</a> - Uso de una api externa a través de un proxy propio.
                 </li>
             </ul>
-
 </section>
